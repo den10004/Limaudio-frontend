@@ -3,19 +3,65 @@ import { useEffect, useState } from "react";
 import "./blogmainpage.css";
 import BlogCard from "../BlogCard";
 
+type RichTextBlock = {
+  __component: "shared.rich-text";
+  id: number;
+  body: string;
+};
+
+type SliderBlock = {
+  __component: "shared.slider";
+  id: number;
+  files: string[];
+};
+
+type Block = RichTextBlock | SliderBlock;
+
 type Card = {
-  id: string;
+  blocks: Block[];
+  category: {
+    documentId: string;
+    id: number;
+    name: string;
+  };
+  comments: {
+    count: number;
+  };
+  cover: {
+    documentId: string;
+    id: number;
+    url: string;
+  };
+  createdAt: string;
+  description: string;
+  documentId: string;
+  id: number;
+  publishedAt: string;
+  slug: string;
   title: string;
-  image: string;
-  tags: any;
-  galery: any;
+  views: number;
+  url: string;
+  updatedAt: string;
   date: string;
-  author: string;
+  type: string;
 };
 
 type GroupedCard = {
   type: "big" | "small";
   cards: Card[];
+};
+
+type CardsResponse = {
+  length: any;
+  data: Card[];
+  meta: {
+    pagination: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
 };
 
 const groupCards = (cards: Card[]): GroupedCard[] => {
@@ -40,7 +86,19 @@ const groupCards = (cards: Card[]): GroupedCard[] => {
 const INITIAL_VISIBLE_GROUPS = 4;
 
 export default function BlogMainPage() {
-  const [allCards, setAllCards] = useState<Card[]>([]);
+  const [allCards, setAllCards] = useState<CardsResponse>({
+    data: [],
+    meta: {
+      pagination: {
+        page: 1,
+        pageSize: 10,
+        pageCount: 0,
+        total: 0,
+      },
+    },
+    length: undefined,
+  });
+
   const [visibleGroups, setVisibleGroups] = useState(INITIAL_VISIBLE_GROUPS);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,9 +112,8 @@ export default function BlogMainPage() {
           throw new Error(text || "Ошибка при загрузке");
         }
 
-        const strapiData = await res.json();
+        const cards = await res.json();
 
-        console.log(strapiData);
         setAllCards(cards);
         setIsLoading(false);
       } catch (err: any) {
@@ -68,20 +125,13 @@ export default function BlogMainPage() {
     fetchCards();
   }, []);
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ru-RU");
-  };
-
-  const groupedCards = groupCards(allCards);
+  const groupedCards = groupCards(allCards.data);
   const visibleGrouped = groupedCards.slice(0, visibleGroups);
-
   const showMore = () => setVisibleGroups((prev) => prev + 2);
 
   if (isLoading) return <div className="container">Загрузка...</div>;
   if (error) return <div className="container error-message">{error}</div>;
-  if (!allCards.length)
+  if (!allCards.data.length)
     return <div className="container">Нет доступных блогов</div>;
 
   return (
@@ -92,8 +142,8 @@ export default function BlogMainPage() {
             key={index}
             className={`row ${group.type === "big" ? "big-row" : "small-row"}`}
           >
-            {group.cards.map((card) => (
-              <BlogCard key={card.id} card={card} type={group.type} />
+            {group.cards.map((card, i) => (
+              <BlogCard key={i} card={card} type={group.type} />
             ))}
           </div>
         ))}

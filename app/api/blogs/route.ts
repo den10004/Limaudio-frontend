@@ -1,3 +1,4 @@
+import { count } from "console";
 import { NextResponse } from "next/server";
 import qs from "qs";
 
@@ -28,10 +29,12 @@ export async function GET() {
               "shared.slider": { populate: "*" },
             },
           },
+          category: { fields: "name" },
+          comments: { count: true },
         },
       },
       {
-        encodeValuesOnly: true, // важно для корректной сериализации
+        encodeValuesOnly: true,
       }
     );
 

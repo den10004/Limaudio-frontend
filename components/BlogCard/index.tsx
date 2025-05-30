@@ -4,14 +4,28 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 
+type cover = {
+  url: string;
+};
+
+type name = {
+  name: string;
+};
+
+type comments = {
+  count: number;
+};
+
 export type Card = {
-  id: number;
-  author: string;
-  image: string;
-  category: string;
+  slug: string;
+  cover: cover;
+  category: name;
+  comments: comments;
   title: string;
-  content: string;
+  description: string;
   date: string;
+  views: number;
+  type: string;
 };
 
 type CardItemProps = {
@@ -39,37 +53,26 @@ const getBackgroundColor = (type: string) => {
 };
 
 export default function BlogCard({ card, type }: CardItemProps) {
-  const createSlug = (title: string) => {
-    /*
-   .toLowerCase()
-      .replace(/[^а-яёa-z0-9\s-]/g, "")
-      .replace(/[\s-]+/g, "-")
-      .replace(/^-+|-+$/g, "");*/
-    return title;
-  };
-
-  const slug = createSlug(card.title);
-
   return (
-    <Link href={`/blog/${slug}`} scroll={false}>
+    <Link href={`/blog/${card.slug}`} scroll={false}>
       <div
         className={`card ${type === "big" ? "wide" : "small"}`}
         style={{ position: "relative" }}
       >
         <div style={{ position: "relative" }}>
-          <img className="card__img" src={card.image} alt={card.title} />
+          <img className="card__img" src={card.cover.url} alt={card.title} />
           <div className="labelblock-big">
             <div
               className="label comparison-label label-color"
               style={{
-                backgroundColor: getBackgroundColor(card.type),
+                backgroundColor: getBackgroundColor(card.category.name),
                 color:
                   card.type === "silver" || card.type === "gold"
                     ? "black"
                     : "white",
               }}
             >
-              {card.type}
+              {card.category.name}
             </div>
             <div className="label show-label show-label-min label-color">
               <svg
@@ -88,7 +91,7 @@ export default function BlogCard({ card, type }: CardItemProps) {
                   stroke="black"
                 ></path>
               </svg>
-              120
+              {card.views}
             </div>
             <div className="label show-label show-label-min label-color">
               <svg
@@ -105,13 +108,13 @@ export default function BlogCard({ card, type }: CardItemProps) {
                   fill="#1C1C1C"
                 ></path>
               </svg>
-              20
+              {card.comments.count}
             </div>
           </div>
         </div>
         <div className="card__desc">
           <h2 className="text-h2">{card.title}</h2>
-          <p className="text">{card.content}</p>
+          <p className="text">{card.description}</p>
           <span className="text16">{card.date}</span>
         </div>
       </div>
