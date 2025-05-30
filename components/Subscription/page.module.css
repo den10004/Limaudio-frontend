@@ -1,0 +1,139 @@
+.subscription {
+    margin-top: 30px;
+}
+
+.subscription>.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subscription__block {
+    display: flex;
+    background-color: var(--color-grayF5);
+    padding: 22px 21px 17px 17px;
+    border-radius: 20px;
+    width: 100%
+}
+
+.subscription__block>form {
+    margin: 0 20px;
+    position: relative;
+}
+
+
+.subscription__block>form>input {
+    width: 416px;
+    height: 50px;
+    border: 1px solid var(--color-black2C);
+    border-radius: 8px;
+}
+
+.send_btn {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+}
+
+.send_btn:hover {
+    background-color: var(--color-blue) !important;
+    transition: stroke 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.send_btn:hover>svg path {
+    fill: var(--color-white);
+    transition: stroke 0.3s ease-in-out, fill 0.3s ease-in-out;
+}
+
+.send_btn:hover>svg rect {
+    fill: #BEBEBE;
+    transition: stroke 0.3s ease-in-out, fill 0.3s ease-in-out;
+}
+
+
+
+.subscription__block>div {
+    max-width: 306px;
+}
+
+.subscription__block>div>span>a {
+    color: var(--color-blue);
+}
+
+#scrollToTopBtn {
+    position: fixed;
+    border: none;
+    outline: none;
+    background-color: var(--color-grayF5);
+    cursor: pointer;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    bottom: 60px;
+    right: 20px;
+    display: none;
+}
+
+#scrollToTopBtn:hover {
+    background-color: var(--color-blue);
+    transition: stroke 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+#scrollToTopBtn:hover>svg path {
+    stroke: #BEBEBE;
+    transition: stroke 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+
+
+
+@media screen and (max-width: 1100px) {
+    .subscription__block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .subscription__block>form>input {
+        margin: 10px 0;
+    }
+
+    .send_btn {
+        top: 17px;
+    }
+
+    #scrollToTopBtn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .subscription__block>form {
+        margin: 0;
+    }
+
+    .subscription__block>div {
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    #scrollToTopBtn {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .subscription__block>form {
+        width: 100%;
+    }
+
+    .subscription__block>form>input {
+        width: 100%;
+    }
+}

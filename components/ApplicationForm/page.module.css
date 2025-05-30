@@ -1,0 +1,107 @@
+.application {
+    margin-top: 25px;
+    background-color: #EEF5FF;
+    border-radius: 20px;
+    padding: 19px;
+}
+
+.application>p {
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 14px;
+}
+
+.application__form {
+    margin-top: 23px;
+    display: flex;
+    gap: 20px;
+}
+
+.application__form>div>img {
+    margin-top: 7px;
+    max-width: 265px;
+    height: auto;
+    border-radius: 20px;
+}
+
+
+.application__sendform {
+    display: flex;
+    flex-direction: column;
+}
+
+.application__form_group>input {
+    width: 100%;
+    height: 58px;
+}
+
+.application__sendform>.application__form_group>input {
+    margin-top: 6px;
+}
+
+.application__sendform>.application__form_group:first-child {
+    margin-bottom: 23px;
+}
+
+.application__sendform>button {
+    width: 100%;
+    margin-top: auto
+}
+
+
+.form__expert {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    backdrop-filter: blur(6px);
+    color: var(--color-white);
+    background: #aca0a04d;
+    border-radius: 0 0 20px 20px;
+}
+
+
+
+@media screen and (max-width: 1124px) {
+    .application__sendform>button {
+        font-size: 19px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .application__form {
+        flex-direction: column;
+    }
+
+    .application__form>div {
+        display: flex;
+        margin: 0 auto;
+    }
+
+    .application__form>form>button {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .application__form {
+        flex-direction: column;
+    }
+
+    .application__form>div {
+        display: flex;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width:500px) {
+
+    .application__form>div>img {
+        width: 100%;
+        max-width: 100%;
+
+    }
+
+}

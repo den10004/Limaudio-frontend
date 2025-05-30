@@ -1,0 +1,136 @@
+.blog {
+    margin-top: 30px;
+}
+
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.card {
+    background: var(--color-grayFA);
+    padding: 20px;
+    border-radius: 20px;
+    color: var(--color-black1C);
+}
+
+.card__container-wide {
+    display: flex;
+}
+
+.card__container-wide>div>img {
+    border-radius: 20px;
+    aspect-ratio: 16/9;
+}
+
+.container__wide-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.wide-padding {
+    padding-left: 20px;
+}
+
+
+
+.container__wide-text h2,
+.container__wide-text p {
+    color: var(--color-black1C);
+}
+
+.container__wide-text p {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.container__wide-text span {
+    color: var(--color-gray56);
+}
+
+.container__wide-text>span {
+    margin-top: auto;
+}
+
+.wide {
+    grid-column: 1 / 4;
+}
+
+
+.card__container-small>div>img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    aspect-ratio: 16/9;
+    border-radius: 20px;
+}
+
+
+.card__container-small>div {
+    margin-top: 10px;
+}
+
+.card__container-small>div>h2 {
+    font-size: 23px !important;
+}
+
+.card__container-small>div>p {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card__container-small>div>span {
+    margin-top: 10px;
+}
+
+#load-more {
+    margin: 20px auto;
+}
+
+
+@media (max-width: 1000px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+
+    .card__container-wide {
+        flex-direction: column;
+    }
+
+    .card__container-wide>div>img {
+        width: 100%;
+    }
+
+    .wide-padding {
+        padding-left: 0px;
+        padding-top: 10px;
+    }
+
+    .container__wide-text p {
+        -webkit-line-clamp: 5;
+        margin-bottom: 15px;
+    }
+
+    .wide,
+    .card {
+        grid-column: 1 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .card__container-small>div>h2 {
+        font-size: 22px !important;
+        font-weight: 500;
+        line-height: 100%;
+    }
+}

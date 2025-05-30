@@ -1,0 +1,28 @@
+.blogSlider>img {
+    border-radius: 20px;
+}
+
+.blog-button-prev,
+.blog-button-next {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 54px;
+    height: 54px;
+    background-color: var(--color-grayF8);
+    border-radius: 50%;
+    margin: 0 10px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: absolute;
+    z-index: 5;
+}
+
+
+.blog-button-prev {
+    left: 10px;
+}
+
+.blog-button-next {
+    right: 10px;
+}

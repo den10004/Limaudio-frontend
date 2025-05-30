@@ -1,0 +1,21 @@
+.popular__sort {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.popular__sort>li>a {
+    display: flex;
+    align-items: center;
+    color: var(--color-black2C);
+    background-color: var(--color-grayF4);
+    padding-right: 10px;
+    border-radius: 20px;
+    height: 32px;
+}
+
+.popular__sort>li>a>img {
+    border-radius: 20px 0px 0px 20px;
+    margin-right: 5px;
+}

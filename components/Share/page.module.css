@@ -1,0 +1,11 @@
+.blog__share {
+    margin-top: 20px;
+}
+
+.blog__share>div>a {
+    margin-right: 5px;
+}
+
+.share_social {
+    margin-top: 15px;
+}
