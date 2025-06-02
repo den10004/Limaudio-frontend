@@ -21,8 +21,8 @@ interface TagItem {
 interface TagsProps {
   tags: TagItem[];
 }
-export default function Tags({ tags }: any) {
-  //console.log(tags);
+export default function Tags({ tags }: TagsProps) {
+  console.log(tags);
 
   if (!tags?.length) {
     return null;
@@ -30,7 +30,7 @@ export default function Tags({ tags }: any) {
 
   return (
     <ul className={styles.popular__sort}>
-      {tags.map((e: any, i: string) => (
+      {tags.map((e: any, i) => (
         <li key={i} className={styles.tag}>
           <Link href="/">
             <Image src={e.image.url} alt={e.title} width={28} height={32} />

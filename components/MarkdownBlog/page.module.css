@@ -1,0 +1,8 @@
+.img_slider {
+    display: block;
+    height: auto;
+    object-fit: contain;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 20px;
+}

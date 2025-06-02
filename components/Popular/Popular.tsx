@@ -94,7 +94,8 @@ export default function Popular() {
           }`}
           id="linksList"
         >
-          <Tags tags={tags} />
+          {/*
+          <Tags tags={tags} />*/}
         </ul>
 
         <div className={styles.popular__search}>
