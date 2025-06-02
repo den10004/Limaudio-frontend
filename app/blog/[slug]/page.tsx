@@ -12,29 +12,16 @@ import BlogSlider from "@/components/BlogSlider";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
 import Share from "@/components/Share";
-import { getArticleBySlug } from "@/lib/api";
+import { getArticleBySlug } from "@/app/api/blog/api";
 import { Articles } from "@/types/articles";
+import { type Metadata } from "next";
 
-const tags = [
-  {
-    href: "/homeСinema.png",
-    title: "Акустика",
-  },
-  {
-    href: "/outdoorAcoustics.png",
-    title: "Hi-Fi звук",
-  },
-  {
-    href: "/ShelfAcoustics.png",
-    title: "Наушники",
-  },
-];
-
-export default async function BlogPostPage({
-  params,
-}: {
+interface PageProps {
   params: { slug: string };
-}) {
+}
+
+export default async function BlogPostPage({ params }: any) {
+  const { slug } = params;
   const content: Articles | null = await getArticleBySlug(params.slug);
 
   const breadcrumbs = [
@@ -47,7 +34,10 @@ export default async function BlogPostPage({
     },
   ];
 
-  console.log(content);
+  const tags: any = content?.topics;
+
+  console.log(tags);
+  // console.log(content);
   if (!content) return notFound();
   return (
     <>

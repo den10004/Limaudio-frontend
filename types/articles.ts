@@ -1,42 +1,61 @@
-type RichTextBlock = {
-  __component: "shared.rich-text";
+type MediaFile = {
+  documentId: string;
   id: number;
-  body: string;
+  url?: string;
+  createdAt?: string;
 };
 
-type SliderBlock = {
-  __component: "shared.slider";
+type BaseBlock = {
+  __component: string;
   id: number;
-  files: string[];
 };
+
+interface RichTextBlock extends BaseBlock {
+  __component: "shared.rich-text";
+  body: string;
+}
+
+interface SliderBlock extends BaseBlock {
+  __component: "shared.slider";
+  files: string[];
+}
 
 type Block = RichTextBlock | SliderBlock;
 
+type Topic = {
+  createdAt: string;
+  documentId: string;
+  id: number;
+  image: MediaFile;
+  publishedAt: string;
+  title: string;
+  updatedAt: string;
+};
+
+type Category = {
+  documentId: string;
+  id: number;
+  name: string;
+};
+
 export type Articles = {
+  id: number;
+  documentId: string;
+  slug: string;
+  title: string;
+  description: string;
+  type: string;
+  url: string;
+  date: string;
+  views: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  cover: MediaFile;
   blocks: Block[];
-  category: {
-    documentId: string;
-    id: number;
-    name: string;
-  };
+  category: Category;
   comments: {
     count: number;
   };
-  cover: {
-    documentId: string;
-    id: number;
-    url: string;
-  };
-  createdAt: string;
-  description: string;
-  documentId: string;
-  id: number;
-  publishedAt: string;
-  slug: string;
-  title: string;
-  views: number;
-  url: string;
-  updatedAt: string;
-  date: string;
-  type: string;
+  topics: Topic;
 };

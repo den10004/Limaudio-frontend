@@ -11,9 +11,11 @@ export default async function PopularArticles() {
       <div className="container">
         <h3 className="text-h3-bold">Популярные статьи</h3>
         <div className={styles.interes__card}>
+          {/*
           {firstThree.map((card) => (
+      
             <BlogCard key={card.id} card={card} type="small" />
-          ))}
+          ))}*/}
         </div>
       </div>
     </section>

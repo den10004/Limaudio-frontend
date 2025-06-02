@@ -8,7 +8,7 @@ import { brandLogos } from "@/lib/brands";
 
 import { notFound } from "next/navigation";
 import Subscription from "@/components/Subscription/Subscription";
-import PopularArticles from "@/components/PopularArticles";
+//import PopularArticles from "@/components/PopularArticles";
 import BlogMainPage from "@/components/BlogMainPage";
 import BrandText from "@/components/BrandText";
 
@@ -48,7 +48,8 @@ export default async function BrandsPage({ params }: any) {
       <div style={{ display: "none" }}>
         <BlogMainPage />
       </div>
-      <PopularArticles />
+      {/*
+      <PopularArticles />*/}
       <Subscription />
       <Footer />
       <ScrollBtn />
