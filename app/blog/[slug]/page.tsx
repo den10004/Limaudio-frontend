@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
@@ -12,66 +13,68 @@ import BlogSlider from "@/components/BlogSlider";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
 import Share from "@/components/Share";
+import qs from "qs";
 
-const slugToTitle = (slug: string) => {
-  return decodeURIComponent(slug)
-    .replace(/-/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-};
+export default async function BlogPostPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const slug = params.slug;
 
-const createSlug = (title: string) => {
-  return title
-    .toLowerCase()
-    .replace(/[^а-яёa-z0-9\s-]/g, "")
-    .replace(/[\s-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-};
+  const query = qs.stringify(
+    {
+      populate: {
+        cover: {
+          fields: ["url"],
+        },
+        blocks: {
+          on: {
+            "shared.rich-text": { populate: "*" },
+            "shared.slider": { populate: "*" },
+          },
+        },
+        category: { fields: ["name"] },
+        comments: { count: true },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
 
-const tags = [
-  {
-    href: "/acustic.png",
-    title: "Акустика",
-  },
-  {
-    href: "/outdoorAcoustics.png",
-    title: "Hi-Fi звук",
-  },
-  {
-    href: "/headphones.png",
-    title: "Наушники",
-  },
-];
+  const res = await fetch(
+    `${process.env.API_URL}/articles/rq1fukmesblg79z72rokv89v/?${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.TOKEN}`,
+      },
+      cache: "force-cache",
+    }
+  );
 
-export default async function BlogPostPage({ params }: any) {
-  const { slug } = params;
-  const title = slugToTitle(params.slug);
+  if (!res.ok) return notFound();
+
+  const data = await res.json();
+  console.log(data.data);
 
   const breadcrumbs = [
-    { label: "Главная", href: INDEX },
-    { label: "Сравнения", href: COMPARION },
+    { label: "Акустика", href: INDEX },
+    { label: "Бренды", href: COMPARION },
     {
-      label: title,
-      href: slug,
+      label: data.data.slug,
+      href: "",
       isActive: true,
     },
   ];
-  const cards = await getCards();
-  const similarCard = cards.slice(0, 4);
-  const decodedSlug = decodeURIComponent(slug);
-
-  const card = cards.find(
-    (card) => createSlug(card.title) === createSlug(decodedSlug)
-  );
-
-  if (!card) {
-    return <div>Карточка не найдена</div>;
-  }
 
   return (
     <>
-      <Header />
-      <Breadcrumbs items={breadcrumbs} />
+      <Header /> <Breadcrumbs items={breadcrumbs} />
+      {data.data.title} <br />
+      {data.data.description}
+      {/*
+   
 
       <section className={styles.blog}>
         <div className="container">
@@ -334,6 +337,8 @@ export default async function BlogPostPage({ params }: any) {
           </div>
         </div>
       </section>
+
+      */}
       <Footer />
       <ScrollBtn />
     </>

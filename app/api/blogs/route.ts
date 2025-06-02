@@ -5,10 +5,7 @@ import qs from "qs";
 export const revalidate = 60;
 
 export async function GET() {
-  const API_URL = process.env.API_URL;
-  const TOKEN = process.env.TOKEN;
-
-  if (!API_URL || !TOKEN) {
+  if (!process.env.API_URL || !process.env.TOKEN) {
     console.error("API_URL или TOKEN не заданы в .env");
     return NextResponse.json(
       { error: "Неверная конфигурация сервера" },
@@ -38,10 +35,10 @@ export async function GET() {
       }
     );
 
-    const res = await fetch(`${API_URL}/articles?${query}`, {
+    const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${TOKEN}`,
+        Authorization: `Bearer ${process.env.TOKEN}`,
       },
       next: { revalidate: 60 },
     });

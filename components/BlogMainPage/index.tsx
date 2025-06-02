@@ -83,9 +83,8 @@ const groupCards = (cards: Card[]): GroupedCard[] => {
   return grouped;
 };
 
-const INITIAL_VISIBLE_GROUPS = 4;
-
 export default function BlogMainPage() {
+  const INITIAL_VISIBLE_GROUPS = 4;
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],
     meta: {
