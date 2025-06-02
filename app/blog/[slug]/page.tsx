@@ -3,7 +3,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import ScrollBtn from "@/components/ScrollBtn";
-import { INDEX, COMPARION } from "@/lib/breadcrumbs";
+import { INDEX } from "@/lib/breadcrumbs";
 import styles from "./page.module.css";
 import Article from "@/components/Article";
 import Comments from "@/components/Comments";
@@ -12,7 +12,8 @@ import BlogSlider from "@/components/BlogSlider";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
 import Share from "@/components/Share";
-import qs from "qs";
+import { getArticleBySlug } from "@/lib/api";
+import { Articles } from "@/types/articles";
 
 const tags = [
   {
@@ -34,64 +35,20 @@ export default async function BlogPostPage({
 }: {
   params: { slug: string };
 }) {
-  const slug = params.slug;
-
-  const query = qs.stringify(
-    {
-      filters: {
-        slug: {
-          $eq: slug,
-        },
-      },
-      populate: {
-        cover: {
-          fields: ["url"],
-        },
-        blocks: {
-          populate: "*",
-          on: {
-            "shared.rich-text": { populate: "*" },
-            "shared.slider": { populate: "*" },
-          },
-        },
-        category: {
-          fields: ["name"],
-        },
-        comments: {
-          count: true,
-        },
-      },
-      publicationState: "live",
-    },
-    {
-      encodeValuesOnly: true,
-    }
-  );
-
-  const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
-    headers: {
-      Authorization: `Bearer ${process.env.TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    next: { revalidate: 60 },
-  });
-
-  if (!res.ok) return notFound();
-
-  const data = await res.json();
-  let content = data.data[0];
-  if (!content) return notFound();
+  const content: Articles | null = await getArticleBySlug(params.slug);
 
   const breadcrumbs = [
     { label: "Акустика", href: INDEX },
     { label: "Сравнения", href: "" },
     {
-      label: content.title,
+      label: content?.title ?? "",
       href: "",
       isActive: true,
     },
   ];
 
+  console.log(content);
+  if (!content) return notFound();
   return (
     <>
       <Header />
@@ -105,7 +62,7 @@ export default async function BlogPostPage({
               <span>{content.category.name}</span>
             </div>
             <div>
-              <span>{content.date}</span>
+              <span>{content.createdAt}</span>
             </div>
             <div>
               <svg
@@ -151,10 +108,11 @@ export default async function BlogPostPage({
             <div className={styles.blog__block}>
               <div className={styles.blog__content}>
                 <div className={styles.blog__part}>
-                  <img src={`${content.img}`} alt={content.title} />
+                  <img src={`${content.cover.url}`} alt={content.title} />
 
                   <p className="text blog-main">{content.description}</p>
 
+                  {/*
                   <div className={styles.blog__cont}>
                     <p className="text-h3-bold">Содержание</p>
                     <ul className="text16">
@@ -222,6 +180,7 @@ export default async function BlogPostPage({
                   {/*
                   <BlogSlider card={card} />*/}
 
+                  {/*
                   <h3 className={`text-h3-bold ${styles.blog_main}`}>
                     Bluetooth и аудиокодеки 
                   </h3>
@@ -338,7 +297,7 @@ export default async function BlogPostPage({
                       </li>
                     </ul>
                   </div>
-
+*/}
                   <Tags tags={tags} />
                 </div>
 
