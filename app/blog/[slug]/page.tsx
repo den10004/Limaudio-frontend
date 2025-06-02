@@ -7,13 +7,27 @@ import { INDEX, COMPARION } from "@/lib/breadcrumbs";
 import styles from "./page.module.css";
 import Article from "@/components/Article";
 import Comments from "@/components/Comments";
-import { getCards } from "@/lib/cardsData";
 import BlogSimilar from "@/components/BlogSimilar";
 import BlogSlider from "@/components/BlogSlider";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
 import Share from "@/components/Share";
 import qs from "qs";
+
+const tags = [
+  {
+    href: "/homeСinema.png",
+    title: "Акустика",
+  },
+  {
+    href: "/outdoorAcoustics.png",
+    title: "Hi-Fi звук",
+  },
+  {
+    href: "/ShelfAcoustics.png",
+    title: "Наушники",
+  },
+];
 
 export default async function BlogPostPage({
   params,
@@ -24,45 +38,55 @@ export default async function BlogPostPage({
 
   const query = qs.stringify(
     {
+      filters: {
+        slug: {
+          $eq: slug,
+        },
+      },
       populate: {
         cover: {
           fields: ["url"],
         },
         blocks: {
+          populate: "*",
           on: {
             "shared.rich-text": { populate: "*" },
             "shared.slider": { populate: "*" },
           },
         },
-        category: { fields: ["name"] },
-        comments: { count: true },
+        category: {
+          fields: ["name"],
+        },
+        comments: {
+          count: true,
+        },
       },
+      publicationState: "live",
     },
     {
       encodeValuesOnly: true,
     }
   );
 
-  const res = await fetch(
-    `${process.env.API_URL}/articles/rq1fukmesblg79z72rokv89v/?${query}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.TOKEN}`,
-      },
-      cache: "force-cache",
-    }
-  );
+  const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
+    headers: {
+      Authorization: `Bearer ${process.env.TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    next: { revalidate: 60 },
+  });
 
   if (!res.ok) return notFound();
 
   const data = await res.json();
-  console.log(data.data);
+  let content = data.data[0];
+  if (!content) return notFound();
 
   const breadcrumbs = [
     { label: "Акустика", href: INDEX },
-    { label: "Бренды", href: COMPARION },
+    { label: "Сравнения", href: "" },
     {
-      label: data.data.slug,
+      label: content.title,
       href: "",
       isActive: true,
     },
@@ -70,22 +94,18 @@ export default async function BlogPostPage({
 
   return (
     <>
-      <Header /> <Breadcrumbs items={breadcrumbs} />
-      {data.data.title} <br />
-      {data.data.description}
-      {/*
-   
-
+      <Header />
+      <Breadcrumbs items={breadcrumbs} />
       <section className={styles.blog}>
         <div className="container">
           <h3 className="text-h3-bold">Блог</h3>
 
           <div className={`text16 ${styles.blog__article}`}>
             <div>
-              <span>Статья</span>
+              <span>{content.category.name}</span>
             </div>
             <div>
-              <span>{card.date}</span>
+              <span>{content.date}</span>
             </div>
             <div>
               <svg
@@ -126,14 +146,14 @@ export default async function BlogPostPage({
           </div>
 
           <div className={styles.blog__container}>
-            <h2 className="text-h2">{card.title}</h2>
+            <h2 className="text-h2">{content.title}</h2>
 
             <div className={styles.blog__block}>
               <div className={styles.blog__content}>
                 <div className={styles.blog__part}>
-                  <img src={`${card.img}`} alt={card.title} />
+                  <img src={`${content.img}`} alt={content.title} />
 
-                  <p className="text blog-main">{card.description}</p>
+                  <p className="text blog-main">{content.description}</p>
 
                   <div className={styles.blog__cont}>
                     <p className="text-h3-bold">Содержание</p>
@@ -199,7 +219,8 @@ export default async function BlogPostPage({
                 </div>
 
                 <div className={styles.blog__part}>
-                  <BlogSlider card={card} />
+                  {/*
+                  <BlogSlider card={card} />*/}
 
                   <h3 className={`text-h3-bold ${styles.blog_main}`}>
                     Bluetooth и аудиокодеки 
@@ -329,16 +350,15 @@ export default async function BlogPostPage({
               <div className={styles.blog__similar}>
                 <h3 className="text-h3-bold">Похожие статьи</h3>
 
+                {/*
                 {similarCard.map((card) => (
                   <BlogSimilar key={card.id} card={card} type="small" />
-                ))}
+                ))}*/}
               </div>
             </div>
           </div>
         </div>
       </section>
-
-      */}
       <Footer />
       <ScrollBtn />
     </>
