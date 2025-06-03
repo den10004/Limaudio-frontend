@@ -3,7 +3,6 @@ import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import ScrollBtn from "@/components/ScrollBtn";
 import { INDEX, COMPARION } from "@/lib/breadcrumbs";
-import { getCards } from "@/lib/cardsData";
 import { brandLogos } from "@/lib/brands";
 
 import { notFound } from "next/navigation";
@@ -36,8 +35,6 @@ export default async function BrandsPage({ params }: any) {
       isActive: true,
     },
   ];
-  const cards = await getCards();
-  const similarCard = cards.slice(0, 4);
 
   return (
     <>

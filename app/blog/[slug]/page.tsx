@@ -7,8 +7,7 @@ import { INDEX } from "@/lib/breadcrumbs";
 import styles from "./page.module.css";
 import Article from "@/components/Article";
 import Comments from "@/components/Comments";
-import BlogSimilar from "@/components/BlogSimilar";
-import BlogSlider from "@/components/BlogSlider";
+import BlogSimilar from "@/components/BlogSimilar/index";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
 import Share from "@/components/Share";
@@ -90,7 +89,7 @@ export default async function BlogPostPage({ params }: any) {
                   stroke="#0055CC"
                 />
               </svg>
-              <span>120</span>
+              <span>{content.views}</span>
             </div>
             <div>
               <svg
@@ -131,14 +130,8 @@ export default async function BlogPostPage({ params }: any) {
 
                 <Comments />
               </div>
-              <div className={styles.blog__similar}>
-                <h3 className="text-h3-bold">Похожие статьи</h3>
 
-                {/*
-                {similarCard.map((card) => (
-                  <BlogSimilar key={card.id} card={card} type="small" />
-                ))}*/}
-              </div>
+              <BlogSimilar />
             </div>
           </div>
         </div>
