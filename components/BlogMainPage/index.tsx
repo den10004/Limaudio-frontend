@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./blogmainpage.css";
-import { Card, CardsResponse } from "@/types/card";
-import BlogCard from "../BlogCard";
+import BlogCard, { Card } from "../BlogCard";
+import { CardsResponse } from "@/types/card";
 
 type GroupedCard = {
   type: "big" | "small";

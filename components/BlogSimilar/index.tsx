@@ -1,17 +1,7 @@
 import Link from "next/link";
-<<<<<<< HEAD
-import styles from "./page.module.css";
-import { Card } from "@/types/card";
-
-type CardItemProps = {
-  card: Card;
-  type?: "big" | "small";
-};
-=======
 import Image from "next/image";
 import "./styles.css";
 import { FormatDate } from "@/utils/formatDate";
->>>>>>> 8d28ae507c83de014e67d81fa177bf6b413d52a1
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -32,13 +22,7 @@ const getBackgroundColor = (type: string) => {
   }
 };
 
-<<<<<<< HEAD
-export default function BlogSimilar() {
-  return <div></div>;
-=======
 export default function BlogSimilar({ card }: any) {
-  console.log(card);
-
   return (
     <Link href={`/blog/${card.slug}`} scroll={false}>
       <article className="similarArticle">
@@ -107,5 +91,4 @@ export default function BlogSimilar({ card }: any) {
       </article>
     </Link>
   );
->>>>>>> 8d28ae507c83de014e67d81fa177bf6b413d52a1
 }

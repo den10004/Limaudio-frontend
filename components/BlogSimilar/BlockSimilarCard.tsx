@@ -46,8 +46,6 @@ export default function BlockSimilarCard() {
     fetchCards();
   }, []);
 
-  console.log(sortedCards);
-
   return (
     <div className="blog__similar">
       <h3 className="text-h3-bold">Похожие статьи</h3>

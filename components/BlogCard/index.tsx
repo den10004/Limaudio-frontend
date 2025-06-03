@@ -3,7 +3,30 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
-import { Card } from "@/types/card";
+
+type cover = {
+  url: string;
+};
+
+type name = {
+  name: string;
+};
+
+type comments = {
+  count: number;
+};
+
+export type Card = {
+  slug: string;
+  cover: cover;
+  category: name;
+  comments: comments;
+  title: string;
+  description: string;
+  date: string;
+  views: number;
+  type: string;
+};
 
 type CardItemProps = {
   card: Card;
@@ -38,12 +61,7 @@ export default function BlogCard({ card, type }: CardItemProps) {
       >
         <div style={{ position: "relative" }}>
           {card?.cover?.url && (
-            <Image
-              className="card__img"
-              src={card.cover.url}
-              alt={card.title}
-              fill
-            />
+            <img className="card__img" src={card.cover.url} alt={card.title} />
           )}
 
           <div className="labelblock-big">
