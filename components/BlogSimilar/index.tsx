@@ -1,11 +1,7 @@
 import Link from "next/link";
-import styles from "./page.module.css";
-import { Card } from "@/lib/cardsData";
-
-type CardItemProps = {
-  card: Card;
-  type?: "big" | "small";
-};
+import Image from "next/image";
+import "./styles.css";
+import { FormatDate } from "@/utils/formatDate";
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
@@ -26,35 +22,36 @@ const getBackgroundColor = (type: string) => {
   }
 };
 
-export default function BlogSimilar({ card }: CardItemProps) {
-  const createSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^а-яёa-z0-9\s-]/g, "")
-      .replace(/[\s-]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-  };
-  const slug = createSlug(card.title);
+export default function BlogSimilar({ card }: any) {
+  console.log(card);
 
   return (
-    <Link href={`/blog/${slug}`} scroll={false}>
-      <article className={styles.similarArticle}>
-        <div
-          className={styles.similarArticle__img}
-          style={{ position: "relative" }}
-        >
-          <img src={card.img} alt={card.title} />
-          <div className="labelblock-min">
-            <div className="label article-label">{card.type}</div>
+    <Link href={`/blog/${card.slug}`} scroll={false}>
+      <article className="similarArticle">
+        <div className="similarArticle__img" style={{ position: "relative" }}>
+          <img src={card.cover.url} alt="blog" />
+          <div className="labelblock_min">
+            <div
+              className="label article_label"
+              style={{
+                backgroundColor: getBackgroundColor(card.category.name),
+                color:
+                  card.type === "silver" || card.type === "gold"
+                    ? "black"
+                    : "white",
+              }}
+            >
+              {card.category.name}
+            </div>
           </div>
         </div>
 
         <h3 className="text" style={{ fontWeight: 500 }}>
           {card.title}
         </h3>
-        <div className={`text-small ${styles.similarArticle__span}`}>
+        <div className="similarArticle__span text_small">
           <div>
-            <span>11/04/2025</span>
+            <span>{FormatDate(card.createdAt)}</span>
           </div>
           <div>
             <svg
@@ -73,7 +70,7 @@ export default function BlogSimilar({ card }: CardItemProps) {
                 stroke="#0055CC"
               ></path>
             </svg>
-            <span>120</span>
+            <span>{card.views}</span>
           </div>
           <div>
             <svg
@@ -90,7 +87,7 @@ export default function BlogSimilar({ card }: CardItemProps) {
                 fill="#0055CC"
               ></path>
             </svg>
-            <span>20</span>
+            <span>{card.comments.count}</span>
           </div>
         </div>
       </article>
