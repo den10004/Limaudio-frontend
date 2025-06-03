@@ -35,7 +35,7 @@ export async function GET() {
       }
     );
 
-    const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
+    const res = await fetch(`${process.env.API_URL}/brands`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,

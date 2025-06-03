@@ -3,7 +3,7 @@ import Footer from "@/components/Footer/Footer";
 import Hero from "@/components/Hero/Hero";
 import Popular from "@/components/Popular/Popular";
 import Subscription from "@/components/Subscription/Subscription";
-import Brands from "@/components/Brands/Brands";
+import Brands from "@/components/Brands";
 import PopularArticles from "@/components/PopularArticles";
 import BlogMainPage from "@/components/BlogMainPage";
 import ScrollBtn from "@/components/ScrollBtn";

@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { brandLogos } from "@/lib/brands";
 import "swiper/css";
 import "swiper/css/navigation";

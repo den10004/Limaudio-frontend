@@ -3,7 +3,7 @@ import Footer from "@/components/Footer/Footer";
 import BlogMainPage from "@/components/BlogMainPage";
 import Popular from "@/components/Popular/Popular";
 import PopularArticles from "@/components/PopularArticles";
-import Brands from "@/components/Brands/Brands";
+import Brands from "@/components/Brands";
 import Subscription from "@/components/Subscription/Subscription";
 import ScrollBtn from "@/components/ScrollBtn";
 
@@ -19,7 +19,7 @@ export default function Blog() {
       {/*
       <Popular />*/}
       <BlogMainPage />
-      {/*      <PopularArticles /> */}
+      <PopularArticles />
       <Brands />
       <Subscription />
       <Footer />

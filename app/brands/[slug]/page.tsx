@@ -44,7 +44,6 @@ export default async function BrandsPage({ params }: any) {
       <div style={{ display: "none" }}>
         <BlogMainPage />
       </div>
-
       <PopularArticles />
       <Subscription />
       <Footer />
