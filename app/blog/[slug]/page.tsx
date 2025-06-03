@@ -90,7 +90,7 @@ export default async function BlogPostPage({ params }: any) {
                   stroke="#0055CC"
                 />
               </svg>
-              <span>120</span>
+              <span>{content?.views}</span>
             </div>
             <div>
               <svg
