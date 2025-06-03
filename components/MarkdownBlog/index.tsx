@@ -9,7 +9,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 export default function Markdown({ blocs }: any) {
-  console.log(blocs);
   return (
     <div>
       <>

@@ -22,8 +22,6 @@ interface TagsProps {
   tags: TagItem[];
 }
 export default function Tags({ tags }: TagsProps) {
-  console.log(tags);
-
   if (!tags?.length) {
     return null;
   }

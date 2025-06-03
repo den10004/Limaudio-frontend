@@ -4,7 +4,7 @@ import Hero from "@/components/Hero/Hero";
 import Popular from "@/components/Popular/Popular";
 import Subscription from "@/components/Subscription/Subscription";
 import Brands from "@/components/Brands/Brands";
-//import PopularArticles from "@/components/PopularArticles";
+import PopularArticles from "@/components/PopularArticles";
 import BlogMainPage from "@/components/BlogMainPage";
 import ScrollBtn from "@/components/ScrollBtn";
 
@@ -13,11 +13,9 @@ export default function Home() {
     <>
       <Header />
       <Hero />
-      {/*      
-      <Popular />*/}
+      <Popular />
       <BlogMainPage />
-      {/*    <PopularArticles />*/}
-
+      <PopularArticles />
       <Brands />
       <Subscription />
       <Footer />

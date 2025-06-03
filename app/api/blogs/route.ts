@@ -1,4 +1,3 @@
-import { count } from "console";
 import { NextResponse } from "next/server";
 import qs from "qs";
 

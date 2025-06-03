@@ -60,7 +60,10 @@ export default function BlogCard({ card, type }: CardItemProps) {
         style={{ position: "relative" }}
       >
         <div style={{ position: "relative" }}>
-          <img className="card__img" src={card.cover.url} alt={card.title} />
+          {card?.cover?.url && (
+            <img className="card__img" src={card.cover.url} alt={card.title} />
+          )}
+
           <div className="labelblock-big">
             <div
               className="label comparison-label label-color"

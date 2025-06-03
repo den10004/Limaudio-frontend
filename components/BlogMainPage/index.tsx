@@ -1,67 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import "./blogmainpage.css";
-import BlogCard from "../BlogCard";
-
-type RichTextBlock = {
-  __component: "shared.rich-text";
-  id: number;
-  body: string;
-};
-
-type SliderBlock = {
-  __component: "shared.slider";
-  id: number;
-  files: string[];
-};
-
-type Block = RichTextBlock | SliderBlock;
-
-type Card = {
-  blocks: Block[];
-  category: {
-    documentId: string;
-    id: number;
-    name: string;
-  };
-  comments: {
-    count: number;
-  };
-  cover: {
-    documentId: string;
-    id: number;
-    url: string;
-  };
-  createdAt: string;
-  description: string;
-  documentId: string;
-  id: number;
-  publishedAt: string;
-  slug: string;
-  title: string;
-  views: number;
-  url: string;
-  updatedAt: string;
-  date: string;
-  type: string;
-};
+import BlogCard, { Card } from "../BlogCard";
+import { CardsResponse } from "@/types/card";
 
 type GroupedCard = {
   type: "big" | "small";
   cards: Card[];
-};
-
-type CardsResponse = {
-  length: any;
-  data: Card[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
 };
 
 const groupCards = (cards: Card[]): GroupedCard[] => {

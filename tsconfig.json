@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "components/Tags/index.jsx",
-    "app/blog/[slug]/page.jsx"
+    "app/blog/[slug]/page.jsx",
+    "test-views-count.js"
   ],
   "exclude": ["node_modules"]
 }

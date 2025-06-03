@@ -48,5 +48,25 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
   }
 
   const data = await res.json();
-  return data?.data?.[0] ?? null;
+  const article = data?.data?.[0] ?? null;
+  /*
+  if (article?.id) {
+    try {
+      await fetch(
+        `${process.env.API_URL}/articles/${article.id}/increment-views`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error incrementing view:", error);
+    }
+  }
+*/
+  return article;
+  // return data?.data?.[0] ?? null;
 }

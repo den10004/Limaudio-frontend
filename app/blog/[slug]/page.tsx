@@ -12,7 +12,7 @@ import BlogSlider from "@/components/BlogSlider";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
 import Share from "@/components/Share";
-import { getArticleBySlug } from "@/app/api/blog/api";
+import { getArticleBySlug } from "@/app/api/article/api";
 import { Articles } from "@/types/articles";
 import MarkdownBlog from "@/components/MarkdownBlog";
 import { FormatDate } from "@/utils/formatDate";
@@ -56,7 +56,6 @@ export default async function BlogPostPage({ params }: any) {
 
   const tags: any = content?.topics;
   const blocs: any = content?.blocks;
-  console.log(blocs);
 
   if (!content) return notFound();
   return (
@@ -119,11 +118,12 @@ export default async function BlogPostPage({ params }: any) {
               <div className={styles.blog__content}>
                 <div className={styles.blog__part}>
                   {content?.cover?.url && (
-                    <img src={content.cover.url} alt={content.title || ""} />
+                    <img src={content.cover.url} alt={content.title} />
                   )}
                   <p className="text blog-main">{content.description}</p>
                   <MarkdownBlog blocs={blocs} />
-                  <Tags tags={tags} />
+
+                  {tags && <Tags tags={tags} />}
                 </div>
 
                 <Share />
