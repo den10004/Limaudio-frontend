@@ -43,7 +43,7 @@ export default function BlogSimilarCard({ card }: CardItemProps) {
           className={styles.similarArticle__img}
           style={{ position: "relative" }}
         >
-          <img src={card.img} alt={card.title} />
+          <img src={card.cover.url} alt={card.title} />
           <div className="labelblock-min">
             <div className="label article-label">{card.type}</div>
           </div>

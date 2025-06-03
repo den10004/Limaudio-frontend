@@ -12,7 +12,7 @@ type SliderBlock = {
 
 type Block = RichTextBlock | SliderBlock;
 
-type Card = {
+export type Card = {
   blocks: Block[];
   category: {
     documentId: string;
