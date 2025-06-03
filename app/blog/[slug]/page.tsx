@@ -7,7 +7,6 @@ import { INDEX } from "@/lib/breadcrumbs";
 import styles from "./page.module.css";
 import Article from "@/components/Article";
 import Comments from "@/components/Comments";
-import BlogSimilar from "@/components/BlogSimilar/index";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
 import Share from "@/components/Share";
@@ -15,6 +14,7 @@ import { getArticleBySlug } from "@/app/api/article/api";
 import { Articles } from "@/types/articles";
 import MarkdownBlog from "@/components/MarkdownBlog";
 import { FormatDate } from "@/utils/formatDate";
+import BlockSimilarCard from "@/components/BlogSimilar/BlockSimilarCard";
 
 interface PageProps {
   params: { slug: string };
@@ -89,8 +89,8 @@ export default async function BlogPostPage({ params }: any) {
                   stroke="#0055CC"
                 />
               </svg>
+
               <span>{content.views}</span>
-            </div>
             <div>
               <svg
                 width="18"
@@ -106,7 +106,7 @@ export default async function BlogPostPage({ params }: any) {
                   fill="#0055CC"
                 />
               </svg>
-              <span>20</span>
+              <span>{content.comments.count}</span>
             </div>
           </div>
 
@@ -130,8 +130,7 @@ export default async function BlogPostPage({ params }: any) {
 
                 <Comments />
               </div>
-
-              <BlogSimilar />
+              <BlockSimilarCard />
             </div>
           </div>
         </div>

@@ -59,13 +59,6 @@
     margin-top: 20px;
 }
 
-.blog__similar {
-    width: 42.5%;
-    background-color: var(--color-grayF8);
-    padding: 22px 18px 18px 18px;
-    border-radius: 20px;
-}
-
 .blog__cont {
     margin-top: 20px;
     background: #EEF5FF;
@@ -187,10 +180,6 @@
         width: 100%;
     }
 
-    .blog__similar {
-        width: 100%;
-        margin-top: 20px;
-    }
 
     .consultation {
         width: 48%;
