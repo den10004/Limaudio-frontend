@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
-import { decodeMultipleTimes } from "@/utils/decodeMultipleTimes";
 
 interface Brand {
+  slug: string;
   title: string;
   logo: {
     url: string;
@@ -131,7 +131,7 @@ export default function Brands() {
               >
                 {allCards.map((brand, index) => (
                   <SwiperSlide key={index} className={styles.brand_style}>
-                    <Link href={`/brands/${decodeMultipleTimes(brand.title)}`}>
+                    <Link href={`/brands/${brand.slug}`}>
                       <Image
                         src={brand?.logo?.url}
                         alt={brand?.title}
@@ -150,7 +150,7 @@ export default function Brands() {
             <div className={styles.brands_grid}>
               {allCards.map((brand, index) => (
                 <div key={index} className={styles.brand_card}>
-                  <Link href={`/brands/${decodeMultipleTimes(brand.title)}`}>
+                  <Link href={`/brands/${brand.slug}`}>
                     <Image
                       src={brand?.logo?.url}
                       alt={brand?.title}
