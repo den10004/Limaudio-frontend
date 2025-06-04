@@ -2,7 +2,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useState } from "react";
-import MarkdownBlog from "../MarkdownBlog";
+import MarkdownBrand from "./MarkdownBrand";
 
 type Brand = {
   name: string;
@@ -16,8 +16,6 @@ interface BrandTextProps {
 }
 
 export default function BrandText({ content }: any) {
-  console.log(content);
-
   const [expanded, setExpanded] = useState(false);
   return (
     <section className={styles.brand_desc}>
@@ -40,7 +38,7 @@ export default function BrandText({ content }: any) {
             className={styles.brand_desc__text}
             style={{ position: "relative" }}
           >
-            <MarkdownBlog content={content} />
+            <MarkdownBrand content={content} expanded={expanded} />
 
             <button
               onClick={() => setExpanded(!expanded)}

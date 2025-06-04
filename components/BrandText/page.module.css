@@ -32,7 +32,7 @@
 .brand_desc__img>img {
     width: 185px !important;
     height: auto !important;
-    margin: 67px 0px 0 23px;
+    margin: 15px 0px 0 23px;
 }
 
 
@@ -78,6 +78,22 @@
 .toggle_btn {
     background: none;
     color: var(--color-gray);
+}
+
+.markdownContainer {
+    p {
+        margin-bottom: 5px;
+    }
+
+    ul {
+        list-style-type: disc;
+        padding-left: 2rem;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
 }
 
 
