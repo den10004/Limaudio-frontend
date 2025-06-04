@@ -5,17 +5,54 @@ import styles from "./page.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
-import { brandLogos } from "@/lib/brands";
 import "swiper/css";
 import "swiper/css/navigation";
+import Link from "next/link";
+import { decodeMultipleTimes } from "@/utils/decodeMultipleTimes";
+
+interface Brand {
+  title: string;
+  logo: {
+    url: string;
+  };
+}
 
 export default function Brands() {
+  const [allCards, setAllCards] = useState<Brand[]>([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const handleToggle = () => setIsExpanded(!isExpanded);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/brands");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
 
-  const handleToggle = () => setIsExpanded(!isExpanded);
+        const cards = await res.json();
+        const card = cards.data;
+
+        setAllCards(card);
+        setIsLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
+  if (isLoading) return <div className="container">Загрузка...</div>;
+  if (error) return <div className="container error-message">{error}</div>;
+  if (!allCards) return <div className="container">Нет доступных блогов</div>;
 
   return (
     <section className={styles.brands}>
@@ -92,17 +129,17 @@ export default function Brands() {
                 modules={[Navigation]}
                 className={`brandSlider ${styles.SwiperSlide}`}
               >
-                {brandLogos.map((brand, index) => (
+                {allCards.map((brand, index) => (
                   <SwiperSlide key={index} className={styles.brand_style}>
-                    <a href={`/brands/${brand.slug}`}>
+                    <Link href={`/brands/${decodeMultipleTimes(brand.title)}`}>
                       <Image
-                        src={brand.src}
-                        alt={brand.alt}
+                        src={brand?.logo?.url}
+                        alt={brand?.title}
                         width={119}
                         height={122}
                         style={{ objectFit: "contain" }}
                       />
-                    </a>
+                    </Link>
                   </SwiperSlide>
                 ))}
               </Swiper>
@@ -111,17 +148,17 @@ export default function Brands() {
 
           {isExpanded && (
             <div className={styles.brands_grid}>
-              {brandLogos.map((brand, index) => (
+              {allCards.map((brand, index) => (
                 <div key={index} className={styles.brand_card}>
-                  <a href={`/brands/${brand.slug}`}>
+                  <Link href={`/brands/${decodeMultipleTimes(brand.title)}`}>
                     <Image
-                      src={brand.src}
-                      alt={brand.alt}
+                      src={brand?.logo?.url}
+                      alt={brand?.title}
                       width={119}
                       height={122}
                       style={{ objectFit: "contain" }}
                     />
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>

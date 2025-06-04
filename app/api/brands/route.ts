@@ -16,18 +16,9 @@ export async function GET() {
     const query = qs.stringify(
       {
         populate: {
-          cover: {
-            fields: "url",
+          logo: {
+            fields: ["name", "documentId", "url"],
           },
-          /*
-          blocks: {
-            on: {
-              "shared.rich-text": { populate: "*" },
-              "shared.slider": { populate: "*" },
-            },
-          },*/
-          category: { fields: "name" },
-          comments: { count: true },
         },
       },
       {
@@ -35,7 +26,7 @@ export async function GET() {
       }
     );
 
-    const res = await fetch(`${process.env.API_URL}/brands`, {
+    const res = await fetch(`${process.env.API_URL}/brends?${query}`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
@@ -49,6 +40,7 @@ export async function GET() {
       throw new Error(`Strapi API error: ${res.status}`);
     }
     const data = await res.json();
+
     return NextResponse.json(data);
   } catch (error) {
     console.error("Ошибка при получении данных из Strapi:", error);
