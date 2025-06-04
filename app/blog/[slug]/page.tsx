@@ -5,7 +5,6 @@ import Header from "@/components/Header/Header";
 import ScrollBtn from "@/components/ScrollBtn";
 import { INDEX } from "@/lib/breadcrumbs";
 import styles from "./page.module.css";
-import Article from "@/components/Article";
 import Comments from "@/components/Comments";
 import Tags from "@/components/Tags";
 import ApplicationForm from "@/components/ApplicationForm";
