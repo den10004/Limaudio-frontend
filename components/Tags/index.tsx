@@ -31,7 +31,15 @@ export default function Tags({ tags }: TagsProps) {
       {tags.map((e: any, i) => (
         <li key={i} className={styles.tag}>
           <Link href="/">
-            <Image src={e.image.url} alt={e.title} width={28} height={32} />
+            <Image
+              src={
+                e.image?.url ||
+                "https://37490647-limaudio.s3.twcstorage.ru/platforma_20783e4ce2.jpg"
+              }
+              alt={e.title}
+              width={28}
+              height={32}
+            />
             <span>{e.title}</span>
           </Link>
         </li>

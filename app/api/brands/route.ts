@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import qs from "qs";
 
-export const revalidate = 60;
-
 export async function GET() {
   if (!process.env.API_URL || !process.env.TOKEN) {
     console.error("API_URL или TOKEN не заданы в .env");
@@ -31,7 +29,7 @@ export async function GET() {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
       },
-      next: { revalidate: 60 },
+      next: { revalidate: 1 },
     });
 
     if (!res.ok) {

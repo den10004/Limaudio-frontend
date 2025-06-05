@@ -98,4 +98,4 @@ export default function Contacts() {
   );
 }
 
-export const revalidate = 60;
+export const revalidate = 1;

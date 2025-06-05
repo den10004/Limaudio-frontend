@@ -14,18 +14,7 @@ export async function GET() {
     const query = qs.stringify(
       {
         populate: {
-          cover: {
-            fields: "url",
-          },
-          /*
-          blocks: {
-            on: {
-              "shared.rich-text": { populate: "*" },
-              "shared.slider": { populate: "*" },
-            },
-          },*/
-          category: { fields: "name" },
-          comments: { count: true },
+          image: { fields: "url" },
         },
       },
       {
@@ -33,7 +22,7 @@ export async function GET() {
       }
     );
 
-    const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
+    const res = await fetch(`${process.env.API_URL}/topics?${query}`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,

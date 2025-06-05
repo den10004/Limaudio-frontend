@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     "components/Tags/index.jsx",
     "app/blog/[slug]/page.jsx",
-    "test-views-count.js"
+    "test-views-count.js",
+    "app/api/article/controllers/lifecycles.js"
   ],
   "exclude": ["node_modules"]
 }

@@ -2,79 +2,77 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tags from "../Tags";
 
-const tags = [
-  {
-    href: "/homeСinema.png",
-    title: "Домашний кинотеатр",
-  },
-  {
-    href: "/outdoorAcoustics.png",
-    title: "Напольная акустика",
-  },
-  {
-    href: "/ShelfAcoustics.png",
-    title: "Полочная акустика",
-  },
-  {
-    href: "/Dolby.Atmos.png",
-    title: "Dolby.Atmos",
-  },
-  {
-    href: "/Subwoofers.jpg",
-    title: "Сабвуферы",
-  },
-  {
-    href: "/av.png",
-    title: "AV Ресиверы",
-  },
-  {
-    href: "/cap.png",
-    title: "ЦАПы",
-  },
-  {
-    href: "/Acoustic kits.png",
-    title: "Комплекты акустики",
-  },
-  {
-    href: "/AV-processors.jpg",
-    title: "AV Процессоры",
-  },
-  {
-    href: "/Amplifiers.png",
-    title: "Предусилители",
-  },
+interface Image {
+  id: number;
+  documentId: string;
+  url: string;
+}
 
-  {
-    href: "/Preamps.jpg",
-    title: "Усилители",
-  },
-  {
-    href: "/Network players.jpg",
-    title: "Сетевые проигрыватели",
-  },
-  {
-    href: "/Vinyl Turntables.png",
-    title: "Проигрыватели винила",
-  },
-  {
-    href: "/Phono correctors.png",
-    title: "Фонокорректоры",
-  },
-  {
-    href: "/projector.png",
-    title: "Проекторы и экраны",
-  },
-];
+interface DataItem {
+  id: number;
+  documentId: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  publishedAt: string; // ISO date string
+  title?: string; // Optional as not all items might have it
+  image?: Image; // Optional as not all items might have it
+}
+
+interface Pagination {
+  page: number;
+  pageCount: number;
+  pageSize: number;
+  total: number;
+}
+
+interface Meta {
+  pagination: Pagination;
+}
+
+interface ApiResponse {
+  data: DataItem[];
+  meta: Meta;
+}
+interface TagsProps {
+  tags?: ApiResponse[];
+}
 
 export default function Popular() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [tags, setAllTags] = useState<ApiResponse | null>(null);
 
   const toggleList = () => {
     setIsExpanded((prev) => !prev);
   };
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/topics");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+
+        setAllTags(cards);
+        setIsLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
+  const tag: any = tags?.data;
 
   return (
     <section className={styles.popular}>
@@ -94,8 +92,7 @@ export default function Popular() {
           }`}
           id="linksList"
         >
-          {/*
-          <Tags tags={tags} />*/}
+          {tags && <Tags tags={tag} />}
         </ul>
 
         <div className={styles.popular__search}>

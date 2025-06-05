@@ -20,7 +20,7 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
       Authorization: `Bearer ${process.env.TOKEN}`,
       "Content-Type": "application/json",
     },
-    next: { revalidate: 60 },
+    next: { revalidate: 1 },
   });
 
   if (!res.ok) {
@@ -31,24 +31,6 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
   const data = await res.json();
   const brand = data?.data?.[0] ?? null;
 
-  /*
-  if (article?.id) {
-    try {
-      await fetch(
-        `${process.env.API_URL}/articles/${article.id}/increment-views`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${process.env.TOKEN}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    } catch (error) {
-      console.error("Error incrementing view:", error);
-    }
-  }
-*/
   return brand;
   // return data?.data?.[0] ?? null;
 }

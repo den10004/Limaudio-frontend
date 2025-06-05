@@ -39,7 +39,7 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
       Authorization: `Bearer ${process.env.TOKEN}`,
       "Content-Type": "application/json",
     },
-    next: { revalidate: 60 },
+    next: { revalidate: 1 },
   });
 
   if (!res.ok) {
@@ -49,13 +49,15 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
 
   const data = await res.json();
   const article = data?.data?.[0] ?? null;
+
+  // счётчик просмотров
   /*
-  if (article?.id) {
+  if (article?.documentId) {
     try {
       await fetch(
-        `${process.env.API_URL}/articles/${article.id}/increment-views`,
+        `${process.env.API_URL}/articles/${article.documentId}/views`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${process.env.TOKEN}`,
             "Content-Type": "application/json",
@@ -63,10 +65,9 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
         }
       );
     } catch (error) {
-      console.error("Error incrementing view:", error);
+      console.error("Error incrementing views:", error);
     }
-  }
-*/
+  }*/
+
   return article;
-  // return data?.data?.[0] ?? null;
 }
