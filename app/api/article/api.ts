@@ -39,7 +39,7 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
       Authorization: `Bearer ${process.env.TOKEN}`,
       "Content-Type": "application/json",
     },
-    next: { revalidate: 1 },
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {

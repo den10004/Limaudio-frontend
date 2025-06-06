@@ -29,7 +29,7 @@ export async function GET() {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
       },
-      next: { revalidate: 1 },
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {
