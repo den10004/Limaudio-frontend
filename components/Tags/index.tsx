@@ -1,6 +1,8 @@
+"use client";
 import Link from "next/link";
 import styles from "./page.module.css";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface TagImage {
   id: number;
@@ -20,8 +22,10 @@ interface TagItem {
 
 interface TagsProps {
   tags: TagItem[];
+  onTagClick?: (tagTitle: string | null) => void;
 }
-export default function Tags({ tags }: TagsProps) {
+
+export default function Tags({ tags, onTagClick }: TagsProps) {
   if (!tags?.length) {
     return null;
   }
@@ -30,7 +34,14 @@ export default function Tags({ tags }: TagsProps) {
     <ul className={styles.popular__sort}>
       {tags.map((e: any, i) => (
         <li key={i} className={styles.tag}>
-          <Link href="/">
+          <Link
+            href="/"
+            onClick={() => {
+              if (onTagClick) {
+                onTagClick(e.title);
+              }
+            }}
+          >
             <Image
               src={
                 e.image?.url ||

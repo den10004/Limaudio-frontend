@@ -45,6 +45,7 @@ export default function Popular() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
+  const [click, setClick] = useState<string | null>(null);
 
   const toggleList = () => {
     setIsExpanded((prev) => !prev);
@@ -92,7 +93,7 @@ export default function Popular() {
           }`}
           id="linksList"
         >
-          {tags && <Tags tags={tag} />}
+          {tags && <Tags onTagClick={setClick} tags={tag} />}
         </ul>
 
         <div className={styles.popular__search}>
