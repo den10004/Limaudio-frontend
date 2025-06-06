@@ -68,7 +68,6 @@ export default function BlogMainPage() {
 
     fetchCards();
   }, []);
-  console.log(allCards);
 
   const groupedCards = groupCards(allCards.data);
   const visibleGrouped = groupedCards.slice(0, visibleGroups);

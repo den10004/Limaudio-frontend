@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Tags from "../Tags";
 
 interface Image {
@@ -11,25 +11,14 @@ interface Image {
   url: string;
 }
 
-interface Topic {
-  id: number;
-  documentId: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  title: string;
-}
-
 interface DataItem {
   id: number;
   documentId: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  title?: string;
-  views?: number;
-  image?: Image;
-  topics?: Topic[];
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  publishedAt: string; // ISO date string
+  title?: string; // Optional as not all items might have it
+  image?: Image; // Optional as not all items might have it
 }
 
 interface Pagination {
@@ -78,142 +67,23 @@ export default function Popular() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Debounce the search query with a 500ms delay
-  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+  const debouncedSearchQuery = useDebounce(searchQuery, 1000);
 
-  // Replace with your API token or JWT (e.g., from environment variable or auth context)
-  const API_TOKEN = process.env.TOKEN || "";
-
-  // Memoize fetch parameters to prevent unnecessary re-renders
-  const fetchParams = useMemo(
-    () => ({
-      tag: selectedTag,
-      sortByDate,
-      sortByPopularity,
-      searchQuery: debouncedSearchQuery,
-    }),
-    [selectedTag, sortByDate, sortByPopularity, debouncedSearchQuery]
-  );
-
-  // Form the fetch URL
-  const formFetchUrl = (fetchParams: {
-    tag: string | null;
-    sortByDate: "asc" | "desc";
-    sortByPopularity: "popular" | "not_popular";
-    searchQuery: string;
-  }) => {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:8000";
-    const queryParams = new URLSearchParams();
-
-    // Add filters for tag (matches onTagClick, e.g., "Домашний кинотеатр")
-    if (fetchParams.tag) {
-      queryParams.append("filters[topics][title][$eq]", fetchParams.tag);
-    }
-
-    // Add search filter for title
-    if (fetchParams.searchQuery) {
-      queryParams.append("filters[title][$containsi]", fetchParams.searchQuery);
-    }
-
-    // Add sorting (popularity by views or date by publishedAt)
-    if (fetchParams.sortByPopularity !== "popular") {
-      queryParams.append(
-        "sort[0]",
-        `views:${
-          fetchParams.sortByPopularity === "not_popular" ? "asc" : "desc"
-        }`
-      );
-    } else {
-      queryParams.append("sort[0]", `publishedAt:${fetchParams.sortByDate}`);
-    }
-
-    // Populate related data
-    queryParams.append("populate", "topics,image");
-
-    return `${baseUrl}/api/articles?${queryParams.toString()}`;
-  };
-
-  // Toggle list visibility
   const toggleList = () => {
     setIsExpanded((prev) => !prev);
   };
 
-  // Handle tag selection
-  const handleTagClick = useCallback((tagTitle: string | null) => {
-    setSelectedTag(tagTitle);
-    console.log("Parent: Selected tag -", tagTitle);
-  }, []);
-
-  // Toggle sort by date
-  const handleSortByDate = useCallback(() => {
-    setSortByDate((prev) => (prev === "asc" ? "desc" : "asc"));
-    setSortByPopularity("popular"); // Reset to default popularity sort
-  }, []);
-
-  // Toggle sort by popularity
-  const handleSortByPopularity = useCallback(() => {
-    setSortByPopularity((prev) =>
-      prev === "popular" ? "not_popular" : "popular"
-    );
-    setSortByDate("asc"); // Reset to default date sort
-  }, []);
-
-  // Handle search input
-  const handleSearchInput = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(e.target.value);
-    },
-    []
-  );
-
-  // Fetch data from Strapi when fetchParams change
   useEffect(() => {
     const fetchCards = async () => {
-      setIsLoading(true);
-      setError(null);
       try {
-        const url = formFetchUrl(fetchParams);
-        const headers: HeadersInit = { "Content-Type": "application/json" };
-        if (API_TOKEN) {
-          headers["Authorization"] = `Bearer ${API_TOKEN}`;
-        }
-
-        const res = await fetch(url, { headers });
+        const res = await fetch("/api/topics");
         if (!res.ok) {
           const text = await res.text();
-          throw new Error(
-            text ||
-              "Ошибка при загрузке данных из Strapi (возможно, доступ запрещен)"
-          );
+          throw new Error(text || "Ошибка при загрузке");
         }
 
-        const response = await res.json();
-
-        // Map Strapi response to component's expected format
-        const formattedData: ApiResponse = {
-          data: response.data.map((item: any) => ({
-            id: item.id,
-            documentId: item.attributes.documentId || item.id.toString(),
-            createdAt: item.attributes.createdAt,
-            updatedAt: item.attributes.updatedAt,
-            publishedAt: item.attributes.publishedAt,
-            title: item.attributes.title,
-            views: item.attributes.views,
-            image: item.attributes.image?.data
-              ? {
-                  id: item.attributes.image.data.id,
-                  documentId:
-                    item.attributes.image.data.attributes.documentId ||
-                    item.attributes.image.data.id.toString(),
-                  url: item.attributes.image.data.attributes.url,
-                }
-              : undefined,
-            topics: item.attributes.topics, // Matches provided structure
-          })),
-          meta: response.meta,
-        };
-
-        setAllTags(formattedData);
+        const cards = await res.json();
+        setAllTags(cards);
         setIsLoading(false);
       } catch (err: any) {
         setError(err.message);
@@ -222,7 +92,37 @@ export default function Popular() {
     };
 
     fetchCards();
-  }, [fetchParams, API_TOKEN]);
+  }, []);
+
+  const handleTagClick = (tagTitle: string | null) => {
+    setSelectedTag(tagTitle);
+    console.log("Parent: Selected tag -", tagTitle);
+  };
+
+  const handleSortByDate = () => {
+    setSortByDate((prev) => (prev === "asc" ? "desc" : "asc"));
+    setSortByPopularity("popular");
+  };
+
+  const handleSortByPopularity = () => {
+    setSortByPopularity((prev) =>
+      prev === "popular" ? "not_popular" : "popular"
+    );
+    setSortByDate("asc");
+  };
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const fetchData = {
+    tag: selectedTag,
+    sortByDate: sortByDate,
+    sortByPopularity: sortByPopularity,
+    searchQuery: debouncedSearchQuery,
+  };
+
+  console.log("Collected fetch data:", fetchData);
 
   return (
     <section className={styles.popular}>
@@ -260,24 +160,16 @@ export default function Popular() {
               <div className={`${styles.strip} ${styles.strip_2}`}></div>
               <div className={`${styles.strip} ${styles.strip_3}`}></div>
             </div>
-            По просмотрам (
+            По популярности (
             {sortByPopularity === "popular" ? "популярные" : "не популярные"})
           </button>
           <input
             className={`${styles.search_input} text`}
-            placeholder="Поиск по заголовку, например, саундбар"
+            placeholder="Например, саундбар"
             value={searchQuery}
             onChange={handleSearchInput}
           />
         </div>
-        {error && (
-          <div className={styles.error}>
-            {error.includes("403")
-              ? "Доступ запрещен: проверьте настройки Strapi или токен"
-              : error}
-          </div>
-        )}
-        {isLoading && <div className={styles.loading}>Загрузка...</div>}
       </div>
     </section>
   );

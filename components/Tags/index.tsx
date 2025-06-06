@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useState } from "react";
 
 interface Image {
   id: number;
@@ -21,25 +22,43 @@ interface DataItem {
 
 interface TagsProps {
   tags: DataItem[];
-  onTagClick?: (tagTitle: string | null) => void;
+  onTagClick?: (selectedTags: (string | null)[]) => void;
 }
 
 export default function Tags({ tags, onTagClick }: TagsProps) {
+  const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
+
   if (!tags?.length) {
     return null;
   }
 
+  const handleTagClick = (tagTitle: string | null) => {
+    let updatedTags: (string | null)[];
+    if (selectedTags.includes(tagTitle)) {
+      updatedTags = selectedTags.filter((title) => title !== tagTitle);
+    } else {
+      updatedTags = [...selectedTags, tagTitle];
+    }
+    setSelectedTags(updatedTags);
+    if (onTagClick) {
+      onTagClick(updatedTags);
+    }
+  };
+
   return (
     <ul className={styles.popular__sort}>
       {tags.map((e) => (
-        <li key={e.id} className={styles.tag}>
+        <li
+          key={e.id}
+          className={`${styles.tag} ${
+            selectedTags.includes(e.title ?? null) ? styles.selected : ""
+          }`}
+        >
           <Link
             href="/"
             onClick={(event) => {
-              event.preventDefault(); // Prevent navigation to avoid multiple triggers
-              if (onTagClick) {
-                onTagClick(e.title ?? null);
-              }
+              event.preventDefault();
+              handleTagClick(e.title ?? null);
             }}
           >
             <Image
