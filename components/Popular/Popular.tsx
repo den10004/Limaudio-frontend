@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import styles from "./page.module.css";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Tags from "../Tags";
 
 interface Image {
@@ -14,11 +13,11 @@ interface Image {
 interface DataItem {
   id: number;
   documentId: string;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  publishedAt: string; // ISO date string
-  title?: string; // Optional as not all items might have it
-  image?: Image; // Optional as not all items might have it
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  title?: string;
+  image?: Image;
 }
 
 interface Pagination {
@@ -59,7 +58,7 @@ export default function Popular() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
   const [sortByDate, setSortByDate] = useState<"asc" | "desc">("asc");
   const [sortByPopularity, setSortByPopularity] = useState<
     "popular" | "not_popular"
@@ -94,9 +93,9 @@ export default function Popular() {
     fetchCards();
   }, []);
 
-  const handleTagClick = (tagTitle: string | null) => {
-    setSelectedTag(tagTitle);
-    console.log("Parent: Selected tag -", tagTitle);
+  const handleTagClick = (selectedTags: (string | null)[]) => {
+    setSelectedTags(selectedTags);
+    console.log("Parent: Selected tags -", selectedTags);
   };
 
   const handleSortByDate = () => {
@@ -116,7 +115,7 @@ export default function Popular() {
   };
 
   const fetchData = {
-    tag: selectedTag,
+    tags: selectedTags,
     sortByDate: sortByDate,
     sortByPopularity: sortByPopularity,
     searchQuery: debouncedSearchQuery,

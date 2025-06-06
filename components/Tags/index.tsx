@@ -19,19 +19,15 @@ interface DataItem {
   title?: string;
   image?: Image;
 }
-
 interface TagsProps {
   tags: DataItem[];
   onTagClick?: (selectedTags: (string | null)[]) => void;
 }
-
 export default function Tags({ tags, onTagClick }: TagsProps) {
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
-
   if (!tags?.length) {
     return null;
   }
-
   const handleTagClick = (tagTitle: string | null) => {
     let updatedTags: (string | null)[];
     if (selectedTags.includes(tagTitle)) {
@@ -44,7 +40,6 @@ export default function Tags({ tags, onTagClick }: TagsProps) {
       onTagClick(updatedTags);
     }
   };
-
   return (
     <ul className={styles.popular__sort}>
       {tags.map((e) => (
