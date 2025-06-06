@@ -1,3 +1,4 @@
+"use client";
 import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Footer from "@/components/Footer/Footer";
@@ -14,6 +15,7 @@ import { Articles } from "@/types/articles";
 import MarkdownBlog from "@/components/MarkdownBlog";
 import { FormatDate } from "@/utils/formatDate";
 import BlockSimilarCard from "@/components/BlogSimilar/BlockSimilarCard";
+import { useState } from "react";
 
 interface PageProps {
   params: { slug: string };
@@ -41,6 +43,7 @@ interface UnknownBloc {
 
 export default async function BlogPostPage({ params }: any) {
   const content: Articles | null = await getArticleBySlug(params.slug);
+  //const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const breadcrumbs = [
     { label: "Акустика", href: INDEX },
@@ -51,6 +54,10 @@ export default async function BlogPostPage({ params }: any) {
       isActive: true,
     },
   ];
+
+  const handleTagClick = (tagTitle: string | null) => {
+    console.log("blog", tagTitle);
+  };
 
   const tags: any = content?.topics;
   const blocs: any = content?.blocks;
@@ -121,7 +128,8 @@ export default async function BlogPostPage({ params }: any) {
                   <p className="text blog-main">{content.description}</p>
                   <MarkdownBlog blocs={blocs} />
 
-                  {tags && <Tags tags={tags} />}
+                  {/*
+                  {tags && <Tags tags={tags} onTagClick={handleTagClick} />}*/}
                 </div>
 
                 <Share />

@@ -26,6 +26,7 @@ export async function GET() {
           },*/
           category: { fields: "name" },
           comments: { count: true },
+          topics: { fields: "title" },
         },
       },
       {
@@ -38,7 +39,7 @@ export async function GET() {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
       },
-      next: { revalidate: 1 },
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {

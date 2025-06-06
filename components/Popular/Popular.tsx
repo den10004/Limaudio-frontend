@@ -39,12 +39,13 @@ interface ApiResponse {
 interface TagsProps {
   tags?: ApiResponse[];
 }
-
+//http://localhost:8000/api/articles?filters[topics][title][$eq]=Dolby.Atmos&populate=topics
 export default function Popular() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const toggleList = () => {
     setIsExpanded((prev) => !prev);
@@ -74,6 +75,11 @@ export default function Popular() {
 
   const tag: any = tags?.data;
 
+  const handleTagClick = (tagTitle: string | null) => {
+    setSelectedTag(tagTitle);
+    console.log("Parent:", tagTitle);
+  };
+
   return (
     <section className={styles.popular}>
       <div className="container">
@@ -92,7 +98,7 @@ export default function Popular() {
           }`}
           id="linksList"
         >
-          {tags && <Tags tags={tag} />}
+          {tags && <Tags tags={tag} onTagClick={handleTagClick} />}
         </ul>
 
         <div className={styles.popular__search}>
