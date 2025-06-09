@@ -1,0 +1,41 @@
+.popular__sort {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.popular__sort>div {
+    background-color: var(--color-grayF4);
+    border-radius: 20px;
+    align-items: center;
+    padding-right: 10px;
+    display: flex;
+    width: 200px;
+    height: 32px;
+    animation: colorChange 4s linear infinite;
+}
+
+
+.card {
+    background: var(--color-grayFA);
+    border-radius: 20px;
+    padding: 20px;
+    height: 353px;
+    width: 100%;
+    animation: colorChange 4s linear infinite;
+}
+
+@keyframes colorChange {
+    0% {
+        background-color: var(--color-grayF4);
+    }
+
+    50% {
+        background-color: var(--color-gray);
+    }
+
+    100% {
+        background-color: var(--color-grayF4);
+    }
+}

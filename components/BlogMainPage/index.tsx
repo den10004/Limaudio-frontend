@@ -4,6 +4,7 @@ import BlogCard, { Card } from "../BlogCard";
 import { CardsResponse } from "@/types/card";
 import { useSearchParams } from "next/navigation";
 import "./blogmainpage.css";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 type GroupedCard = {
   type: "big" | "small";
@@ -85,10 +86,6 @@ export default function BlogMainPage() {
   const visibleGrouped = groupedCards.slice(0, visibleGroups);
   const showMore = () => setVisibleGroups((prev) => prev + 2);
 
-  if (isLoading) return <div className="container">Загрузка...</div>;
-  if (error) return <div className="container error-message">{error}</div>;
-  if (!allCards) return <div className="container">Нет доступных блогов</div>;
-
   return (
     <div className="container">
       <div className="cards-container">
@@ -102,6 +99,9 @@ export default function BlogMainPage() {
             ))}
           </div>
         ))}
+        {isLoading && <CardSkeleton />}
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        {!allCards && <div style={{ color: "red" }}>Нет доступных блогов</div>}
       </div>
 
       {visibleGroups < groupedCards.length && (

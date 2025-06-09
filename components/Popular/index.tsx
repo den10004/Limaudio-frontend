@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { useEffect, useState } from "react";
 import Tags from "../Tags";
 import { useRouter, useSearchParams } from "next/navigation";
+import PopularSkeleton from "../Loading/PopularSkeleton";
 
 interface Image {
   id: number;
@@ -221,6 +222,8 @@ export default function Popular() {
           {uniqueTags && (
             <Tags uniqueTags={uniqueTags} onTagClick={handleTagClick} />
           )}
+          {isLoading && <PopularSkeleton />}
+          {error && <div style={{ color: "red" }}>{error}</div>}
         </ul>
 
         <div className={styles.popular__search}>

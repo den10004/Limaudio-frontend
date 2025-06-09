@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
 import styles from "./page.module.css";
 import { CardsResponse } from "@/types/card";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 export default function PopularArticles() {
   const [allCards, setAllCards] = useState<CardsResponse>({
@@ -46,16 +47,17 @@ export default function PopularArticles() {
 
     fetchCards();
   }, []);
-  if (isLoading) return <div className="container">Загрузка...</div>;
-  if (error) return <div className="container error-message">{error}</div>;
-  if (!allCards.data.length)
-    return <div className="container">Нет доступных блогов</div>;
 
   return (
     <section className={styles.interes}>
       <div className="container">
         <h3 className="text-h3-bold">Популярные статьи</h3>
+
         <div className={styles.interes__card}>
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          {!allCards && (
+            <div style={{ color: "red" }}>Нет доступных блогов</div>
+          )}
           {sortedCards.map((card) => (
             <BlogCard key={card.id} card={card} type="small" />
           ))}
