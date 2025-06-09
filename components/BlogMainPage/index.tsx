@@ -85,8 +85,6 @@ export default function BlogMainPage() {
   const visibleGrouped = groupedCards.slice(0, visibleGroups);
   const showMore = () => setVisibleGroups((prev) => prev + 2);
 
-  console.log(allCards.data);
-
   if (isLoading) return <div className="container">Загрузка...</div>;
   if (error) return <div className="container error-message">{error}</div>;
   if (!allCards) return <div className="container">Нет доступных блогов</div>;

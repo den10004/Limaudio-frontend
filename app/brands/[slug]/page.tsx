@@ -5,10 +5,10 @@ import ScrollBtn from "@/components/ScrollBtn";
 import { INDEX, COMPARION } from "@/lib/breadcrumbs";
 import { notFound } from "next/navigation";
 import Subscription from "@/components/Subscription/Subscription";
-import BlogMainPage from "@/components/BlogMainPage";
 import BrandText from "@/components/BrandText";
 import PopularArticles from "@/components/PopularArticles";
 import { getBrandsBySlug } from "@/app/api/brands/api";
+import BlogMainPageWrapper from "@/components/BlogMainPageWrapper";
 
 export default async function BrandsPage({ params }: any) {
   const content: any = await getBrandsBySlug(params.slug);
@@ -31,7 +31,7 @@ export default async function BrandsPage({ params }: any) {
       <BrandText content={content} />
 
       <div style={{ display: "none" }}>
-        <BlogMainPage />
+        <BlogMainPageWrapper />
       </div>
       <PopularArticles />
       <Subscription />

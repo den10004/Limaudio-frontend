@@ -1,10 +1,9 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Tags from "../Tags";
 import { useRouter, useSearchParams } from "next/navigation";
-import { strict } from "assert";
 
 interface Image {
   id: number;
@@ -85,7 +84,6 @@ export default function Popular() {
   const [error, setError] = useState<string | null>(null);
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
   const [uniqueTags, SetUniqueTags] = useState<TagItem | null>(null);
-  const [cards, setAllCards] = useState<ApiResponse | null>(null);
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
   const [sortByDate, setSortByDate] = useState<"asc" | "desc">("asc");
   const [sortByPopularity, setSortByPopularity] = useState<
