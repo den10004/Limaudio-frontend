@@ -59,27 +59,38 @@ export async function GET() {
 */
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const sortByDate = searchParams.get("sortByDate") || "desc";
-  const sortByPopularity = searchParams.get("sortByPopularity") || "popular";
-
-  const sortParams = [];
-  if (sortByPopularity === "popular") sortParams.push("views:desc");
-  if (sortByDate) sortParams.push(`publishedAt:${sortByDate}`);
-
-  const query = qs.stringify(
-    {
-      sort: sortParams,
-      populate: {
-        cover: { fields: ["url"] },
-        category: { fields: ["name"] },
-        comments: { count: true },
-      },
-    },
-    { encodeValuesOnly: true }
-  );
+  if (!process.env.API_URL || !process.env.TOKEN) {
+    console.error("API_URL или TOKEN не заданы в .env");
+    return NextResponse.json(
+      { error: "Неверная конфигурация сервера" },
+      { status: 500 }
+    );
+  }
 
   try {
+    const { searchParams } = new URL(req.url);
+    const sortByDate = searchParams.get("sortByDate") || "asc";
+    const sortByPopularity =
+      searchParams.get("sortByPopularity") || "not_popular";
+
+    const sortParams: string[] = [];
+
+    if (sortByPopularity === "popular") {
+      sortParams.push("views:desc"); // замените "views" на фактическое поле популярности
+    }
+
+    if (sortByDate) {
+      sortParams.push(`publishedAt:${sortByDate}`);
+    }
+
+    const query = qs.stringify(
+      {
+        sort: sortParams,
+        populate: "*",
+      },
+      { encodeValuesOnly: true }
+    );
+
     const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
       headers: {
         Accept: "application/json",
@@ -88,10 +99,15 @@ export async function GET(req: NextRequest) {
       next: { revalidate: 60 },
     });
 
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);
+      return NextResponse.json({ error: text }, { status: res.status });
+    }
+
     const data = await res.json();
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Ошибка при получении данных из Strapi:", error);
     return NextResponse.json(
       { error: "Ошибка при получении данных" },

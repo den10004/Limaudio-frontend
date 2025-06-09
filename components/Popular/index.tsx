@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { useEffect, useMemo, useState } from "react";
 import Tags from "../Tags";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Image {
   id: number;
@@ -36,14 +37,6 @@ interface ApiResponse {
   meta: Meta;
 }
 
-interface fetchData {
-  tags: (string | null)[];
-  sortByDate: "asc" | "desc" | undefined;
-  sortByPopularity: "popular" | "not_popular" | undefined;
-  searchQuery: string | undefined;
-}
-
-// Custom debounce hook
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
@@ -61,11 +54,14 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 export default function Popular() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
-  const [cards, setAllCards] = useState<ApiResponse | null>(null); // New state for blog cards
+  const [cards, setAllCards] = useState<ApiResponse | null>(null);
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
   const [sortByDate, setSortByDate] = useState<"asc" | "desc">("asc");
   const [sortByPopularity, setSortByPopularity] = useState<
@@ -73,8 +69,20 @@ export default function Popular() {
   >("popular");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Debounce the search query with a 500ms delay
   const debouncedSearchQuery = useDebounce(searchQuery, 1000);
+
+  const updateURLParams = (newParams: {
+    sortByDate?: string;
+    sortByPopularity?: string;
+  }) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (newParams.sortByDate) params.set("sortByDate", newParams.sortByDate);
+    if (newParams.sortByPopularity)
+      params.set("sortByPopularity", newParams.sortByPopularity);
+
+    router.push(`/?${params.toString()}`);
+  };
 
   const toggleList = () => {
     setIsExpanded((prev) => !prev);
@@ -85,15 +93,18 @@ export default function Popular() {
   };
 
   const handleSortByDate = () => {
-    setSortByDate((prev) => (prev === "asc" ? "desc" : "asc"));
+    const newSort = sortByDate === "asc" ? "desc" : "asc";
+    setSortByDate(newSort);
     setSortByPopularity("popular");
+    updateURLParams({ sortByDate: newSort, sortByPopularity: "popular" });
   };
 
   const handleSortByPopularity = () => {
-    setSortByPopularity((prev) =>
-      prev === "popular" ? "not_popular" : "popular"
-    );
+    const newPopularity =
+      sortByPopularity === "popular" ? "not_popular" : "popular";
+    setSortByPopularity(newPopularity);
     setSortByDate("asc");
+    updateURLParams({ sortByPopularity: newPopularity, sortByDate: "asc" });
   };
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,20 +114,18 @@ export default function Popular() {
   const fetchData = useMemo(
     () => ({
       tags: selectedTags,
-      sortByDate: sortByDate,
-      sortByPopularity: sortByPopularity,
+      sortByDate,
+      sortByPopularity,
       searchQuery: debouncedSearchQuery,
     }),
     [selectedTags, sortByDate, sortByPopularity, debouncedSearchQuery]
   );
 
-  console.log(fetchData);
-
   useEffect(() => {
     const fetchCards = async () => {
       try {
         const res = await fetch(
-          `/api/blogs?${new URLSearchParams(fetchData).toString()}`,
+          `/api/blogs?${new URLSearchParams(fetchData as any).toString()}`,
           {
             method: "GET",
             headers: {

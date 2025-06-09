@@ -40,6 +40,7 @@ export default function Tags({ tags, onTagClick }: TagsProps) {
       onTagClick(updatedTags);
     }
   };
+
   return (
     <ul className={styles.popular__sort}>
       {tags.map((e) => (

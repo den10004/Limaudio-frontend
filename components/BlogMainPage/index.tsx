@@ -58,7 +58,6 @@ export default function BlogMainPage() {
           sortByDate,
           sortByPopularity,
         });
-
         const res = await fetch(`/api/blogs?${queryParams.toString()}`);
         if (!res.ok) throw new Error(await res.text());
 
