@@ -120,8 +120,8 @@ export default async function BlogPostPage({ params }: any) {
                   )}
                   <p className="text blog-main">{content.description}</p>
                   <MarkdownBlog blocs={blocs} />
-
-                  {tags && <Tags tags={tags} />}
+                  {/*
+                  {tags && <Tags tags={tags} />}*/}
                 </div>
 
                 <Share />

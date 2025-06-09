@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
     const sortParams: string[] = [];
 
     if (sortByPopularity === "popular") {
-      sortParams.push("views:desc"); // замените "views" на фактическое поле популярности
+      sortParams.push("views:desc");
     }
 
     if (sortByDate) {
@@ -86,7 +86,19 @@ export async function GET(req: NextRequest) {
     const query = qs.stringify(
       {
         sort: sortParams,
-        populate: "*",
+        populate: {
+          cover: { fields: ["url"] },
+          category: { fields: ["name"] },
+          comments: { count: true },
+          topics: {
+            populate: {
+              title: {},
+              image: {
+                fields: ["url"],
+              },
+            },
+          },
+        },
       },
       { encodeValuesOnly: true }
     );

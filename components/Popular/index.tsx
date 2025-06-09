@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { useEffect, useMemo, useState } from "react";
 import Tags from "../Tags";
 import { useRouter, useSearchParams } from "next/navigation";
+import { strict } from "assert";
 
 interface Image {
   id: number;
@@ -12,6 +13,7 @@ interface Image {
 }
 
 interface DataItem {
+  topics: any;
   id: number;
   documentId: string;
   createdAt: string;
@@ -35,6 +37,27 @@ interface Meta {
 interface ApiResponse {
   data: DataItem[];
   meta: Meta;
+}
+
+interface uniqueTags {
+  createdAt: string;
+  documentId: string;
+  id: number;
+  image: {
+    documentId: string;
+    id: string;
+    url: string;
+  };
+  title: string;
+  updatedAt: string;
+}
+
+interface TagItem {
+  id: number;
+  title: string;
+  image?: {
+    url: string;
+  };
 }
 
 function useDebounce<T>(value: T, delay: number): T {
@@ -61,6 +84,7 @@ export default function Popular() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
+  const [uniqueTags, SetUniqueTags] = useState<TagItem | null>(null);
   const [cards, setAllCards] = useState<ApiResponse | null>(null);
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
   const [sortByDate, setSortByDate] = useState<"asc" | "desc">("asc");
@@ -146,6 +170,23 @@ export default function Popular() {
     fetchCards();
   }, []);
 
+  useEffect(() => {
+    if (tags?.data) {
+      const uniqueTopicsMap = new Map();
+      tags.data.forEach((item) => {
+        item.topics.forEach((topic: { title: any }) => {
+          if (!uniqueTopicsMap.has(topic.title)) {
+            uniqueTopicsMap.set(topic.title, topic);
+          }
+        });
+      });
+
+      const uniqueTopics: any = Array.from(uniqueTopicsMap.values());
+
+      SetUniqueTags(uniqueTopics);
+    }
+  }, [tags]);
+
   return (
     <section className={styles.popular}>
       <div className="container">
@@ -164,7 +205,9 @@ export default function Popular() {
           }`}
           id="linksList"
         >
-          {tags && <Tags tags={tags.data} onTagClick={handleTagClick} />}
+          {uniqueTags && (
+            <Tags uniqueTags={uniqueTags} onTagClick={handleTagClick} />
+          )}
         </ul>
 
         <div className={styles.popular__search}>

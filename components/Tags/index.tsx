@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { Key, useState } from "react";
 
 interface Image {
   id: number;
@@ -10,22 +10,30 @@ interface Image {
   url: string;
 }
 
-interface DataItem {
-  id: number;
-  documentId: string;
+interface uniqueTags {
   createdAt: string;
-  updatedAt: string;
+  documentId: string;
+  id: number;
+  image: {
+    documentId: string;
+    id: string;
+    url: string;
+  };
+  title: string;
   publishedAt: string;
-  title?: string;
-  image?: Image;
+  updatedAt: string;
 }
+
 interface TagsProps {
-  tags: DataItem[];
+  uniqueTags: any;
+  // uniqueTags: uniqueTags;
   onTagClick?: (selectedTags: (string | null)[]) => void;
 }
-export default function Tags({ tags, onTagClick }: TagsProps) {
+
+export default function Tags({ uniqueTags = [], onTagClick }: TagsProps) {
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
-  if (!tags?.length) {
+  console.log(uniqueTags);
+  if (!uniqueTags) {
     return null;
   }
   const handleTagClick = (tagTitle: string | null) => {
@@ -43,33 +51,39 @@ export default function Tags({ tags, onTagClick }: TagsProps) {
 
   return (
     <ul className={styles.popular__sort}>
-      {tags.map((e) => (
-        <li
-          key={e.id}
-          className={`${styles.tag} ${
-            selectedTags.includes(e.title ?? null) ? styles.selected : ""
-          }`}
-        >
-          <Link
-            href="/"
-            onClick={(event) => {
-              event.preventDefault();
-              handleTagClick(e.title ?? null);
-            }}
+      {uniqueTags.map(
+        (e: {
+          id: Key | null | undefined;
+          title: any;
+          image: { url: any };
+        }) => (
+          <li
+            key={e.id}
+            className={`${styles.tag} ${
+              selectedTags.includes(e.title ?? null) ? styles.selected : ""
+            }`}
           >
-            <Image
-              src={
-                e.image?.url ||
-                "https://37490647-limaudio.s3.twcstorage.ru/platforma_20783e4ce2.jpg"
-              }
-              alt={e.title ?? "Без названия"}
-              width={28}
-              height={32}
-            />
-            <span>{e.title ?? "Без названия"}</span>
-          </Link>
-        </li>
-      ))}
+            <Link
+              href="/"
+              onClick={(event) => {
+                event.preventDefault();
+                handleTagClick(e.title ?? null);
+              }}
+            >
+              <Image
+                src={
+                  e.image?.url ||
+                  "https://37490647-limaudio.s3.twcstorage.ru/platforma_20783e4ce2.jpg"
+                }
+                alt={e.title ?? "Без названия"}
+                width={28}
+                height={32}
+              />
+              <span>{e.title ?? "Без названия"}</span>
+            </Link>
+          </li>
+        )
+      )}
     </ul>
   );
 }
