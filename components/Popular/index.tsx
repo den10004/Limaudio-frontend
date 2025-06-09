@@ -78,7 +78,7 @@ function useDebounce<T>(value: T, delay: number): T {
 export default function Popular() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +108,7 @@ export default function Popular() {
       params.set("searchQuery", newParams.searchQuery);
 
     if (newParams.tags) {
-      params.delete("tags[]"); // сначала очищаем, иначе будут дубли
+      params.delete("tags[]");
       newParams.tags.forEach((tag) => tag && params.append("tags[]", tag));
     }
 
@@ -125,6 +125,7 @@ export default function Popular() {
   };
 
   const handleSortByDate = () => {
+    setScrollPosition(window.scrollY);
     const newSort = sortByDate === "asc" ? "desc" : "asc";
     setSortByDate(newSort);
     setSortByPopularity("popular");
@@ -132,6 +133,7 @@ export default function Popular() {
   };
 
   const handleSortByPopularity = () => {
+    setScrollPosition(window.scrollY);
     const newPopularity =
       sortByPopularity === "popular" ? "not_popular" : "popular";
     setSortByPopularity(newPopularity);
@@ -144,6 +146,16 @@ export default function Popular() {
     setSearchQuery(value);
     updateURLParams({ searchQuery: value, tags: selectedTags });
   };
+
+  useEffect(() => {
+    const handleScroll = () => setScrollPosition(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, scrollPosition);
+  }, [scrollPosition]);
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -213,22 +225,39 @@ export default function Popular() {
 
         <div className={styles.popular__search}>
           <button className="text" onClick={handleSortByDate}>
-            <div>
-              <div className={`${styles.strip} ${styles.strip_1}`}></div>
-              <div className={`${styles.strip} ${styles.strip_2}`}></div>
-              <div className={`${styles.strip} ${styles.strip_3}`}></div>
-            </div>
-            По дате ({sortByDate === "asc" ? "возрастание" : "убывание"})
+            {sortByDate === "asc" ? (
+              <div>
+                <div className={`${styles.strip} ${styles.strip_1}`}></div>
+                <div className={`${styles.strip} ${styles.strip_2}`}></div>
+                <div className={`${styles.strip} ${styles.strip_3}`}></div>
+              </div>
+            ) : (
+              <div>
+                <div className={`${styles.strip} ${styles.strip_3}`}></div>
+                <div className={`${styles.strip} ${styles.strip_2}`}></div>
+                <div className={`${styles.strip} ${styles.strip_1}`}></div>
+              </div>
+            )}
+            По дате
           </button>
+
           <button className="text" onClick={handleSortByPopularity}>
-            <div>
-              <div className={`${styles.strip} ${styles.strip_1}`}></div>
-              <div className={`${styles.strip} ${styles.strip_2}`}></div>
-              <div className={`${styles.strip} ${styles.strip_3}`}></div>
-            </div>
-            По популярности (
-            {sortByPopularity === "popular" ? "популярные" : "не популярные"})
+            {sortByPopularity === "popular" ? (
+              <div>
+                <div className={`${styles.strip} ${styles.strip_1}`}></div>
+                <div className={`${styles.strip} ${styles.strip_2}`}></div>
+                <div className={`${styles.strip} ${styles.strip_3}`}></div>
+              </div>
+            ) : (
+              <div>
+                <div className={`${styles.strip} ${styles.strip_3}`}></div>
+                <div className={`${styles.strip} ${styles.strip_2}`}></div>
+                <div className={`${styles.strip} ${styles.strip_1}`}></div>
+              </div>
+            )}
+            По популярности
           </button>
+
           <input
             className={`${styles.search_input} text`}
             placeholder="Например, саундбар"
