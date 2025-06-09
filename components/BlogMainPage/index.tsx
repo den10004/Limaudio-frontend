@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import BlogCard, { Card } from "../BlogCard";
 import { CardsResponse } from "@/types/card";
+import { useSearchParams } from "next/navigation";
 import "./blogmainpage.css";
 
 type GroupedCard = {
@@ -29,6 +30,9 @@ const groupCards = (cards: Card[]): GroupedCard[] => {
 };
 
 export default function BlogMainPage() {
+  const searchParams = useSearchParams();
+  const sortByDate = searchParams.get("sortByDate") || "desc";
+  const sortByPopularity = searchParams.get("sortByPopularity") || "popular";
   const INITIAL_VISIBLE_GROUPS = 4;
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],
@@ -50,13 +54,15 @@ export default function BlogMainPage() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await fetch("/api/blogs");
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || "Ошибка при загрузке");
-        }
-        const cards = await res.json();
+        const queryParams = new URLSearchParams({
+          sortByDate,
+          sortByPopularity,
+        });
 
+        const res = await fetch(`/api/blogs?${queryParams.toString()}`);
+        if (!res.ok) throw new Error(await res.text());
+
+        const cards = await res.json();
         setAllCards(cards);
         setIsLoading(false);
       } catch (err: any) {
@@ -66,7 +72,7 @@ export default function BlogMainPage() {
     };
 
     fetchCards();
-  }, []);
+  }, [sortByDate, sortByPopularity]);
 
   const groupedCards = groupCards(allCards.data);
   const visibleGrouped = groupedCards.slice(0, visibleGroups);

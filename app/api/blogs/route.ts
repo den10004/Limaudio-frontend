@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import qs from "qs";
-
+/*
 export async function GET() {
   if (!process.env.API_URL || !process.env.TOKEN) {
     console.error("API_URL или TOKEN не заданы в .env");
@@ -23,7 +23,7 @@ export async function GET() {
               "shared.rich-text": { populate: "*" },
               "shared.slider": { populate: "*" },
             },
-          },*/
+          },*/ /*
           category: { fields: "name" },
           comments: { count: true },
         },
@@ -46,6 +46,49 @@ export async function GET() {
       console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);
       throw new Error(`Strapi API error: ${res.status}`);
     }
+    const data = await res.json();
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("Ошибка при получении данных из Strapi:", error);
+    return NextResponse.json(
+      { error: "Ошибка при получении данных" },
+      { status: 500 }
+    );
+  }
+}
+*/
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const sortByDate = searchParams.get("sortByDate") || "desc";
+  const sortByPopularity = searchParams.get("sortByPopularity") || "popular";
+
+  const sortParams = [];
+  if (sortByPopularity === "popular") sortParams.push("views:desc");
+  if (sortByDate) sortParams.push(`publishedAt:${sortByDate}`);
+
+  const query = qs.stringify(
+    {
+      sort: sortParams,
+      populate: {
+        cover: { fields: ["url"] },
+        category: { fields: ["name"] },
+        comments: { count: true },
+      },
+    },
+    { encodeValuesOnly: true }
+  );
+
+  try {
+    const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.TOKEN}`,
+      },
+      next: { revalidate: 60 },
+    });
+
+    if (!res.ok) throw new Error(await res.text());
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error) {

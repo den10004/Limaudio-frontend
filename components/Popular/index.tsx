@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./page.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Tags from "../Tags";
 
 interface Image {
@@ -100,20 +100,23 @@ export default function Popular() {
     setSearchQuery(e.target.value);
   };
 
-  const fetchData: fetchData = {
-    tags: selectedTags,
-    sortByDate: sortByDate,
-    sortByPopularity: sortByPopularity,
-    searchQuery: debouncedSearchQuery,
-  };
+  const fetchData = useMemo(
+    () => ({
+      tags: selectedTags,
+      sortByDate: sortByDate,
+      sortByPopularity: sortByPopularity,
+      searchQuery: debouncedSearchQuery,
+    }),
+    [selectedTags, sortByDate, sortByPopularity, debouncedSearchQuery]
+  );
 
   console.log(fetchData);
-  /*
+
   useEffect(() => {
     const fetchCards = async () => {
       try {
         const res = await fetch(
-          `/api/add?${new URLSearchParams(fetchData).toString()}`,
+          `/api/blogs?${new URLSearchParams(fetchData).toString()}`,
           {
             method: "GET",
             headers: {
@@ -123,7 +126,6 @@ export default function Popular() {
         );
 
         const cards = await res.json();
-        console.log(res);
         setAllTags(cards);
         setIsLoading(false);
       } catch (err: any) {
@@ -134,7 +136,7 @@ export default function Popular() {
 
     fetchCards();
   }, []);
-*/
+
   return (
     <section className={styles.popular}>
       <div className="container">
