@@ -36,6 +36,13 @@ interface ApiResponse {
   meta: Meta;
 }
 
+interface fetchData {
+  tags: (string | null)[];
+  sortByDate: "asc" | "desc" | undefined;
+  sortByPopularity: "popular" | "not_popular" | undefined;
+  searchQuery: string | undefined;
+}
+
 // Custom debounce hook
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -58,6 +65,7 @@ export default function Popular() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
+  const [cards, setAllCards] = useState<ApiResponse | null>(null); // New state for blog cards
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
   const [sortByDate, setSortByDate] = useState<"asc" | "desc">("asc");
   const [sortByPopularity, setSortByPopularity] = useState<
@@ -72,30 +80,8 @@ export default function Popular() {
     setIsExpanded((prev) => !prev);
   };
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const res = await fetch("/api/topics");
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || "Ошибка при загрузке");
-        }
-
-        const cards = await res.json();
-        setAllTags(cards);
-        setIsLoading(false);
-      } catch (err: any) {
-        setError(err.message);
-        setIsLoading(false);
-      }
-    };
-
-    fetchCards();
-  }, []);
-
   const handleTagClick = (selectedTags: (string | null)[]) => {
     setSelectedTags(selectedTags);
-    console.log("Parent: Selected tags -", selectedTags);
   };
 
   const handleSortByDate = () => {
@@ -114,15 +100,41 @@ export default function Popular() {
     setSearchQuery(e.target.value);
   };
 
-  const fetchData = {
+  const fetchData: fetchData = {
     tags: selectedTags,
     sortByDate: sortByDate,
     sortByPopularity: sortByPopularity,
     searchQuery: debouncedSearchQuery,
   };
 
-  console.log("Collected fetch data:", fetchData);
+  console.log(fetchData);
+  /*
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch(
+          `/api/add?${new URLSearchParams(fetchData).toString()}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
+        const cards = await res.json();
+        console.log(res);
+        setAllTags(cards);
+        setIsLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
+*/
   return (
     <section className={styles.popular}>
       <div className="container">
