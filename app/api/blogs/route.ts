@@ -26,7 +26,6 @@ export async function GET() {
           },*/
           category: { fields: "name" },
           comments: { count: true },
-          topics: { fields: "title" },
         },
       },
       {
