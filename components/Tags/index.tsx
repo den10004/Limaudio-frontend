@@ -32,7 +32,6 @@ interface TagsProps {
 
 export default function Tags({ uniqueTags = [], onTagClick }: TagsProps) {
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
-  console.log(uniqueTags);
   if (!uniqueTags) {
     return null;
   }

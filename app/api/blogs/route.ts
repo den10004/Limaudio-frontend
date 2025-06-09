@@ -69,9 +69,12 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url);
+
     const sortByDate = searchParams.get("sortByDate") || "asc";
     const sortByPopularity =
       searchParams.get("sortByPopularity") || "not_popular";
+    const searchQuery = searchParams.get("searchQuery") || "";
+    const tags = searchParams.getAll("tags[]");
 
     const sortParams: string[] = [];
 
@@ -83,9 +86,32 @@ export async function GET(req: NextRequest) {
       sortParams.push(`publishedAt:${sortByDate}`);
     }
 
+    const filters: any = {};
+
+    if (searchQuery) {
+      filters.$or = [
+        { title: { $containsi: searchQuery } },
+        { content: { $containsi: searchQuery } },
+      ];
+    }
+
+    if (tags.length > 0) {
+      filters.topics = {
+        title: {
+          $in: tags,
+        },
+      };
+    }
+    filters.category = {
+      name: {
+        $in: tags,
+      },
+    };
+
     const query = qs.stringify(
       {
         sort: sortParams,
+        filters,
         populate: {
           cover: { fields: ["url"] },
           category: { fields: ["name"] },
@@ -118,6 +144,7 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await res.json();
+    console.log(data);
     return NextResponse.json(data);
   } catch (error: any) {
     console.error("Ошибка при получении данных из Strapi:", error);

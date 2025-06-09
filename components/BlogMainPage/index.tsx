@@ -33,7 +33,11 @@ export default function BlogMainPage() {
   const searchParams = useSearchParams();
   const sortByDate = searchParams.get("sortByDate") || "desc";
   const sortByPopularity = searchParams.get("sortByPopularity") || "popular";
+  const searchQuery = searchParams.get("searchQuery") || "";
+  const tags = searchParams.getAll("tags[]"); // считываем массив тегов
+
   const INITIAL_VISIBLE_GROUPS = 4;
+
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],
     meta: {
@@ -58,6 +62,10 @@ export default function BlogMainPage() {
           sortByDate,
           sortByPopularity,
         });
+
+        if (searchQuery) queryParams.set("searchQuery", searchQuery);
+        tags.forEach((tag) => tag && queryParams.append("tags[]", tag));
+
         const res = await fetch(`/api/blogs?${queryParams.toString()}`);
         if (!res.ok) throw new Error(await res.text());
 
@@ -71,16 +79,17 @@ export default function BlogMainPage() {
     };
 
     fetchCards();
-  }, [sortByDate, sortByPopularity]);
+  }, [sortByDate, sortByPopularity, searchQuery, tags.join(",")]);
 
   const groupedCards = groupCards(allCards.data);
   const visibleGrouped = groupedCards.slice(0, visibleGroups);
   const showMore = () => setVisibleGroups((prev) => prev + 2);
 
+  console.log(allCards.data);
+
   if (isLoading) return <div className="container">Загрузка...</div>;
   if (error) return <div className="container error-message">{error}</div>;
-  if (!allCards.data.length)
-    return <div className="container">Нет доступных блогов</div>;
+  if (!allCards) return <div className="container">Нет доступных блогов</div>;
 
   return (
     <div className="container">

@@ -98,12 +98,21 @@ export default function Popular() {
   const updateURLParams = (newParams: {
     sortByDate?: string;
     sortByPopularity?: string;
+    searchQuery?: string;
+    tags?: (string | null)[];
   }) => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (newParams.sortByDate) params.set("sortByDate", newParams.sortByDate);
     if (newParams.sortByPopularity)
       params.set("sortByPopularity", newParams.sortByPopularity);
+    if (newParams.searchQuery !== undefined)
+      params.set("searchQuery", newParams.searchQuery);
+
+    if (newParams.tags) {
+      params.delete("tags[]"); // сначала очищаем, иначе будут дубли
+      newParams.tags.forEach((tag) => tag && params.append("tags[]", tag));
+    }
 
     router.push(`/?${params.toString()}`);
   };
@@ -114,6 +123,7 @@ export default function Popular() {
 
   const handleTagClick = (selectedTags: (string | null)[]) => {
     setSelectedTags(selectedTags);
+    updateURLParams({ tags: selectedTags, searchQuery });
   };
 
   const handleSortByDate = () => {
@@ -132,49 +142,42 @@ export default function Popular() {
   };
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    const value = e.target.value;
+    setSearchQuery(value);
+    updateURLParams({ searchQuery: value, tags: selectedTags });
   };
-
-  const fetchData = useMemo(
-    () => ({
-      tags: selectedTags,
-      sortByDate,
-      sortByPopularity,
-      searchQuery: debouncedSearchQuery,
-    }),
-    [selectedTags, sortByDate, sortByPopularity, debouncedSearchQuery]
-  );
 
   useEffect(() => {
     const fetchCards = async () => {
-      try {
-        const res = await fetch(
-          `/api/blogs?${new URLSearchParams(fetchData as any).toString()}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+      const params = new URLSearchParams();
+      if (sortByDate) params.set("sortByDate", sortByDate);
+      if (sortByPopularity) params.set("sortByPopularity", sortByPopularity);
+      if (debouncedSearchQuery) params.set("searchQuery", debouncedSearchQuery);
+      if (selectedTags.length > 0) {
+        selectedTags?.forEach(
+          (tag, i) => tag && params.append(`tags[${i}]`, tag)
         );
-
-        const cards = await res.json();
-        setAllTags(cards);
-        setIsLoading(false);
-      } catch (err: any) {
-        setError(err.message);
-        setIsLoading(false);
       }
+
+      const res = await fetch(`/api/blogs?${params.toString()}`);
+      const data = await res.json();
+      setAllTags(data);
+      setIsLoading(false);
     };
 
     fetchCards();
-  }, []);
+  }, [
+    sortByDate,
+    sortByPopularity,
+    debouncedSearchQuery,
+    JSON.stringify(selectedTags),
+  ]);
 
   useEffect(() => {
     if (tags?.data) {
       const uniqueTopicsMap = new Map();
       tags.data.forEach((item) => {
-        item.topics.forEach((topic: { title: any }) => {
+        item.topics?.forEach((topic: { title: any }) => {
           if (!uniqueTopicsMap.has(topic.title)) {
             uniqueTopicsMap.set(topic.title, topic);
           }
