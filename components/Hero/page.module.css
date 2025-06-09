@@ -3,7 +3,7 @@
 }
 
 .hero__background {
-    background-image: url(../../public/banner.webp);
+    background-image: url(https://37490647-limaudio.s3.twcstorage.ru/banner_4a21bb8d1a.webp);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -29,7 +29,7 @@
 
 @media screen and (max-width: 767px) {
     .hero__background {
-        background-image: url(../../public/banner-min.webp);
+        background-image: url(https://37490647-limaudio.s3.twcstorage.ru/banner_min_5c6f7a2bab.webp);
         height: 300px;
         padding-left: 30px;
         margin-top: 7px;
