@@ -41,7 +41,7 @@ export async function GET() {
       },
       next: { revalidate: 60 },
     });
-
+    console.log(res);
     if (!res.ok) {
       const text = await res.text();
       console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);

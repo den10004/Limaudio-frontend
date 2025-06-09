@@ -19,3 +19,8 @@
     border-radius: 20px 0px 0px 20px;
     margin-right: 5px;
 }
+
+.selected {
+    border: 1px solid #005bb5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

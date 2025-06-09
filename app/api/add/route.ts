@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import qs from "qs";
 
-export async function GET() {
+export async function GET(request: Request) {
   if (!process.env.API_URL || !process.env.TOKEN) {
     console.error("API_URL или TOKEN не заданы в .env");
     return NextResponse.json(
@@ -11,12 +11,18 @@ export async function GET() {
   }
 
   try {
+    const { searchParams } = new URL(request.url);
+    console.log("fgf");
+    const fetchParams = Object.fromEntries(searchParams.entries());
     const query = qs.stringify(
       {
+        ...fetchParams,
         populate: {
-          logo: {
-            fields: ["name", "documentId", "url"],
+          cover: {
+            fields: "url",
           },
+          category: { fields: "name" },
+          comments: { count: true },
         },
       },
       {
@@ -24,7 +30,7 @@ export async function GET() {
       }
     );
 
-    const res = await fetch(`${process.env.API_URL}/brends?${query}`, {
+    const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
@@ -37,8 +43,8 @@ export async function GET() {
       console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);
       throw new Error(`Strapi API error: ${res.status}`);
     }
-    const data = await res.json();
 
+    const data = await res.json();
     return NextResponse.json(data);
   } catch (error) {
     console.error("Ошибка при получении данных из Strapi:", error);

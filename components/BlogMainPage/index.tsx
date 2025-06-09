@@ -55,7 +55,6 @@ export default function BlogMainPage() {
           const text = await res.text();
           throw new Error(text || "Ошибка при загрузке");
         }
-
         const cards = await res.json();
 
         setAllCards(cards);
