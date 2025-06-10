@@ -4,7 +4,7 @@ import BlogMainPage from "../BlogMainPage/index";
 
 export default function BlogMainPageWrapper() {
   return (
-    <Suspense fallback={<div className="container">Загрузка фильтров...</div>}>
+    <Suspense fallback={<div className="container"></div>}>
       <BlogMainPage />
     </Suspense>
   );

@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
 import styles from "./page.module.css";
 import { CardsResponse } from "@/types/card";
-import CardSkeleton from "../Loading/CardSkeleton";
 
 export default function PopularArticles() {
   const [allCards, setAllCards] = useState<CardsResponse>({

@@ -15,6 +15,7 @@ export async function GET() {
       {
         populate: {
           image: { fields: "url" },
+          category: { fields: ["name"] },
         },
       },
       {
@@ -22,7 +23,7 @@ export async function GET() {
       }
     );
 
-    const res = await fetch(`${process.env.API_URL}/topics?${query}`, {
+    const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
