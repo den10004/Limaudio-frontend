@@ -5,6 +5,22 @@ import BlogCard from "../BlogCard";
 import { CardsResponse } from "@/types/card";
 import styles from "./page.module.css";
 
+interface Article {
+  id: number;
+  attributes: {
+    title: string;
+    description: string;
+    image: string;
+    category: {
+      data: {
+        attributes: {
+          name: string;
+        };
+      };
+    };
+  };
+}
+
 export default function BlogPage() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category") ?? "";
@@ -18,49 +34,33 @@ export default function BlogPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [articles, setArticles] = useState<Response | null>(null);
+  const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
-    const fetchArticles = async () => {
+    const fetchCards = async () => {
       try {
-        setIsLoading(true);
-        setError(null);
-
-        const params = new URLSearchParams();
-        params.append("populate", "category");
-
-        const categoryValue = categoryMap[category as keyof typeof categoryMap];
-
-        if (categoryValue) {
-          if (Array.isArray(categoryValue)) {
-            categoryValue.forEach((val, index) => {
-              params.append(`filters[category][name][$in][${index}]`, val);
-            });
-          } else {
-            params.append("filters[category][name][$eq]", categoryValue);
-          }
-        }
-
-        const res = await fetch(`/api/category?${params.toString()}`);
+        const category = "Обзор";
+        const res = await fetch(
+          `/api/category?category=${encodeURIComponent(category)}`
+        );
 
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+          const errorData = await res.json();
+          throw new Error(errorData.message || "Ошибка при загрузке данных");
         }
 
-        const data = await res.json();
-        console.log(data);
-        setArticles(data);
+        const { data } = await res.json();
+        console.log(data); // Проверяем данные
+        setIsLoading(false);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "An unknown error occurred"
-        );
-      } finally {
+        console.error("Ошибка:", err);
+        // setError(err.message);
         setIsLoading(false);
       }
     };
 
-    fetchArticles();
-  }, [category]);
+    fetchCards();
+  }, []);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

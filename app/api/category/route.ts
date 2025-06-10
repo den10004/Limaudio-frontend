@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import qs from "qs";
 
-export async function GET() {
-  if (!process.env.API_URL || !process.env.TOKEN) {
-    console.error("API_URL или TOKEN не заданы в .env");
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const categoryName = searchParams.get("category");
+
+  if (!categoryName) {
     return NextResponse.json(
-      { error: "Неверная конфигурация сервера" },
-      { status: 500 }
+      { error: "Параметр 'category' обязателен" },
+      { status: 400 }
     );
   }
 
@@ -14,34 +16,50 @@ export async function GET() {
     const query = qs.stringify(
       {
         populate: {
-          image: { fields: "url" },
+          cover: { fields: ["url"] },
           category: { fields: ["name"] },
+          topics: {
+            populate: {
+              title: {},
+              image: {
+                fields: ["url"],
+              },
+            },
+          },
+        },
+        filters: {
+          category: {
+            name: {
+              $eq: categoryName,
+            },
+          },
         },
       },
-      {
-        encodeValuesOnly: true,
-      }
+      { encodeValuesOnly: true }
     );
 
-    const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
+    const strapiUrl = `${process.env.API_URL}/articles?${query}`;
+    console.log("Запрос к Strapi:", strapiUrl);
+
+    const res = await fetch(strapiUrl, {
       headers: {
-        Accept: "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
       },
-      next: { revalidate: 60 },
+      cache: "no-store",
     });
 
     if (!res.ok) {
-      const text = await res.text();
-      console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);
-      throw new Error(`Strapi API error: ${res.status}`);
+      const errorText = await res.text();
+      console.error("Strapi Error:", errorText);
+      throw new Error(`Strapi вернул ${res.status}: ${errorText}`);
     }
+
     const data = await res.json();
     return NextResponse.json(data);
-  } catch (error) {
-    console.error("Ошибка при получении данных из Strapi:", error);
+  } catch (err) {
+    console.error("API Error:", err);
     return NextResponse.json(
-      { error: "Ошибка при получении данных" },
+      { error: "Ошибка сервера при загрузке данных" },
       { status: 500 }
     );
   }
