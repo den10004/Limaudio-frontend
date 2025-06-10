@@ -40,9 +40,7 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        // Get the mapped category value(s) or default to empty array if not found
         const mappedCategory = categoryMap[category] || [];
-        // Normalize to array for consistent handling
         const categories = Array.isArray(mappedCategory)
           ? mappedCategory
           : [mappedCategory];
@@ -51,7 +49,6 @@ export default function BlogPage() {
           throw new Error("Категория не найдена");
         }
 
-        // Fetch data for each category
         const fetchPromises = categories.map(async (cat) => {
           const res = await fetch(
             `/api/category?category=${encodeURIComponent(cat)}`
@@ -82,10 +79,6 @@ export default function BlogPage() {
     fetchCards();
   }, [category]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  console.log(articles);
   return (
     <>
       <div className="container">
@@ -101,6 +94,7 @@ export default function BlogPage() {
             {!articles && (
               <div style={{ color: "red" }}>Нет доступных блогов</div>
             )}
+            {error && <div style={{ color: "red" }}>error</div>}
             {articles.map((card) => (
               <BlogCard key={card.id} card={card} type="small" />
             ))}

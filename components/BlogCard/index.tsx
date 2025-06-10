@@ -15,15 +15,21 @@ type comments = {
 };
 
 export type Card = {
-  slug: string;
-  cover: cover;
+  type: string;
   category: name;
   comments: comments;
-  title: string;
+  cover: cover;
+  createdAt: string;
   description: string;
-  date: string;
+  documentId: string;
+  id: number;
+  publishedAt: string;
+  slug: string;
+  title: string;
+  date?: string;
+  topics?: any;
+  updatedAt: string;
   views: number;
-  type: string;
 };
 
 type CardItemProps = {
@@ -50,7 +56,7 @@ const getBackgroundColor = (type: string) => {
   }
 };
 
-export default function BlogCard({ card, type }: CardItemProps) {
+export default function BlogCard({ card, type }: any) {
   return (
     <Link href={`/blog/${card.slug}`} scroll={false}>
       <div

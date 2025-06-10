@@ -51,7 +51,7 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
   const article = data?.data?.[0] ?? null;
 
   // счётчик просмотров
-  /*
+
   if (article?.documentId) {
     try {
       await fetch(
@@ -67,7 +67,7 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
     } catch (error) {
       console.error("Error incrementing views:", error);
     }
-  }*/
+  }
 
   return article;
 }
