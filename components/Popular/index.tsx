@@ -79,7 +79,6 @@ function useDebounce<T>(value: T, delay: number): T {
 export default function Popular() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -113,7 +112,7 @@ export default function Popular() {
       newParams.tags.forEach((tag) => tag && params.append("tags[]", tag));
     }
 
-    router.push(`/?${params.toString()}`);
+    router.replace(`/?${params.toString()}`, { scroll: false });
   };
 
   const toggleList = () => {
@@ -126,7 +125,6 @@ export default function Popular() {
   };
 
   const handleSortByDate = () => {
-    setScrollPosition(window.scrollY);
     const newSort = sortByDate === "asc" ? "desc" : "asc";
     setSortByDate(newSort);
     setSortByPopularity("popular");
@@ -134,7 +132,6 @@ export default function Popular() {
   };
 
   const handleSortByPopularity = () => {
-    setScrollPosition(window.scrollY);
     const newPopularity =
       sortByPopularity === "popular" ? "not_popular" : "popular";
     setSortByPopularity(newPopularity);
@@ -147,16 +144,6 @@ export default function Popular() {
     setSearchQuery(value);
     updateURLParams({ searchQuery: value, tags: selectedTags });
   };
-
-  useEffect(() => {
-    const handleScroll = () => setScrollPosition(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    window.scrollTo(0, scrollPosition);
-  }, [scrollPosition]);
 
   useEffect(() => {
     const fetchCards = async () => {

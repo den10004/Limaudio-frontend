@@ -35,7 +35,7 @@ export default function BlogMainPage() {
   const sortByDate = searchParams.get("sortByDate") || "desc";
   const sortByPopularity = searchParams.get("sortByPopularity") || "popular";
   const searchQuery = searchParams.get("searchQuery") || "";
-  const tags = searchParams.getAll("tags[]"); // считываем массив тегов
+  const tags = searchParams.getAll("tags[]");
 
   const INITIAL_VISIBLE_GROUPS = 4;
 
@@ -86,6 +86,8 @@ export default function BlogMainPage() {
   const visibleGrouped = groupedCards.slice(0, visibleGroups);
   const showMore = () => setVisibleGroups((prev) => prev + 2);
 
+  console.log(allCards.data);
+
   return (
     <div className="container">
       <div className="cards-container">
@@ -101,7 +103,11 @@ export default function BlogMainPage() {
         ))}
         {isLoading && <CardSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
-        {!allCards && <div style={{ color: "red" }}>Нет доступных блогов</div>}
+        {allCards.data.length === 0 && (
+          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+            Нет доступных блогов
+          </div>
+        )}
       </div>
 
       {visibleGroups < groupedCards.length && (
