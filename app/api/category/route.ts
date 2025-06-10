@@ -18,6 +18,7 @@ export async function GET(request: Request) {
         populate: {
           cover: { fields: ["url"] },
           category: { fields: ["name"] },
+          comments: { count: true },
           topics: {
             populate: {
               title: {},

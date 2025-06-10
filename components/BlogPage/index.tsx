@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
 import { CardsResponse } from "@/types/card";
 import styles from "./page.module.css";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 interface Article {
   id: number;
@@ -39,7 +40,9 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
+        // Get the mapped category value(s) or default to empty array if not found
         const mappedCategory = categoryMap[category] || [];
+        // Normalize to array for consistent handling
         const categories = Array.isArray(mappedCategory)
           ? mappedCategory
           : [mappedCategory];
@@ -47,23 +50,31 @@ export default function BlogPage() {
         if (!categories.length) {
           throw new Error("Категория не найдена");
         }
-        console.log(categories);
-        const category1 = "Обзор";
-        const res = await fetch(
-          `/api/category?category=${encodeURIComponent(category1)}`
-        );
 
-        if (!res.ok) {
-          const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.error || "Ошибка при загрузке данных");
-        }
+        // Fetch data for each category
+        const fetchPromises = categories.map(async (cat) => {
+          const res = await fetch(
+            `/api/category?category=${encodeURIComponent(cat)}`
+          );
 
-        const { data } = await res.json();
-        console.log("Данные от API:", data);
+          if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            throw new Error(
+              errorData.error || `Ошибка при загрузке данных для ${cat}`
+            );
+          }
+
+          const { data } = await res.json();
+          return data;
+        });
+
+        const results = await Promise.all(fetchPromises);
+        const combinedArticles = results.flat();
+        setArticles(combinedArticles);
         setIsLoading(false);
       } catch (err) {
         console.error("Полная ошибка:", err);
-        //setError(err.message);
+        setError(err instanceof Error ? err.message : "Неизвестная ошибка");
         setIsLoading(false);
       }
     };
@@ -73,25 +84,27 @@ export default function BlogPage() {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  console.log(articles);
   return (
     <>
       <div className="container">
         <h2 className="text-h3-bold" style={{ margin: "40px 0" }}>
-          Блог {category}
+          Блог
         </h2>
       </div>
       <section className={styles.interes}>
         <div className="container">
-          {/*
           <div className={styles.interes__card}>
             {error && <div style={{ color: "red" }}>{error}</div>}
-            {!allCards && (
+            {isLoading && <CardSkeleton />}
+            {!articles && (
               <div style={{ color: "red" }}>Нет доступных блогов</div>
             )}
-            {sortedCards.map((card) => (
+            {articles.map((card) => (
               <BlogCard key={card.id} card={card} type="small" />
             ))}
-          </div>*/}
+          </div>
         </div>
       </section>
     </>
