@@ -87,6 +87,7 @@
     border-left: 1px solid var(--color-black1C);
 }
 
+
 @media screen and (max-width: 1024px) {
     .header__block {
         display: flex;

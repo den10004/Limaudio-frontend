@@ -3,11 +3,11 @@ import Footer from "@/components/Footer/Footer";
 import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function Thanks() {
   return (
     <div className={styles.pageWrapper}>
-      <Header />
       <main className={styles.mainContent}>
         <section className={styles.thanks}>
           <div className="container">
@@ -37,7 +37,6 @@ export default function Thanks() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

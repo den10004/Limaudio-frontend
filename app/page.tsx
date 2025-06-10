@@ -7,18 +7,17 @@ import PopularArticles from "@/components/PopularArticles";
 import ScrollBtn from "@/components/ScrollBtn";
 import BlogMainWrapper from "@/components/BlogMainPageWrapper";
 import PopularWrapper from "@/components/PopularWrapper";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
     <>
-      <Header />
       <Hero />
       <PopularWrapper />
       <BlogMainWrapper />
       <PopularArticles />
       <Brands />
       <Subscription />
-      <Footer />
       <ScrollBtn />
     </>
   );

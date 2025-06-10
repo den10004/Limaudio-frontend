@@ -7,6 +7,7 @@ import styles from "./page.module.css";
 import { INDEX } from "@/lib/breadcrumbs";
 import QuestionForm from "@/components/QuestionForm";
 import MapComponent from "@/components/Map";
+import { Suspense } from "react";
 
 const breadcrumbs = [
   { label: "Главная", href: INDEX },
@@ -16,7 +17,6 @@ const breadcrumbs = [
 export default function Contacts() {
   return (
     <>
-      <Header />
       <Breadcrumbs items={breadcrumbs} />
 
       <section className={styles.contacts}>
@@ -93,7 +93,6 @@ export default function Contacts() {
       <ScrollBtn />
       <QuestionForm />
       <Subscription />
-      <Footer />
     </>
   );
 }

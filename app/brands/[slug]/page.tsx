@@ -26,7 +26,6 @@ export default async function BrandsPage({ params }: any) {
   ];
   return (
     <>
-      <Header />
       <Breadcrumbs items={breadcrumbs} />
       <BrandText content={content} />
 
@@ -35,7 +34,6 @@ export default async function BrandsPage({ params }: any) {
       </div>
       <PopularArticles />
       <Subscription />
-      <Footer />
       <ScrollBtn />
     </>
   );

@@ -5,6 +5,9 @@ import "./../styles/search-menu.css";
 import "./../styles/bloglist.css";
 import "./../styles/label.css";
 import "./../styles/modal.css";
+import { Suspense } from "react";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -23,8 +26,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={roboto.className}>{children}</body>
+    <html lang="ru">
+      <body className={roboto.className}>
+        <Suspense fallback={<div>Загрузка...</div>}>
+          <Header />
+        </Suspense>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

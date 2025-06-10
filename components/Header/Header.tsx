@@ -4,11 +4,23 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { ModalHeader } from "../Modals/ModalHeader";
 import { ModalQuestions } from "../Modals/ModalQuestions";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function Header() {
   const [headerMenu, setHeaderMenu] = useState(false);
   const [callbackModal, setCallbackModal] = useState(false);
   const [inputOpen, setInputOpen] = useState(false);
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const currentCategory = searchParams.get("category");
+
+  const links = [
+    { href: "/blog?category=обзоры", label: "Обзоры" },
+    { href: "/blog?category=сравнения", label: "Сравнения" },
+    { href: "/blog?category=топы", label: "Топы" },
+    { href: "/blog?category=гайды-и-советы", label: "Гайды и советы" },
+  ];
 
   return (
     <>
@@ -103,18 +115,24 @@ export default function Header() {
             </div>
             <nav>
               <ul>
-                <li>
-                  <Link href="/"> Обзоры </Link>
-                </li>
-                <li>
-                  <Link href="/"> Сравнения </Link>
-                </li>
-                <li>
-                  <Link href="/"> Топы </Link>
-                </li>
-                <li>
-                  <Link href="/"> Гайды и советы </Link>
-                </li>
+                {links.map((link) => {
+                  const linkCategory = new URLSearchParams(
+                    link.href.split("?")[1]
+                  ).get("category");
+                  const isActive =
+                    pathname === "/blog" && currentCategory === linkCategory;
+
+                  return (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className={isActive ? "font-bold text-blue-500" : ""}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </div>

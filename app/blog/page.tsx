@@ -1,29 +1,19 @@
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
 import PopularArticles from "@/components/PopularArticles";
 import Brands from "@/components/Brands";
 import Subscription from "@/components/Subscription/Subscription";
 import ScrollBtn from "@/components/ScrollBtn";
-import BlogMainPageWrapper from "@/components/BlogMainPageWrapper";
-import PopularWrapper from "@/components/PopularWrapper";
+import BlogPage from "@/components/BlogPage";
+import { Suspense } from "react";
 
 export default function Blog() {
   return (
     <>
-      <Header />
-      <div className="container">
-        <h2 className="text-h3-bold" style={{ margin: "40px 0" }}>
-          Блог
-        </h2>
-      </div>
-      {/*
-         <PopularWrapper />*/}
-
-      <BlogMainPageWrapper />
+      <Suspense fallback={<div></div>}>
+        <BlogPage />
+      </Suspense>
       <PopularArticles />
       <Brands />
       <Subscription />
-      <Footer />
       <ScrollBtn />
     </>
   );

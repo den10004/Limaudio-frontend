@@ -58,7 +58,6 @@ export default async function BlogPostPage({ params }: any) {
   if (!content) return notFound();
   return (
     <>
-      <Header />
       <Breadcrumbs items={breadcrumbs} />
       <section className={styles.blog}>
         <div className="container">
@@ -134,7 +133,6 @@ export default async function BlogPostPage({ params }: any) {
           </div>
         </div>
       </section>
-      <Footer />
       <ScrollBtn />
     </>
   );
