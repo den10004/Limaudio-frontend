@@ -24,7 +24,6 @@ interface Article {
 export default function BlogPage() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category") ?? "";
-  const categoryParam = searchParams.get("category") ?? "";
 
   const categoryMap: Record<string, string | string[]> = {
     обзоры: "Обзор",
@@ -40,9 +39,18 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const category = "Обзор";
+        const mappedCategory = categoryMap[category] || [];
+        const categories = Array.isArray(mappedCategory)
+          ? mappedCategory
+          : [mappedCategory];
+
+        if (!categories.length) {
+          throw new Error("Категория не найдена");
+        }
+        console.log(categories);
+        const category1 = "Обзор";
         const res = await fetch(
-          `/api/category?category=${encodeURIComponent(category)}`
+          `/api/category?category=${encodeURIComponent(category1)}`
         );
 
         if (!res.ok) {
@@ -61,7 +69,7 @@ export default function BlogPage() {
     };
 
     fetchCards();
-  }, []);
+  }, [category]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
