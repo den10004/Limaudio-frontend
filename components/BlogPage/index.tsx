@@ -24,6 +24,7 @@ interface Article {
 export default function BlogPage() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category") ?? "";
+  const categoryParam = searchParams.get("category") ?? "";
 
   const categoryMap: Record<string, string | string[]> = {
     обзоры: "Обзор",
@@ -45,16 +46,16 @@ export default function BlogPage() {
         );
 
         if (!res.ok) {
-          const errorData = await res.json();
-          throw new Error(errorData.message || "Ошибка при загрузке данных");
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.error || "Ошибка при загрузке данных");
         }
 
         const { data } = await res.json();
-        console.log(data); // Проверяем данные
+        console.log("Данные от API:", data);
         setIsLoading(false);
       } catch (err) {
-        console.error("Ошибка:", err);
-        // setError(err.message);
+        console.error("Полная ошибка:", err);
+        //setError(err.message);
         setIsLoading(false);
       }
     };
