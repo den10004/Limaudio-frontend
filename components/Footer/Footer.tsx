@@ -86,13 +86,13 @@ export default function Footer() {
 
           <ul className="text16">
             <li>
-              <Link href="#">О компании</Link>
+              <Link href="/">О компании</Link>
             </li>
             <li>
-              <Link href="#">Контакты</Link>
+              <Link href="/contacts">Контакты</Link>
             </li>
             <li>
-              <Link href="#">Каталог</Link>
+              <Link href="/">Каталог</Link>
             </li>
           </ul>
         </div>

@@ -80,11 +80,11 @@
 }
 
 
-.modal__list>li>a {
+.modal__list>a {
     color: var(--color-black1C);
 }
 
-.modal__list>li:not(:last-child) {
+.modal__list>a:not(:last-child) {
     margin-bottom: 10px;
 }
 
