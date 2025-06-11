@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+"use client";
+import { notFound, useParams } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ScrollBtn from "@/components/ScrollBtn";
 import { INDEX } from "@/lib/breadcrumbs";
@@ -12,29 +13,25 @@ import { Articles } from "@/types/articles";
 import MarkdownBlog from "@/components/MarkdownBlog";
 import { FormatDate } from "@/utils/formatDate";
 import BlockSimilarCard from "@/components/BlogSimilar/BlockSimilarCard";
+import { useEffect, useState } from "react";
 
-interface PageProps {
-  params: { slug: string };
-}
-
-type Bloc = RichTextBloc | SliderBloc | UnknownBloc;
-
-interface RichTextBloc {
-  __component: "shared.rich-text";
-  body: string;
+interface Article {
   id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  views: number;
+  category: { name: string };
+  topics: { title: string }[];
 }
 
-interface SliderBloc {
-  __component: "shared.slider";
-  files: Array<{
-    url: string;
-  }>;
-}
-
-interface UnknownBloc {
-  __component: string;
-  [key: string]: any;
+interface ApiResponse {
+  data: Article[];
+  meta: any;
 }
 
 export default async function BlogPostPage({ params }: any) {
@@ -49,17 +46,50 @@ export default async function BlogPostPage({ params }: any) {
       isActive: true,
     },
   ];
-  console.log(content);
-  const tags: any = content?.topics;
-  const blocs: any = content?.blocks;
+  const { slug } = useParams<{ slug: string }>();
+  const topic = decodeURIComponent(slug).replace(/-/g, " ");
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  //if (!content) return notFound();
+  useEffect(() => {
+    async function fetchArticles() {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(
+          `/api/articles?topic=${encodeURIComponent(topic)}&sortByDate=asc`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Не удалось загрузить статьи.");
+        }
+
+        const data: ApiResponse = await res.json();
+        setArticles(data.data);
+      } catch (err: any) {
+        setError(err.message || "Произошла ошибка при загрузке данных.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchArticles();
+  }, [topic]);
+
   return (
     <>
       <Breadcrumbs items={breadcrumbs} />
       <section>
         <div className="container">
           <h3 className="text-h3-bold">Топик</h3>
+          {}
         </div>
       </section>
       <ScrollBtn />
