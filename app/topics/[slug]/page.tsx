@@ -1,9 +1,13 @@
 "use client";
 
+import BlogCard from "@/components/BlogCard";
+import Brands from "@/components/Brands";
+import PopularArticles from "@/components/PopularArticles";
 import { linksTopics } from "@/lib/footerLinks";
-import Link from "next/link";
+import styles from "./page.module.css";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 
 interface Article {
   id: number;
@@ -100,34 +104,26 @@ export default function TopicPage() {
     );
   }
 
-  // Use normalizedSlug for display
-  const displayTopic = normalizedSlug;
 
+  const displayTopic = normalizedSlug;
+  console.log(articles)
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Статьи по теме: {displayTopic}</h1>
-      {articles.length === 0 ? (
-        <p>Статьи по теме "{displayTopic}" не найдены.</p>
-      ) : (
-        <ul className="space-y-4">
-          {articles.map((article) => (
-            <li key={article.id} className="border p-4 rounded">
-              <h2 className="text-xl font-semibold">
-                <Link href={`/article/${article.slug}`}>{article.title}</Link>
-              </h2>
-              <p>{article.description.substring(0, 150)}...</p>
-              <p className="text-sm text-gray-500">
-                Опубликовано: {new Date(article.publishedAt).toLocaleDateString("ru-RU")}
-              </p>
-              <p className="text-sm text-gray-500">Просмотры: {article.views}</p>
-              <p className="text-sm text-gray-500">Категория: {article.category.name}</p>
-              <p className="text-sm text-gray-500">
-                Темы: {article.topics.map((t) => t.title).join(", ")}
-              </p>
-            </li>
+    <div className="container">
+
+      <h1>{displayTopic}</h1>
+
+      <div>
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          {!articles && (
+            <div style={{ color: "red" }}>Нет доступных блогов</div>
+          )}
+          {articles.map((card) => (
+            <BlogCard key={card.id} card={card} type="small" />
           ))}
-        </ul>
-      )}
+        </div>   
+        {/*
+        <PopularArticles />*/}
+        <Brands />
     </div>
   );
 }
