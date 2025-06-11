@@ -48,7 +48,7 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
   }
 
   const data = await res.json();
-  const article = data?.data?.[0] ?? null;
+    const article = data?.data?.[0] ?? null;
 
   // счётчик просмотров
 

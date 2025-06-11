@@ -87,6 +87,7 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await res.json();
+
     return NextResponse.json(data);
   } catch (error: any) {
     console.error("Ошибка при получении данных из Strapi:", error);
