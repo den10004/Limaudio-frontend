@@ -8,30 +8,30 @@ import { useEffect, useState } from "react";
 const links = [
   { href: "/topics/полочная-акустика", label: "Полочная акустика" },
   {
-    href: "/topics/встраиваемая-акустикя",
+    href: "/topics/встраиваемая-акустика",
     label: "Встраиваемая акустика",
   },
-  { href: "/topics/топы", label: "Dolby.Atmos" },
+  { href: "/topics/dolby-atmos", label: "Dolby.Atmos" },
   { href: "/topics/cабвуферы", label: "Сабвуферы" },
-  { href: "/topics/AV-Ресиверы", label: "AV Ресиверы" },
+  { href: "/topics/AV-ресиверы", label: "AV Ресиверы" },
   { href: "/topics/ЦАПы", label: "ЦАПы" },
-  { href: "/topics/Комплекты-акустики", label: "Комплекты акустики" },
+  { href: "/topics/комплекты-акустики", label: "Комплекты акустики" },
   { href: "/topics/AV-Процессоры", label: "AV Процессоры" },
-  { href: "/topics/Предусилители", label: "Предусилители" },
-  { href: "/topics/Усилители", label: "Усилители" },
+  { href: "/topics/предусилители", label: "Предусилители" },
+  { href: "/topics/усилители", label: "Усилители" },
   {
-    href: "/topics/Сетевые-проигрыватели",
-    label: "Сетевые-проигрыватели",
+    href: "/topics/сетевые-проигрыватели",
+    label: "Сетевые проигрыватели",
   },
   {
-    href: "/topics/Проигрыватели-винила",
+    href: "/topics/проигрыватели-винила",
     label: "Проигрыватели винила",
   },
-  { href: "/topics/Фонокорректоры", label: "Фонокорректоры" },
-  { href: "/topics/Проекторы-и-экраны", label: "Проекторы и экраны" },
-  { href: "/topics/Домашний-кинотеатр", label: "Домашний кинотеатр" },
+  { href: "/topics/фонокорректоры", label: "Фонокорректоры" },
+  { href: "/topics/проекторы-и-экраны", label: "Проекторы и экраны" },
+  { href: "/topics/домашний-кинотеатр", label: "Домашний кинотеатр" },
   { href: "/topics/Hi-Fi-звук", label: "Hi-Fi звук" },
-  { href: "/topics/Акустика", label: "Акустика" },
+  { href: "/topics/акустика", label: "Акустика" },
 ];
 
 type LinksProp = {

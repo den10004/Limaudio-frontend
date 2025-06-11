@@ -23,30 +23,11 @@ interface ApiResponse {
   meta: any;
 }
 
-const links = [
-  { slug: "полочная-акустика", label: "Полочная акустика" },
-  { slug: "встраиваемая-акустика", label: "Встраиваемая акустика" },
-  { slug: "dolby-atmos", label: "Dolby Atmos" },
-  { slug: "сабвуферы", label: "Сабвуферы" },
-  { slug: "av-ресиверы", label: "AV Ресиверы" },
-  { slug: "цапы", label: "ЦАПы" },
-  { slug: "комплекты-акустики", label: "Комплекты акустики" },
-  { slug: "av-процессоры", label: "AV Процессоры" },
-  { slug: "предусилители", label: "Предусилители" },
-  { slug: "усилители", label: "Усилители" },
-  { slug: "сетевые-проигрыватели", label: "Сетевые проигрыватели" },
-  { slug: "проигрыватели-винила", label: "Проигрыватели винила" },
-  { slug: "фонокорректоры", label: "Фонокорректоры" },
-  { slug: "проекторы-и-экраны", label: "Проекторы и экраны" },
-  { slug: "домашний-кинотеатр", label: "Домашний кинотеатр" },
-  { slug: "hi-fi-звук", label: "Hi-Fi звук" },
-  { slug: "акустика", label: "Акустика" },
-];
-
 export default function TopicPage() {
   const params = useParams<{ slug: string }>();
   const { slug } = params;
 
+  console.log("useParams output:", params);
 
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,18 +40,20 @@ export default function TopicPage() {
       return;
     }
 
-    // Map slug to label
-    const normalizedSlug = decodeURIComponent(slug).toLowerCase();
-    const link = links.find((l) => l.slug.toLowerCase() === normalizedSlug);
-    const topic = link ? link.label : decodeURIComponent(slug); // Fallback to decoded slug
+    const topics = decodeURIComponent(slug)
+      .split(",")
+      .map((t) => t.replace(/[+|-|_]/g, " ").trim());
 
     async function fetchArticles() {
       setLoading(true);
       setError(null);
 
       try {
+        const topicQueries = topics
+          .map((t) => `topics[]=${encodeURIComponent(t)}`)
+          .join("&");
         const res = await fetch(
-          `/api/blogs?topic=${encodeURIComponent(topic)}&sortByDate=asc`,
+          `/api/articles?${topicQueries}&sortByDate=asc`,
           {
             headers: {
               Accept: "application/json",
@@ -112,19 +95,31 @@ export default function TopicPage() {
     );
   }
 
-  // Map slug to label for display
-  const normalizedSlug = decodeURIComponent(slug).toLowerCase();
-  const link = links.find((l) => l.slug.toLowerCase() === normalizedSlug);
-  const displayTopic = link ? link.label : decodeURIComponent(slug);
-
-
-  console.log(articles)
-
-
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Статьи по теме: {displayTopic}</h1>
-  
+      <h1 className="text-3xl font-bold mb-4">Статьи по темам: {decodeURIComponent(slug).replace(/[+|-|_]/g, " ").split(",").join(", ")}</h1>
+      {articles.length === 0 ? (
+        <p>Статьи по темам "{decodeURIComponent(slug).replace(/[+|-|_]/g, " ").split(",").join(", ")}" не найдены.</p>
+      ) : (
+        <ul className="space-y-4">
+          {articles.map((article) => (
+            <li key={article.id} className="border p-4 rounded">
+              <h2 className="text-xl font-semibold">
+                <Link href={`/article/${article.slug}`}>{article.title}</Link>
+              </h2>
+              <p>{article.description.substring(0, 150)}...</p>
+              <p className="text-sm text-gray-500">
+                Опубликовано: {new Date(article.publishedAt).toLocaleDateString("ru-RU")}
+              </p>
+              <p className="text-sm text-gray-500">Просмотры: {article.views}</p>
+              <p className="text-sm text-gray-500">Категория: {article.category.name}</p>
+              <p className="text-sm text-gray-500">
+                Темы: {article.topics.map((t) => t.title).join(", ")}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
