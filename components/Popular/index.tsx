@@ -81,7 +81,9 @@ export default function Popular() {
   const searchParams = useSearchParams();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingTags, setIsLoadingTags] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [topics, setTopics] = useState<any>();
   const [tags, setAllTags] = useState<ApiResponse | null>(null);
   const [uniqueTags, SetUniqueTags] = useState<TagItem | null>(null);
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
@@ -188,6 +190,27 @@ export default function Popular() {
     }
   }, [tags]);
 
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/topic");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+        const topics = cards.data;
+        setTopics(topics);
+        setIsLoadingTags(false);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
   return (
     <section className={styles.popular}>
       <div className="container">
@@ -207,7 +230,7 @@ export default function Popular() {
           id="linksList"
         >
           {uniqueTags && (
-            <Tags uniqueTags={uniqueTags} onTagClick={handleTagClick} />
+            <Tags uniqueTags={topics} onTagClick={handleTagClick} />
           )}
           {isLoading && <PopularSkeleton />}
           {error && <div style={{ color: "red" }}>{error}</div>}

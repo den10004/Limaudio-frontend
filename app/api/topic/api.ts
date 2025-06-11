@@ -30,7 +30,6 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
 
   const data = await res.json();
   const brand = data?.data?.[0] ?? null;
-  console.log(brand);
   return brand;
   // return data?.data?.[0] ?? null;
 }

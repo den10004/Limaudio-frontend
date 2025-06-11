@@ -13,70 +13,6 @@ import {
 } from "react";
 import Image from "next/image";
 
-const footerLinks = [
-  {
-    href: "/",
-    title: "Напольная акустика",
-  },
-  {
-    href: "/",
-    title: "Полочная акустика",
-  },
-  {
-    href: "/",
-    title: "Встраиваемая акустика",
-  },
-  {
-    href: "/",
-    title: "Dolby.Atmos",
-  },
-  {
-    href: "/",
-    title: "Сабвуферы",
-  },
-  {
-    href: "/",
-    title: "Комплекты акустики",
-  },
-  {
-    href: "/",
-    title: "AV Ресиверы",
-  },
-  {
-    href: "/",
-    title: "AV Процессоры",
-  },
-  {
-    href: "/",
-    title: "Предусилители",
-  },
-
-  {
-    href: "/",
-    title: "Усилители",
-  },
-  {
-    href: "/",
-    title: "Сетевые проигрыватели",
-  },
-  {
-    href: "/",
-    title: "Проигрыватели винила",
-  },
-  {
-    href: "/",
-    title: "Проекторы и экраны",
-  },
-  {
-    href: "/",
-    title: "Фонокорректоры",
-  },
-  {
-    href: "/",
-    title: "ЦАПы",
-  },
-];
-
 export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
   const [topics, setTopics] = useState<any>();
@@ -93,10 +29,11 @@ export default function Footer() {
 
         const cards = await res.json();
         const topics = cards.data;
-        console.log(topics);
         setTopics(topics);
         setIsLoading(false);
-      } catch (err: any) {}
+      } catch (err: any) {
+        console.log(err);
+      }
     };
 
     fetchCards();

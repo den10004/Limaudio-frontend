@@ -27,7 +27,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={roboto.className}>
+      <body
+        className={roboto.className}
+        style={{
+          margin: 0,
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Suspense fallback={<div>Загрузка...</div>}>
           <Header />
         </Suspense>
