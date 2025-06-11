@@ -1,5 +1,6 @@
 "use client";
 
+import { linksTopics } from "@/lib/footerLinks";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,25 +24,7 @@ interface ApiResponse {
   meta: any;
 }
 
-const links = [
-  { slug: "полочная-акустика", label: "Полочная акустика" },
-  { slug: "встраиваемая-акустика", label: "Встраиваемая акустика" },
-  { slug: "dolby-atmos", label: "Dolby Atmos" },
-  { slug: "cабвуферы", label: "Сабвуферы" },
-  { slug: "av-ресиверы", label: "AV Ресиверы" },
-  { slug: "цапы", label: "ЦАПы" },
-  { slug: "комплекты-акустики", label: "Комплекты акустики" },
-  { slug: "av-процессоры", label: "AV Процессоры" },
-  { slug: "предусилители", label: "Предусилители" },
-  { slug: "усилители", label: "Усилители" },
-  { slug: "сетевые-проигрыватели", label: "Сетевые проигрыватели" },
-  { slug: "проигрыватели-винила", label: "Проигрыватели винила" },
-  { slug: "фонокорректоры", label: "Фонокорректоры" },
-  { slug: "проекторы-и-экраны", label: "Проекторы и экраны" },
-  { slug: "домашний-кинотеатр", label: "Домашний кинотеатр" },
-  { slug: "hi-fi-звук", label: "Hi-Fi звук" },
-  { slug: "акустика", label: "Акустика" },
-];
+
 
 export default function TopicPage() {
   const params = useParams<{ slug: string }>();
@@ -54,8 +37,8 @@ export default function TopicPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Map slug to label
-  const normalizedSlug = links.find((l) => l.slug.toLowerCase() === decodeURIComponent(slug || "").toLowerCase())?.label;
-  console.log(normalizedSlug)
+  const normalizedSlug: any = linksTopics.find((l) => l.slug.toLowerCase() === decodeURIComponent(slug || "").toLowerCase())?.label;
+
 
   useEffect(() => {
     if (!slug) {
@@ -90,7 +73,6 @@ export default function TopicPage() {
 
         const data: ApiResponse = await res.json();
         setArticles(data.data);
-        console.log("Fetched articles:", data.data);
       } catch (err: any) {
         setError(err.message || "Произошла ошибка при загрузке данных.");
       } finally {

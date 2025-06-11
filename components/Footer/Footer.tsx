@@ -2,82 +2,15 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { ModalQuestions } from "../Modals/ModalQuestions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { linksFooter } from "@/lib/footerLinks";
 
 
-const links = [
-  { href: "/topics/полочная-акустика", label: "Полочная акустика" },
-  {
-    href: "/topics/встраиваемая-акустика",
-    label: "Встраиваемая акустика",
-  },
-  { href: "/topics/dolby-atmos", label: "Dolby.Atmos" },
-  { href: "/topics/cабвуферы", label: "Сабвуферы" },
-  { href: "/topics/AV-ресиверы", label: "AV Ресиверы" },
-  { href: "/topics/ЦАПы", label: "ЦАПы" },
-  { href: "/topics/комплекты-акустики", label: "Комплекты акустики" },
-  { href: "/topics/AV-Процессоры", label: "AV Процессоры" },
-  { href: "/topics/предусилители", label: "Предусилители" },
-  { href: "/topics/усилители", label: "Усилители" },
-  {
-    href: "/topics/сетевые-проигрыватели",
-    label: "Сетевые проигрыватели",
-  },
-  {
-    href: "/topics/проигрыватели-винила",
-    label: "Проигрыватели винила",
-  },
-  { href: "/topics/фонокорректоры", label: "Фонокорректоры" },
-  { href: "/topics/проекторы-и-экраны", label: "Проекторы и экраны" },
-  { href: "/topics/домашний-кинотеатр", label: "Домашний кинотеатр" },
-  { href: "/topics/Hi-Fi-звук", label: "Hi-Fi звук" },
-  { href: "/topics/акустика", label: "Акустика" },
-];
-
-type LinksProp = {
-  createdAt: string;
-  documentId: string;
-  id: number;
-  image: {
-    documentId: string;
-    id: number;
-    url: string;
-  };
-  publishedAt: string;
-  title: string;
-  updatedAt: string;
-};
 
 export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
-  const [topics, setTopics] = useState<any>();
-  const [loading, setIsLoading] = useState(false);
-/*
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const currentCategory = searchParams.get("topics");
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const res = await fetch("/api/topic");
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || "Ошибка при загрузке");
-        }
 
-        const cards = await res.json();
-        const topics = cards.data;
-        setTopics(topics);
-        setIsLoading(false);
-      } catch (err: any) {
-        console.log(err);
-      }
-    };
-
-    fetchCards();
-  }, []);
-*/
   return (
     <footer className={styles.footer}>
       <div className={styles.footer__container}>
@@ -158,7 +91,7 @@ export default function Footer() {
 
         <div className={styles.footer__center}>
           <ul className="text-small">
-            {links?.map((item, i) => {
+            {linksFooter?.map((item, i) => {
               return (
                 <li key={i}>
                   <Link href={item.href}>{item.label}</Link>
