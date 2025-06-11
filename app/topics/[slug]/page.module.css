@@ -1,0 +1,166 @@
+.contacts {
+    margin-top: 27px;
+}
+
+.contacts__container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.contacts__about {
+    width: 36.9%;
+    padding: 20px 20px 20px 17px;
+}
+
+
+.contacts__list {
+    margin-top: 24px;
+}
+
+.contacts__list>li {
+    margin-bottom: 23px;
+}
+
+.contacts__list>li>a,
+.contacts__address>li {
+    color: var(--color-black1C);
+}
+
+.contacts__address {
+    margin-top: 10px;
+}
+
+.contacts__address>li {
+    margin-bottom: 10px;
+}
+
+.contacts__btn {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+}
+
+.contacts__btn>a {
+    max-width: 269px;
+    background: transparent;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+}
+
+.contacts__btn>a:first-child {
+    margin-bottom: 10px;
+    border: 1px solid var(--color-blueEE);
+    color: var(--color-blueEE);
+}
+
+.contacts__btn>a:last-child {
+    border: 1px solid var(--color-green66);
+    color: var(--color-green66);
+}
+
+
+.contacts__map {
+    width: 61.2%;
+}
+
+.contacts__form {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.contacts__form>.comments__send__form-group {
+    width: 32%;
+}
+
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.tab_button {
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--color-grayFA);
+    cursor: pointer;
+    border-radius: 100px;
+    transition: background-color 0.3s;
+}
+
+.tab_button.active {
+    background-color: var(--color-grayF1);
+    color: var(--color-black1C);
+}
+
+.tab_button:hover {
+    background-color: #bbb;
+}
+
+.map_container {
+    width: 100%;
+    height: 400px;
+    display: none;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.map_container.active {
+    display: block;
+}
+
+
+
+@media screen and (max-width:1000px) {
+    .tabs {
+        flex-direction: column;
+    }
+}
+
+
+@media screen and (max-width:900px) {
+    .contacts__container {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .contacts__about {
+        width: 100%;
+    }
+
+    .contacts__map {
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .contacts__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    .contacts__form>.comments__send__form-group {
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width:340px) {
+    .contacts__btn>a {
+        padding: 12px 5px;
+    }
+
+    .tab_button {
+        padding: 11px 10px
+    }
+}

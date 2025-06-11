@@ -64,7 +64,6 @@ export default function Footer() {
 
     fetchCards();
   }, []);
-  console.log(topics);
 
   return (
     <footer className={styles.footer}>
@@ -102,11 +101,16 @@ export default function Footer() {
 
         <div className={styles.footer__center}>
           <ul className="text-small">
-            {topics?.map((item: LinksProp) => (
-              <li key={item.id}>
-                <Link href="/themes">{item.title}</Link>
-              </li>
-            ))}
+            {topics?.map((item: LinksProp) => {
+              const linkCategory = new URLSearchParams(item.title).get(
+                "category"
+              );
+              return (
+                <li key={item.id}>
+                  <Link href={`topics/${item.title}`}>{item.title}</Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
 

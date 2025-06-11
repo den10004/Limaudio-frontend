@@ -125,7 +125,6 @@ export default function Header() {
                   ).get("category");
                   const isActive =
                     pathname === "/blog" && currentCategory === linkCategory;
-
                   return (
                     <li key={link.href}>
                       <Link

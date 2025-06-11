@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
-import Footer from "@/components/Footer/Footer";
-import Header from "@/components/Header/Header";
 import ScrollBtn from "@/components/ScrollBtn";
 import { INDEX } from "@/lib/breadcrumbs";
 import styles from "./page.module.css";
