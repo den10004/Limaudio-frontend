@@ -130,7 +130,9 @@ export default function Header() {
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className={isActive ? "font-bold text-blue-500" : ""}
+                        style={{
+                          color: isActive ? "var(--color-blue)" : "inherit",
+                        }}
                       >
                         {link.label}
                       </Link>

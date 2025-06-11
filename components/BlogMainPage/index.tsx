@@ -99,9 +99,10 @@ export default function BlogMainPage() {
             ))}
           </div>
         ))}
+
         {isLoading && <CardSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
-        {allCards.data.length === 0 && (
+        {!isLoading && allCards.data.length === 0 && (
           <div style={{ fontSize: "40px", fontWeight: 600 }}>
             Нет доступных блогов
           </div>

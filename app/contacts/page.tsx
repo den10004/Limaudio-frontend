@@ -11,7 +11,7 @@ import { Suspense } from "react";
 
 const breadcrumbs = [
   { label: "Главная", href: INDEX },
-  { label: "Контакты", href: "/contacts" },
+  { label: "Контакты", href: "" },
 ];
 
 export default function Contacts() {

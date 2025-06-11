@@ -2,7 +2,6 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
-import { CardsResponse } from "@/types/card";
 import styles from "./page.module.css";
 import CardSkeleton from "../Loading/CardSkeleton";
 

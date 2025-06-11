@@ -12,12 +12,38 @@ import {
   useState,
 } from "react";
 import Image from "next/image";
+import { usePathname, useSearchParams } from "next/navigation";
+
+const links = [
+  { href: "/blog?category=обзоры", label: "Обзоры" },
+  { href: "/blog?category=сравнения", label: "Сравнения" },
+  { href: "/blog?category=топы", label: "Топы" },
+  { href: "/blog?category=гайды-и-советы", label: "Гайды и советы" },
+];
+
+type LinksProp = {
+  createdAt: string;
+  documentId: string;
+  id: number;
+  image: {
+    documentId: string;
+    id: number;
+    url: string;
+  };
+  publishedAt: string;
+  title: string;
+  updatedAt: string;
+};
 
 export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
   const [topics, setTopics] = useState<any>();
   const [loading, setIsLoading] = useState(false);
-
+  /*
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const currentCategory = searchParams.get("category");
+*/
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -38,6 +64,7 @@ export default function Footer() {
 
     fetchCards();
   }, []);
+  console.log(topics);
 
   return (
     <footer className={styles.footer}>
@@ -75,41 +102,11 @@ export default function Footer() {
 
         <div className={styles.footer__center}>
           <ul className="text-small">
-            {topics?.map(
-              (
-                item: {
-                  title:
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | ReactPortal
-                    | Promise<
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | ReactPortal
-                        | ReactElement<
-                            unknown,
-                            string | JSXElementConstructor<any>
-                          >
-                        | Iterable<ReactNode>
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined;
-                },
-                index: Key | null | undefined
-              ) => (
-                <li key={index}>
-                  <Link href="/themes">{item.title}</Link>
-                </li>
-              )
-            )}
+            {topics?.map((item: LinksProp) => (
+              <li key={item.id}>
+                <Link href="/themes">{item.title}</Link>
+              </li>
+            ))}
           </ul>
         </div>
 

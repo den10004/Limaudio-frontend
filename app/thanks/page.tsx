@@ -1,9 +1,6 @@
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
 import styles from "./page.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { Suspense } from "react";
 
 export default function Thanks() {
   return (
@@ -23,7 +20,7 @@ export default function Thanks() {
                     Если Вы оставили заявку в нерабочее время, мы перезвоним Вам
                     на следующий рабочий день.
                   </p>
-                  <Link href="#">
+                  <Link href="/">
                     <button className="blogbtnblue">
                       Вернуться на главную
                     </button>
