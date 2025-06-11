@@ -2,7 +2,15 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { ModalQuestions } from "../Modals/ModalQuestions";
-import { useState } from "react";
+import {
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useEffect,
+  useState,
+} from "react";
 import Image from "next/image";
 
 const footerLinks = [
@@ -71,6 +79,28 @@ const footerLinks = [
 
 export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
+  const [topics, setTopics] = useState<any>();
+  const [loading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/topic");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+        const topics = cards.data;
+        console.log(topics);
+        setTopics(topics);
+        setIsLoading(false);
+      } catch (err: any) {}
+    };
+
+    fetchCards();
+  }, []);
 
   return (
     <footer className={styles.footer}>
@@ -91,25 +121,58 @@ export default function Footer() {
           </div>
 
           <ul className="text16">
+            {" "}
+            {/*
             <li>
               <Link href="/">О компании</Link>
-            </li>
+            </li>*/}
             <li>
               <Link href="/contacts">Контакты</Link>
             </li>
+            {/*
             <li>
               <Link href="/">Каталог</Link>
-            </li>
+            </li>*/}
           </ul>
         </div>
 
         <div className={styles.footer__center}>
           <ul className="text-small">
-            {footerLinks.map((item, index) => (
-              <li key={index}>
-                <Link href={item.href}>{item.title}</Link>
-              </li>
-            ))}
+            {topics?.map(
+              (
+                item: {
+                  title:
+                    | string
+                    | number
+                    | bigint
+                    | boolean
+                    | ReactElement<unknown, string | JSXElementConstructor<any>>
+                    | Iterable<ReactNode>
+                    | ReactPortal
+                    | Promise<
+                        | string
+                        | number
+                        | bigint
+                        | boolean
+                        | ReactPortal
+                        | ReactElement<
+                            unknown,
+                            string | JSXElementConstructor<any>
+                          >
+                        | Iterable<ReactNode>
+                        | null
+                        | undefined
+                      >
+                    | null
+                    | undefined;
+                },
+                index: Key | null | undefined
+              ) => (
+                <li key={index}>
+                  <Link href="/themes">{item.title}</Link>
+                </li>
+              )
+            )}
           </ul>
         </div>
 
@@ -164,13 +227,14 @@ export default function Footer() {
               </li>
             </ul>
 
+            {/*
             <div className={styles.footer__switch}>
               <span className="text16">Светлая тема</span>
               <div className="switch">
                 <input type="checkbox" id="toggle-switch" />
                 <label htmlFor="toggle-switch"></label>
               </div>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>
