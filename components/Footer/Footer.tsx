@@ -3,34 +3,34 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { ModalQuestions } from "../Modals/ModalQuestions";
 import { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+
 
 const links = [
-  { href: "/topics/полочная акустика", label: "Полочная акустика" },
+  { href: "/topics/полочная-акустика", label: "Полочная акустика" },
   {
-    href: "/topics/встраиваемая акустикя",
+    href: "/topics/встраиваемая-акустикя",
     label: "Встраиваемая акустика",
   },
   { href: "/topics/топы", label: "Dolby.Atmos" },
   { href: "/topics/cабвуферы", label: "Сабвуферы" },
-  { href: "/topics/AV Ресиверы", label: "AV Ресиверы" },
+  { href: "/topics/AV-Ресиверы", label: "AV Ресиверы" },
   { href: "/topics/ЦАПы", label: "ЦАПы" },
-  { href: "/topics/Комплекты акустики", label: "Комплекты акустики" },
-  { href: "/topics/AV Процессоры", label: "AV Процессоры" },
+  { href: "/topics/Комплекты-акустики", label: "Комплекты акустики" },
+  { href: "/topics/AV-Процессоры", label: "AV Процессоры" },
   { href: "/topics/Предусилители", label: "Предусилители" },
   { href: "/topics/Усилители", label: "Усилители" },
   {
-    href: "/topics/Сетевые проигрыватели",
-    label: "Сетевые проигрыватели",
+    href: "/topics/Сетевые-проигрыватели",
+    label: "Сетевые-проигрыватели",
   },
   {
-    href: "/topics/Проигрыватели винила",
+    href: "/topics/Проигрыватели-винила",
     label: "Проигрыватели винила",
   },
   { href: "/topics/Фонокорректоры", label: "Фонокорректоры" },
-  { href: "/topics/Проекторы и экраны", label: "Проекторы и экраны" },
-  { href: "/topics/Домашний кинотеатр", label: "Домашний кинотеатр" },
-  { href: "/topics/Hi-Fi звук", label: "Hi-Fi звук" },
+  { href: "/topics/Проекторы-и-экраны", label: "Проекторы и экраны" },
+  { href: "/topics/Домашний-кинотеатр", label: "Домашний кинотеатр" },
+  { href: "/topics/Hi-Fi-звук", label: "Hi-Fi звук" },
   { href: "/topics/Акустика", label: "Акустика" },
 ];
 
@@ -52,7 +52,7 @@ export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
   const [topics, setTopics] = useState<any>();
   const [loading, setIsLoading] = useState(false);
-
+/*
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const currentCategory = searchParams.get("topics");
@@ -77,7 +77,7 @@ export default function Footer() {
 
     fetchCards();
   }, []);
-
+*/
   return (
     <footer className={styles.footer}>
       <div className={styles.footer__container}>
