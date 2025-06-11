@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { ModalQuestions } from "../Modals/ModalQuestions";
 import { useState } from "react";
+import Image from "next/image";
 
 const footerLinks = [
   {
@@ -77,7 +78,12 @@ export default function Footer() {
         <div className={styles.footer__left}>
           <div className={styles.footer__logo}>
             <Link className="text-h2" href="/">
-              LIMAUDIO
+              <Image
+                src="https://37490647-limaudio.s3.twcstorage.ru/LIMAUDIO_logo_gray_27b4380684.png"
+                alt="logo"
+                width={150}
+                height={24}
+              />
             </Link>
             <Link className="text14" href="#">
               Политика конфиденциальности

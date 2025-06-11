@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import styles from "./page.module.css";
+import Image from "next/image";
 import { ModalHeader } from "../Modals/ModalHeader";
 import { ModalQuestions } from "../Modals/ModalQuestions";
 import { usePathname, useSearchParams } from "next/navigation";
+import styles from "./page.module.css";
 
 export default function Header() {
   const [headerMenu, setHeaderMenu] = useState(false);
@@ -27,13 +28,16 @@ export default function Header() {
       <header className={styles.header}>
         <div className="container">
           <div className={styles.header__block}>
-            <div
-              className={styles.header__logo_block}
-              style={{ position: "relative" }}
-            >
-              <a className={styles.header__logo} href="/">
-                LIMAUDIO
-              </a>
+            <div className={styles.header__logo_block}>
+              <Link className={styles.header__logo} href="/">
+                <Image
+                  src="https://37490647-limaudio.s3.twcstorage.ru/LIMAUDIO_logo_black_cc78086bc5.png"
+                  alt="logo"
+                  width={150}
+                  height={24}
+                />
+              </Link>
+
               {inputOpen && (
                 <input
                   type="text"
