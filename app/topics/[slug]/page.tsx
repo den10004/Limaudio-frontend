@@ -4,7 +4,6 @@ import BlogCard from "@/components/BlogCard";
 import Brands from "@/components/Brands";
 import PopularArticles from "@/components/PopularArticles";
 import { linksTopics } from "@/lib/footerLinks";
-import styles from "./page.module.css";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import CardSkeleton from "@/components/Loading/CardSkeleton";
@@ -93,7 +92,7 @@ export default function TopicPage() {
         <div className="container">
       <h1>{displayTopic}</h1>
 
-      <div className={styles.interes__card} >
+      <div className="interes__card">
         {loading && <CardSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
         {!loading && articles.length === 0 && (

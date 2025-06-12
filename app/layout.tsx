@@ -6,6 +6,7 @@ import "./../styles/blogmainpage.css";
 import "./../styles/bloglist.css";
 import "./../styles/label.css";
 import "./../styles/modal.css";
+import "./../styles/interes.css";
 import { Suspense } from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";

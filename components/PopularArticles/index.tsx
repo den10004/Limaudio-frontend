@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
-import styles from "./page.module.css";
 import { CardsResponse } from "@/types/card";
 
 export default function PopularArticles() {
@@ -48,11 +47,11 @@ export default function PopularArticles() {
   }, []);
 
   return (
-    <section className={styles.interes}>
+    <section className="interes">
       <div className="container">
         <h3 className="text-h3-bold">Популярные статьи</h3>
 
-        <div className={styles.interes__card}>
+        <div className="interes__card">
           {error && <div style={{ color: "red" }}>{error}</div>}
                   {!isLoading && !allCards && (
           <div style={{ fontSize: "40px", fontWeight: 600 }}>

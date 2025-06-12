@@ -2,7 +2,6 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
-import styles from "./page.module.css";
 import CardSkeleton from "../Loading/CardSkeleton";
 
 interface Article {
@@ -85,9 +84,9 @@ export default function BlogPage() {
           Блог
         </h2>
       </div>
-      <section className={styles.interes}>
+      <section className="interes">
         <div className="container">
-          <div className={styles.interes__card}>
+          <div className="interes__card">
             {error && <div style={{ color: "red" }}>{error}</div>}
             {isLoading && <CardSkeleton />}
             {!articles && (
