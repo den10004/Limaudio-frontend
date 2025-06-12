@@ -8,6 +8,7 @@ import styles from "./page.module.css";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import './../../../components/BlogMainPage/blogmainpage.css'
 
 interface Article {
   id: number;
@@ -86,7 +87,7 @@ export default function TopicPage() {
 
     fetchArticles();
   }, [slug, normalizedSlug]);
-
+/*
   if (loading) {
     return (
       <div className="container mx-auto p-4">
@@ -103,16 +104,16 @@ export default function TopicPage() {
       </div>
     );
   }
-
-
+*/
   const displayTopic = normalizedSlug;
   console.log(articles)
-  return (
-    <div className="container">
 
+
+  return (
+        <>
       <h1>{displayTopic}</h1>
 
-      <div>
+      <div className={styles.interes__card} >
           {error && <div style={{ color: "red" }}>{error}</div>}
           {!articles && (
             <div style={{ color: "red" }}>Нет доступных блогов</div>
@@ -120,10 +121,10 @@ export default function TopicPage() {
           {articles.map((card) => (
             <BlogCard key={card.id} card={card} type="small" />
           ))}
-        </div>   
-        {/*
-        <PopularArticles />*/}
+        </div> 
+   
+        <PopularArticles />
         <Brands />
-    </div>
+    </>
   );
 }
