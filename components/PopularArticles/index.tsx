@@ -54,9 +54,11 @@ export default function PopularArticles() {
 
         <div className={styles.interes__card}>
           {error && <div style={{ color: "red" }}>{error}</div>}
-          {!allCards && (
-            <div style={{ color: "red" }}>Нет доступных блогов</div>
-          )}
+                  {!isLoading && !allCards && (
+          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+            Нет доступных блогов
+          </div>
+        )}
           {sortedCards.map((card) => (
             <BlogCard key={card.id} card={card} type="small" />
           ))}

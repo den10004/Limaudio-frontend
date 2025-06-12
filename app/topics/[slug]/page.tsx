@@ -89,8 +89,6 @@ export default function TopicPage() {
   }, [slug, normalizedSlug]);
 
   const displayTopic = normalizedSlug;
-  console.log(articles)
-
 
   return (
         <div className="container">

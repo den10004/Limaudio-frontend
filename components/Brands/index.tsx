@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 interface Brand {
   slug: string;
@@ -50,16 +51,20 @@ export default function Brands() {
     fetchCards();
   }, []);
 
-  if (isLoading) return <div className="container">Загрузка...</div>;
-  if (error) return <div className="container error-message">{error}</div>;
-  if (!allCards) return <div className="container">Нет доступных блогов</div>;
-
   return (
     <section className={styles.brands}>
       <div className="container">
         <div className={styles.brand_head}>
           <h3 className="text-h3-bold">Бренды</h3>
         </div>
+
+               {isLoading && <CardSkeleton />}
+                {error && <div style={{ color: "red" }}>{error}</div>}
+                {!isLoading && allCards.length === 0 && (
+                  <div style={{ fontSize: "40px", fontWeight: 600 }}>
+                    Нет доступных брендов
+                  </div>
+                )}
 
         <div className="brands__block" style={{ position: "relative" }}>
           {!isExpanded && (

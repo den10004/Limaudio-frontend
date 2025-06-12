@@ -66,7 +66,7 @@ export default function BlogCard({ card, type }: any) {
       >
         <div style={{ position: "relative" }}>
           {card?.cover?.url && (
-            <img className="card__img" src={card.cover.url} alt={card.title} />
+            <img className="card__img" src={card.cover.url} alt={card.title} loading="lazy" />
           )}
 
           <div className="labelblock-big">
