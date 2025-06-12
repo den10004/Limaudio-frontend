@@ -7,7 +7,6 @@ import { linksTopics } from "@/lib/footerLinks";
 import styles from "./page.module.css";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import './../../../components/BlogMainPage/blogmainpage.css'
 import CardSkeleton from "@/components/Loading/CardSkeleton";
 
 interface Article {

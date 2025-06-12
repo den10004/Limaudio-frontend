@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./../styles/globals.css";
 import "./../styles/search-menu.css";
+import "./../styles/blogmainpage.css";
 import "./../styles/bloglist.css";
 import "./../styles/label.css";
 import "./../styles/modal.css";
