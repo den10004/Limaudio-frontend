@@ -7,8 +7,8 @@ import { linksTopics } from "@/lib/footerLinks";
 import styles from "./page.module.css";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
 import './../../../components/BlogMainPage/blogmainpage.css'
+import CardSkeleton from "@/components/Loading/CardSkeleton";
 
 interface Article {
   id: number;
@@ -87,37 +87,23 @@ export default function TopicPage() {
 
     fetchArticles();
   }, [slug, normalizedSlug]);
-/*
-  if (loading) {
-    return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">Загрузка...</h1>
-      </div>
-    );
-  }
 
-  if (error || !slug || !normalizedSlug) {
-    return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">Ошибка</h1>
-        <p>{error || "Тема не указана."}</p>
-      </div>
-    );
-  }
-*/
   const displayTopic = normalizedSlug;
   console.log(articles)
 
 
   return (
-        <>
+        <div className="container">
       <h1>{displayTopic}</h1>
 
       <div className={styles.interes__card} >
-          {error && <div style={{ color: "red" }}>{error}</div>}
-          {!articles && (
-            <div style={{ color: "red" }}>Нет доступных блогов</div>
-          )}
+        {loading && <CardSkeleton />}
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        {!loading && articles.length === 0 && (
+          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+            Нет доступных блогов
+          </div>
+        )}
           {articles.map((card) => (
             <BlogCard key={card.id} card={card} type="small" />
           ))}
@@ -125,6 +111,6 @@ export default function TopicPage() {
    
         <PopularArticles />
         <Brands />
-    </>
+    </div>
   );
 }
