@@ -97,6 +97,27 @@
 }
 
 
+.heading1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 1.5rem 0;
+}
+
+.heading2 {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 1.3rem 0;
+}
+
+.heading3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 1.1rem 0;
+}
+
 @media screen and (max-width: 1000px) {
     .brand_desc__block {
         grid-template-columns: 200px auto;

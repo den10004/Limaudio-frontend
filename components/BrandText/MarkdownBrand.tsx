@@ -153,7 +153,8 @@ const renderChildren = (children: BlockContent[]): React.ReactNode => {
           fontWeight: bold ? "bold" : "normal",
           fontStyle: italic ? "italic" : "normal",
           textDecoration: underline ? "underline" : "none",
-          fontFamily: code ? "monospace" : "inherit",
+          fontFamily: code ? "SFProText" : "inherit",
+          fontSize: "18px",
         }}
       >
         {text}
