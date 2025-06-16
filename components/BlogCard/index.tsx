@@ -2,7 +2,6 @@
 import React from "react";
 import Link from "next/link";
 
-
 type cover = {
   url: string;
 };
@@ -40,18 +39,14 @@ type CardItemProps = {
 
 const getBackgroundColor = (type: string) => {
   switch (type) {
-    case "Обзор":
+    case "Обзоры":
       return "#2AABEE";
-    case "Статья":
-      return "#0055CC";
-    case "Сравнение":
+    case "Сравнения":
       return "#2CAE35";
-    case "Топ":
+    case "Топы":
       return "#FFCA2B";
-    case "Гайд":
+    case "Гайды и советы":
       return "#8067FF";
-    case "Совет":
-      return "#C6DCFD";
     default:
       return "#e0e0e0";
   }
@@ -66,7 +61,12 @@ export default function BlogCard({ card, type }: any) {
       >
         <div style={{ position: "relative" }}>
           {card?.cover?.url && (
-            <img className="card__img" src={card.cover.url} alt={card.title} loading="lazy" />
+            <img
+              className="card__img"
+              src={card.cover.url}
+              alt={card.title}
+              loading="lazy"
+            />
           )}
 
           <div className="labelblock-big">

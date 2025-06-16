@@ -25,10 +25,10 @@ export default function BlogPage() {
   const category = searchParams.get("category") ?? "";
 
   const categoryMap: Record<string, string | string[]> = {
-    обзоры: "Обзор",
-    сравнения: "Статья",
-    топы: "Топ",
-    "гайды-и-советы": ["Гайд", "Совет"],
+    обзоры: "Обзоры",
+    сравнения: "Сравнения",
+    топы: "Топы",
+    "гайды-и-советы": "Гайды и советы",
   };
 
   const [isLoading, setIsLoading] = useState(true);
@@ -87,10 +87,12 @@ export default function BlogPage() {
       <section className="interes">
         <div className="container">
           <div className="interes__card">
-            {error && <div style={{ color: "red" }}>{error}</div>}
             {isLoading && <CardSkeleton />}
-            {!articles && (
-              <div style={{ color: "red" }}>Нет доступных блогов</div>
+            {error && <div style={{ color: "red" }}>{error}</div>}
+            {!isLoading && !articles && (
+              <div style={{ fontSize: "40px", fontWeight: 600 }}>
+                Нет доступных блогов
+              </div>
             )}
             {error && <div style={{ color: "red" }}>error</div>}
             {articles.map((card) => (

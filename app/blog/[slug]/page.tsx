@@ -56,6 +56,8 @@ export default async function BlogPostPage({ params }: any) {
   const blocs: any = content?.blocks;
 
   if (!content) return notFound();
+
+  console.log(content);
   return (
     <>
       <Breadcrumbs items={breadcrumbs} />

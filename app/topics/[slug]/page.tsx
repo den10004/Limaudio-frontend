@@ -27,21 +27,17 @@ interface ApiResponse {
   meta: any;
 }
 
-
-
 export default function TopicPage() {
   const params = useParams<{ slug: string }>();
   const { slug } = params;
-
-
 
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Map slug to label
-  const normalizedSlug: any = linksTopics.find((l) => l.slug.toLowerCase() === decodeURIComponent(slug || "").toLowerCase())?.label;
-
+  const normalizedSlug: any = linksTopics.find(
+    (l) => l.slug.toLowerCase() === decodeURIComponent(slug || "").toLowerCase()
+  )?.label;
 
   useEffect(() => {
     if (!slug) {
@@ -62,7 +58,9 @@ export default function TopicPage() {
 
       try {
         const res = await fetch(
-          `/api/blogs?topic=${encodeURIComponent(normalizedSlug)}&sortByDate=asc`,
+          `/api/blogs?topic=${encodeURIComponent(
+            normalizedSlug
+          )}&sortByDate=asc`,
           {
             headers: {
               Accept: "application/json",
@@ -89,7 +87,7 @@ export default function TopicPage() {
   const displayTopic = normalizedSlug;
 
   return (
-        <div className="container">
+    <div className="container">
       <h1>{displayTopic}</h1>
 
       <div className="interes__card">
@@ -100,13 +98,13 @@ export default function TopicPage() {
             Нет доступных блогов
           </div>
         )}
-          {articles.map((card) => (
-            <BlogCard key={card.id} card={card} type="small" />
-          ))}
-        </div> 
-   
-        <PopularArticles />
-        <Brands />
+        {articles.map((card) => (
+          <BlogCard key={card.id} card={card} type="small" />
+        ))}
+      </div>
+
+      <PopularArticles />
+      <Brands />
     </div>
   );
 }
