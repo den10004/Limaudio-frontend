@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
-import styles from "./page.module.css";
 import { useEffect, useState } from "react";
-import Tags from "../Tags";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import PopularSkeleton from "../Loading/PopularSkeleton";
+import Tags from "../Tags";
+import styles from "./page.module.css";
 
 interface Image {
   id: number;
@@ -77,6 +77,7 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 export default function Popular() {
+  const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -114,7 +115,7 @@ export default function Popular() {
       newParams.tags.forEach((tag) => tag && params.append("tags[]", tag));
     }
 
-    router.replace(`/?${params.toString()}`, { scroll: false });
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const toggleList = () => {

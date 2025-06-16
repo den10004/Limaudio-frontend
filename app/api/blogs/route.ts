@@ -101,7 +101,7 @@ export async function GET(req: NextRequest) {
     const data = await res.json();
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error("Ошибка при получении данных из Strapi:", error);
+    console.error("Ошибка при получении данных:", error);
     return NextResponse.json(
       { error: "Ошибка при получении данных" },
       { status: 500 }
