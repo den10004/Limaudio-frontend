@@ -1,8 +1,6 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
-import Footer from "@/components/Footer/Footer";
-import Header from "@/components/Header/Header";
 import ScrollBtn from "@/components/ScrollBtn";
-import { INDEX, COMPARION } from "@/lib/breadcrumbs";
+import { INDEX, BRANDS } from "@/lib/breadcrumbs";
 import { notFound } from "next/navigation";
 import Subscription from "@/components/Subscription/Subscription";
 import BrandText from "@/components/BrandText";
@@ -17,7 +15,7 @@ export default async function BrandsPage({ params }: any) {
 
   const breadcrumbs = [
     { label: "Главная", href: INDEX },
-    { label: "Бренды", href: COMPARION },
+    { label: "Бренды", href: BRANDS },
     {
       label: `${content.title}`,
       href: "",
@@ -26,9 +24,10 @@ export default async function BrandsPage({ params }: any) {
   ];
   return (
     <>
-      <Breadcrumbs items={breadcrumbs} />
+      <div className="container" style={{ width: "100%" }}>
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
       <BrandText content={content} />
-
       <div style={{ display: "none" }}>
         <BlogMainPageWrapper />
       </div>

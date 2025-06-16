@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
 import { CardsResponse } from "@/types/card";
+import Headline from "@/app/UI/headline";
 
 export default function PopularArticles() {
   const [allCards, setAllCards] = useState<CardsResponse>({
@@ -49,7 +50,7 @@ export default function PopularArticles() {
   return (
     <section className="interes">
       <div className="container">
-        <h3 className="text-h3-bold">Популярные статьи</h3>
+        <Headline text="Популярные статьи" />
 
         <div className="interes__card">
           {error && <div style={{ color: "red" }}>{error}</div>}

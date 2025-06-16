@@ -17,8 +17,9 @@ const breadcrumbs = [
 export default function Contacts() {
   return (
     <>
-      <Breadcrumbs items={breadcrumbs} />
-
+      <div className="container" style={{ width: "100%" }}>
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
       <section className={styles.contacts}>
         <div className="container">
           <div className={styles.contacts__container}>

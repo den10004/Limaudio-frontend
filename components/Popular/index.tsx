@@ -5,6 +5,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import PopularSkeleton from "../Loading/PopularSkeleton";
 import Tags from "../Tags";
 import styles from "./page.module.css";
+import Headline from "@/app/UI/headline";
 
 interface Image {
   id: number;
@@ -215,7 +216,7 @@ export default function Popular() {
   return (
     <section className={styles.popular}>
       <div className={styles.popular__text}>
-        <h3 className="text-h3-bold">Популярные темы</h3>
+        <Headline text="Популярные темы" />
         <button
           className={`text-small ${styles.showbtnPopular}`}
           onClick={toggleList}

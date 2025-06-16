@@ -9,6 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
 import CardSkeleton from "../Loading/CardSkeleton";
+import Headline from "@/app/UI/headline";
 
 interface Brand {
   slug: string;
@@ -55,16 +56,16 @@ export default function Brands() {
     <section className={styles.brands}>
       <div className="container">
         <div className={styles.brand_head}>
-          <h3 className="text-h3-bold">Бренды</h3>
+          <Headline text={"Бренды"} link={"/brands"} />
         </div>
 
-               {isLoading && <CardSkeleton />}
-                {error && <div style={{ color: "red" }}>{error}</div>}
-                {!isLoading && allCards.length === 0 && (
-                  <div style={{ fontSize: "40px", fontWeight: 600 }}>
-                    Нет доступных брендов
-                  </div>
-                )}
+        {isLoading && <CardSkeleton />}
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        {!isLoading && allCards.length === 0 && (
+          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+            Нет доступных брендов
+          </div>
+        )}
 
         <div className="brands__block" style={{ position: "relative" }}>
           {!isExpanded && (
