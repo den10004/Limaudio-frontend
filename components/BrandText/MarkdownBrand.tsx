@@ -1,181 +1,91 @@
 "use client";
 import styles from "./page.module.css";
-
-type BlockType =
-  | "paragraph"
-  | "heading1"
-  | "heading2"
-  | "heading3"
-  | "heading4"
-  | "heading5"
-  | "heading6"
-  | "list"
-  | "bullet_list"
-  | "image"
-  | "embed"
-  | "list_item";
-
-interface Block {
-  type: BlockType;
-  children: Block[] | BlockContent[];
-  data?: {
-    file?: {
-      url: string;
-    };
-    alternativeText?: string;
-    html?: string;
-  };
-}
-
-interface BlockContent {
-  text: string;
-  bold?: boolean;
-  italic?: boolean;
-  underline?: boolean;
-  code?: boolean;
-}
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
+import Image from "next/image";
+import { JSX } from "react";
 
 interface MarkdownBrandProps {
   content: {
-    content: Block[];
+    content: BlocksContent;
   };
   expanded: boolean;
 }
-
-const isBlockContentArray = (
-  children: Block[] | BlockContent[]
-): children is BlockContent[] => {
-  return typeof (children[0] as BlockContent)?.text === "string";
-};
-
-const renderBlock = (block: Block): React.ReactNode => {
-  switch (block.type) {
-    case "paragraph":
-      return (
-        <p className={styles.paragraph}>
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </p>
-      );
-    case "heading1":
-      return (
-        <h1 className={styles.heading}>
-          {" "}
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </h1>
-      );
-    case "heading2":
-      return (
-        <h2 className={styles.heading}>
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </h2>
-      );
-    case "heading3":
-      return (
-        <h3 className={styles.heading}>
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </h3>
-      );
-    case "heading4":
-      return (
-        <h4 className={styles.heading}>
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </h4>
-      );
-    case "heading5":
-      return (
-        <h5 className={styles.heading}>
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </h5>
-      );
-    case "heading6":
-      return (
-        <h6 className={styles.heading}>
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </h6>
-      );
-    case "list":
-      return (
-        <ul className={styles.list}>
-          {(block.children as Block[]).map((child, i) => (
-            <li key={i}>{renderBlock(child)}</li>
-          ))}
-        </ul>
-      );
-    case "bullet_list":
-      return (
-        <ul className={styles.list}>
-          {(block.children as Block[]).map((child, i) => (
-            <li key={i}>{renderBlock(child)}</li>
-          ))}
-        </ul>
-      );
-    case "image":
-      return (
-        <img
-          src={block.data?.file?.url || ""}
-          alt={block.data?.alternativeText || ""}
-          className={styles.image}
-        />
-      );
-    case "embed":
-      return (
-        <div
-          className={styles.embed}
-          dangerouslySetInnerHTML={{ __html: block.data?.html || "" }}
-        />
-      );
-    default:
-      return (
-        <div>
-          {isBlockContentArray(block.children) &&
-            renderChildren(block.children)}
-        </div>
-      );
-  }
-};
-
-const renderChildren = (children: BlockContent[]): React.ReactNode => {
-  return children.map((child, index) => {
-    const { text, bold, italic, underline, code } = child;
-
-    return (
-      <span
-        key={index}
-        className={styles.text}
-        style={{
-          fontWeight: bold ? "bold" : "normal",
-          fontStyle: italic ? "italic" : "normal",
-          textDecoration: underline ? "underline" : "none",
-          fontFamily: code ? "SFProText" : "inherit",
-          fontSize: "18px",
-        }}
-      >
-        {text}
-      </span>
-    );
-  });
-};
 
 export default function MarkdownBrand({
   content,
   expanded,
 }: MarkdownBrandProps) {
+  if (!content?.content || !Array.isArray(content.content)) {
+    return <div>No content available</div>;
+  }
+
   const visibleBlocks = expanded
     ? content.content
     : content.content.slice(0, 6);
 
   return (
     <div className={styles.markdownContainer}>
-      {visibleBlocks.map((block, index) => (
-        <div key={index}>{renderBlock(block)}</div>
-      ))}
+      <BlocksRenderer
+        content={visibleBlocks}
+        blocks={{
+          paragraph: ({ children }) => (
+            <p className={styles.paragraph}>{children}</p>
+          ),
+          heading: ({ children, level }) => {
+            const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+            return <Tag className={styles.heading}>{children}</Tag>;
+          },
+          list: ({ children, format }) => {
+            const Tag = format === "ordered" ? "ol" : "ul";
+            return <Tag className={styles.list}>{children}</Tag>;
+          },
+          "list-item": ({ children }) => <li>{children}</li>,
+          image: ({ image }) => (
+            <Image
+              src={image.url}
+              width={image.width || 600}
+              height={image.height || 400}
+              alt={image.alternativeText || ""}
+              className={styles.image}
+            />
+          ),
+          quote: ({ children }) => (
+            <blockquote className={styles.embed}>{children}</blockquote>
+          ),
+          code: ({ children }) => (
+            <pre className={styles.embed}>
+              <code>{children}</code>
+            </pre>
+          ),
+          link: ({ children, url }) => (
+            <a href={url} className={styles.text}>
+              {children}
+            </a>
+          ),
+        }}
+        modifiers={{
+          bold: ({ children }) => (
+            <strong style={{ fontWeight: "bold" }}>{children}</strong>
+          ),
+          italic: ({ children }) => (
+            <em style={{ fontStyle: "italic" }}>{children}</em>
+          ),
+          underline: ({ children }) => (
+            <span style={{ textDecoration: "underline" }}>{children}</span>
+          ),
+          code: ({ children }) => (
+            <code
+              style={{ fontFamily: "SFProText", fontSize: "18px" }}
+              className={styles.text}
+            >
+              {children}
+            </code>
+          ),
+        }}
+      />
     </div>
   );
 }
