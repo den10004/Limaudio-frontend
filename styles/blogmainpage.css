@@ -97,3 +97,10 @@
         max-width: 100%;
     }
 }
+
+@media (max-width: 500px) {
+    .cards_container {
+        padding-top: 20px;
+        margin: 0 -20px;
+    }
+}

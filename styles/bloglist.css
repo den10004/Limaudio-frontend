@@ -134,3 +134,18 @@
         line-height: 100%;
     }
 }
+
+@media (max-width: 500px) {
+    .card {
+        padding: 0px;
+        border-radius: 0;
+    }
+
+    .card__desc {
+        padding: 0 20px;
+    }
+
+    .card__img {
+        border-radius: 0;
+    }
+}
