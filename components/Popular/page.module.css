@@ -81,11 +81,7 @@
     display: none;
 }
 
-@media screen and (max-width: 900px) {
-    .hero {
-        margin-top: 30px;
-    }
-}
+
 
 @media screen and (max-width: 767px) {
     .popular__sort.collapsed {
