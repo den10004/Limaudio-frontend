@@ -87,7 +87,7 @@ export default function BlogPage() {
   return (
     <>
       <div className="container">
-        <Headline text={"Блог"} />
+        <Headline text={"Блог"} stylecss={{ marginTop: "40px" }} />
         <PopularWrapper />
         {!category && (
           <>

@@ -1,6 +1,13 @@
-export default function Headline({ text }: { text: string }) {
+import { CSSProperties } from "react";
+
+type HeadlineProps = {
+  text: string;
+  stylecss?: CSSProperties;
+};
+
+export default function Headline({ text, stylecss }: HeadlineProps) {
   return (
-    <h2 className="text-h3-bold" style={{ margin: "20px 0 0 0" }}>
+    <h2 className="text-h3-bold" style={stylecss}>
       {text}
     </h2>
   );

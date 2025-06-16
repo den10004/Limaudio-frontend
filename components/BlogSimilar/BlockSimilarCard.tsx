@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import BlogSimilar from "@/components/BlogSimilar";
 import { CardsResponse } from "@/types/card";
 import "./styles.css";
+import Headline from "@/app/UI/headline";
 
 export default function BlockSimilarCard() {
   const [allCards, setAllCards] = useState<CardsResponse>({
@@ -48,7 +49,8 @@ export default function BlockSimilarCard() {
 
   return (
     <div className="blog__similar">
-      <h3 className="text-h3-bold">Похожие статьи</h3>
+      <Headline text="Похожие статьи" />
+      <h3 className="text-h3-bold"></h3>
       {sortedCards.map((card) => (
         <BlogSimilar key={card.id} card={card} type="small" />
       ))}

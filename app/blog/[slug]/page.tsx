@@ -43,9 +43,14 @@ interface UnknownBloc {
 export default async function BlogPostPage({ params }: any) {
   const content: Articles | null = await getArticleBySlug(params.slug);
 
+  const categoryName = content?.category?.name ?? "";
+
   const breadcrumbs = [
     { label: "Акустика", href: INDEX },
-    { label: "Сравнения", href: "" },
+    {
+      label: categoryName,
+      href: `/blog?category=${categoryName.toLowerCase()}`,
+    },
     {
       label: content?.title ?? "",
       href: "",
@@ -59,13 +64,15 @@ export default async function BlogPostPage({ params }: any) {
   if (!content) return notFound();
   return (
     <>
-      <Breadcrumbs items={breadcrumbs} />
+      <div className="container" style={{ width: "100%" }}>
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
       <section className={styles.blog}>
         <div className="container">
           <Headline text={"Блог"} />
           <div className={`text16 ${styles.blog__article}`}>
             <div>
-              <span>{content.category.name}</span>
+              <span>{categoryName}</span>
             </div>
             <div>
               <span>{FormatDate(content.createdAt)}</span>

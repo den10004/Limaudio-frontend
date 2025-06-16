@@ -5,8 +5,10 @@ import Popular from "./../Popular";
 
 export default function PopularWrapper() {
   return (
-    <Suspense fallback={<div>Загрузка фильтров...</div>}>
-      <Popular />
+    <Suspense fallback={<div></div>}>
+      <div className="container">
+        <Popular />
+      </div>
     </Suspense>
   );
 }

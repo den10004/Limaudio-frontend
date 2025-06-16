@@ -1,7 +1,5 @@
 "use client";
-import Link from "next/link";
 import styles from "./page.module.css";
-import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";

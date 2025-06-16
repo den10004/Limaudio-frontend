@@ -214,71 +214,67 @@ export default function Popular() {
 
   return (
     <section className={styles.popular}>
-      <div className="container">
-        <div className={styles.popular__text}>
-          <h3 className="text-h3-bold">Популярные темы</h3>
-          <button
-            className={`text-small ${styles.showbtnPopular}`}
-            onClick={toggleList}
-          >
-            {isExpanded ? "Скрыть" : "Смотреть все"}
-          </button>
-        </div>
-        <ul
-          className={`${styles.popular__sort} ${
-            !isExpanded ? styles.collapsed : ""
-          }`}
-          id="linksList"
+      <div className={styles.popular__text}>
+        <h3 className="text-h3-bold">Популярные темы</h3>
+        <button
+          className={`text-small ${styles.showbtnPopular}`}
+          onClick={toggleList}
         >
-          {uniqueTags && (
-            <Tags uniqueTags={topics} onTagClick={handleTagClick} />
+          {isExpanded ? "Скрыть" : "Смотреть все"}
+        </button>
+      </div>
+      <ul
+        className={`${styles.popular__sort} ${
+          !isExpanded ? styles.collapsed : ""
+        }`}
+        id="linksList"
+      >
+        {uniqueTags && <Tags uniqueTags={topics} onTagClick={handleTagClick} />}
+        {isLoading && <PopularSkeleton />}
+        {error && <div style={{ color: "red" }}>{error}</div>}
+      </ul>
+
+      <div className={styles.popular__search}>
+        <button className="text" onClick={handleSortByDate}>
+          {sortByDate === "asc" ? (
+            <div>
+              <div className={`${styles.strip} ${styles.strip_1}`}></div>
+              <div className={`${styles.strip} ${styles.strip_2}`}></div>
+              <div className={`${styles.strip} ${styles.strip_3}`}></div>
+            </div>
+          ) : (
+            <div>
+              <div className={`${styles.strip} ${styles.strip_3}`}></div>
+              <div className={`${styles.strip} ${styles.strip_2}`}></div>
+              <div className={`${styles.strip} ${styles.strip_1}`}></div>
+            </div>
           )}
-          {isLoading && <PopularSkeleton />}
-          {error && <div style={{ color: "red" }}>{error}</div>}
-        </ul>
+          По дате
+        </button>
 
-        <div className={styles.popular__search}>
-          <button className="text" onClick={handleSortByDate}>
-            {sortByDate === "asc" ? (
-              <div>
-                <div className={`${styles.strip} ${styles.strip_1}`}></div>
-                <div className={`${styles.strip} ${styles.strip_2}`}></div>
-                <div className={`${styles.strip} ${styles.strip_3}`}></div>
-              </div>
-            ) : (
-              <div>
-                <div className={`${styles.strip} ${styles.strip_3}`}></div>
-                <div className={`${styles.strip} ${styles.strip_2}`}></div>
-                <div className={`${styles.strip} ${styles.strip_1}`}></div>
-              </div>
-            )}
-            По дате
-          </button>
+        <button className="text" onClick={handleSortByPopularity}>
+          {sortByPopularity === "popular" ? (
+            <div>
+              <div className={`${styles.strip} ${styles.strip_1}`}></div>
+              <div className={`${styles.strip} ${styles.strip_2}`}></div>
+              <div className={`${styles.strip} ${styles.strip_3}`}></div>
+            </div>
+          ) : (
+            <div>
+              <div className={`${styles.strip} ${styles.strip_3}`}></div>
+              <div className={`${styles.strip} ${styles.strip_2}`}></div>
+              <div className={`${styles.strip} ${styles.strip_1}`}></div>
+            </div>
+          )}
+          По популярности
+        </button>
 
-          <button className="text" onClick={handleSortByPopularity}>
-            {sortByPopularity === "popular" ? (
-              <div>
-                <div className={`${styles.strip} ${styles.strip_1}`}></div>
-                <div className={`${styles.strip} ${styles.strip_2}`}></div>
-                <div className={`${styles.strip} ${styles.strip_3}`}></div>
-              </div>
-            ) : (
-              <div>
-                <div className={`${styles.strip} ${styles.strip_3}`}></div>
-                <div className={`${styles.strip} ${styles.strip_2}`}></div>
-                <div className={`${styles.strip} ${styles.strip_1}`}></div>
-              </div>
-            )}
-            По популярности
-          </button>
-
-          <input
-            className={`${styles.search_input} text`}
-            placeholder="Например, саундбар"
-            value={searchQuery}
-            onChange={handleSearchInput}
-          />
-        </div>
+        <input
+          className={`${styles.search_input} text`}
+          placeholder="Например, саундбар"
+          value={searchQuery}
+          onChange={handleSearchInput}
+        />
       </div>
     </section>
   );
