@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { getBackgroundColor } from "@/lib/getBackgroundColor";
 
 type cover = {
   url: string;
@@ -35,21 +36,6 @@ export type Card = {
 type CardItemProps = {
   card: Card;
   type: "big" | "small";
-};
-
-const getBackgroundColor = (type: string) => {
-  switch (type) {
-    case "Обзоры":
-      return "#2AABEE";
-    case "Сравнения":
-      return "#2CAE35";
-    case "Топы":
-      return "#FFCA2B";
-    case "Гайды и советы":
-      return "#8067FF";
-    default:
-      return "#e0e0e0";
-  }
 };
 
 export default function BlogCard({ card, type }: any) {

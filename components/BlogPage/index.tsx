@@ -5,6 +5,7 @@ import BlogCard from "../BlogCard";
 import CardSkeleton from "../Loading/CardSkeleton";
 import BlogMainWrapper from "@/components/BlogMainPageWrapper";
 import PopularWrapper from "../PopularWrapper";
+import Headline from "@/app/UI/headline";
 
 interface Article {
   id: number;
@@ -86,20 +87,13 @@ export default function BlogPage() {
   return (
     <>
       <div className="container">
-        <h2 className="text-h3-bold" style={{ margin: "20px 0 0 0" }}>
-          Блог
-        </h2>
-      </div>
-
-      <div className="container">
+        <Headline text={"Блог"} />
         <PopularWrapper />
-
         {!category && (
           <>
             <BlogMainWrapper />
           </>
         )}
-
         {!isLoading && !articles.length && (
           <div style={{ fontSize: "40px", fontWeight: 600 }}>
             Нет доступных блогов

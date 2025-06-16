@@ -98,6 +98,7 @@
 }
 
 
+
 @media (max-width: 1000px) {
     .cards-container {
         grid-template-columns: 1fr;

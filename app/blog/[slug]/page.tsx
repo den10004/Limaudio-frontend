@@ -14,6 +14,7 @@ import { Articles } from "@/types/articles";
 import MarkdownBlog from "@/components/MarkdownBlog";
 import { FormatDate } from "@/utils/formatDate";
 import BlockSimilarCard from "@/components/BlogSimilar/BlockSimilarCard";
+import Headline from "@/app/UI/headline";
 
 interface PageProps {
   params: { slug: string };
@@ -61,8 +62,7 @@ export default async function BlogPostPage({ params }: any) {
       <Breadcrumbs items={breadcrumbs} />
       <section className={styles.blog}>
         <div className="container">
-          <h3 className="text-h3-bold">Блог</h3>
-
+          <Headline text={"Блог"} />
           <div className={`text16 ${styles.blog__article}`}>
             <div>
               <span>{content.category.name}</span>
@@ -89,6 +89,7 @@ export default async function BlogPostPage({ params }: any) {
               </svg>
               <span>{content?.views}</span>
             </div>
+            {/*
             <div>
               <svg
                 width="18"
@@ -105,9 +106,8 @@ export default async function BlogPostPage({ params }: any) {
                 />
               </svg>
               <span>{content.comments.count}</span>
-            </div>
+            </div>*/}
           </div>
-
           <div className={styles.blog__container}>
             <h2 className="text-h2">{content.title}</h2>
 
@@ -118,7 +118,11 @@ export default async function BlogPostPage({ params }: any) {
                     <img src={content.cover.url} alt={content.title} />
                   )}
                   <p className="text blog-main">{content.description}</p>
-                  <MarkdownBlog blocs={blocs} />
+                  <br />
+                  <div className="text blog-main">
+                    <MarkdownBlog blocs={blocs} />
+                  </div>
+
                   {/*
                   {tags && <Tags tags={tags} />}*/}
                 </div>
@@ -126,7 +130,8 @@ export default async function BlogPostPage({ params }: any) {
                 <Share />
                 <ApplicationForm />
 
-                <Comments />
+                {/*
+                <Comments />*/}
               </div>
               <BlockSimilarCard />
             </div>
