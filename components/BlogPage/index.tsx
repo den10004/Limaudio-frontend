@@ -43,18 +43,6 @@ export default function BlogPage() {
       try {
         setIsLoading(true);
         setError(null);
-        /*
-        if (!category) {
-          const res = await fetch("/api/blogs");
-          if (!res.ok) {
-            throw new Error("Ошибка при загрузке всех статей");
-          }
-          const { data } = await res.json();
-          setArticles(data);
-          setIsLoading(false);
-          return;
-        }
-*/
         const mappedCategory = categoryMap[category] || [];
         const categories = Array.isArray(mappedCategory)
           ? mappedCategory
@@ -98,34 +86,34 @@ export default function BlogPage() {
   return (
     <>
       <div className="container">
-        <h2 className="text-h3-bold" style={{ margin: "40px 0" }}>
+        <h2 className="text-h3-bold" style={{ margin: "20px 0 0 0" }}>
           Блог
         </h2>
       </div>
-      <section className="interes">
-        <div className="container">
-          {!category && (
-            <>
-              <PopularWrapper />
-              <BlogMainWrapper />
-            </>
-          )}
 
-          {!isLoading && !articles.length && (
-            <div style={{ fontSize: "40px", fontWeight: 600 }}>
-              Нет доступных блогов
-            </div>
-          )}
-          {error && <div style={{ color: "red" }}>{error}</div>}
-          <div className="interes__card">
-            {isLoading && <CardSkeleton />}
+      <div className="container">
+        <PopularWrapper />
 
-            {articles.map((card) => (
-              <BlogCard key={card.id} card={card} type="small" />
-            ))}
+        {!category && (
+          <>
+            <BlogMainWrapper />
+          </>
+        )}
+
+        {!isLoading && !articles.length && (
+          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+            Нет доступных блогов
           </div>
+        )}
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        <div className="interes__card">
+          {isLoading && <CardSkeleton />}
+
+          {articles.map((card) => (
+            <BlogCard key={card.id} card={card} type="small" />
+          ))}
         </div>
-      </section>
+      </div>
     </>
   );
 }

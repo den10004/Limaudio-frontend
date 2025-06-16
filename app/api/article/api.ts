@@ -43,12 +43,12 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
   });
 
   if (!res.ok) {
-    console.error("Error fetching article:", res.status);
+    console.error("Error article:", res.status);
     return null;
   }
 
   const data = await res.json();
-    const article = data?.data?.[0] ?? null;
+  const article = data?.data?.[0] ?? null;
 
   // счётчик просмотров
 

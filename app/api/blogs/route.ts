@@ -94,7 +94,7 @@ export async function GET(req: NextRequest) {
 
     if (!res.ok) {
       const text = await res.text();
-      console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);
+      console.error(`Ошибка API: ${res.status} - ${text}`);
       return NextResponse.json({ error: text }, { status: res.status });
     }
 

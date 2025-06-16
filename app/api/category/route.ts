@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     );
 
     const strapiUrl = `${process.env.API_URL}/articles?${query}`;
-    console.log("Запрос к Strapi:", strapiUrl);
+    console.log("Запрос к БД:", strapiUrl);
 
     const res = await fetch(strapiUrl, {
       headers: {
@@ -51,8 +51,8 @@ export async function GET(request: Request) {
 
     if (!res.ok) {
       const errorText = await res.text();
-      console.error("Strapi Error:", errorText);
-      throw new Error(`Strapi вернул ${res.status}: ${errorText}`);
+      console.error("Error:", errorText);
+      throw new Error(`${res.status}: ${errorText}`);
     }
 
     const data = await res.json();
