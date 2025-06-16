@@ -1,8 +1,10 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { notFound, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
 import CardSkeleton from "../Loading/CardSkeleton";
+import BlogMainWrapper from "@/components/BlogMainPageWrapper";
+import PopularWrapper from "../PopularWrapper";
 
 interface Article {
   id: number;
@@ -22,6 +24,7 @@ interface Article {
 
 export default function BlogPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const category = searchParams.get("category") ?? "";
 
   const categoryMap: Record<string, string | string[]> = {
@@ -38,13 +41,28 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
+        /*
+        if (!category) {
+          const res = await fetch("/api/blogs");
+          if (!res.ok) {
+            throw new Error("Ошибка при загрузке всех статей");
+          }
+          const { data } = await res.json();
+          setArticles(data);
+          setIsLoading(false);
+          return;
+        }
+*/
         const mappedCategory = categoryMap[category] || [];
         const categories = Array.isArray(mappedCategory)
           ? mappedCategory
           : [mappedCategory];
 
         if (!categories.length) {
-          throw new Error("Категория не найдена");
+          router.push("/blog");
+          return;
         }
 
         const fetchPromises = categories.map(async (cat) => {
@@ -68,14 +86,14 @@ export default function BlogPage() {
         setArticles(combinedArticles);
         setIsLoading(false);
       } catch (err) {
-        console.error("Полная ошибка:", err);
+        console.error("ошибка:", err);
         setError(err instanceof Error ? err.message : "Неизвестная ошибка");
         setIsLoading(false);
       }
     };
 
     fetchCards();
-  }, [category]);
+  }, [category, router]);
 
   return (
     <>
@@ -86,15 +104,22 @@ export default function BlogPage() {
       </div>
       <section className="interes">
         <div className="container">
+          {!category && (
+            <>
+              <PopularWrapper />
+              <BlogMainWrapper />
+            </>
+          )}
+
+          {!isLoading && !articles.length && (
+            <div style={{ fontSize: "40px", fontWeight: 600 }}>
+              Нет доступных блогов
+            </div>
+          )}
+          {error && <div style={{ color: "red" }}>{error}</div>}
           <div className="interes__card">
             {isLoading && <CardSkeleton />}
-            {error && <div style={{ color: "red" }}>{error}</div>}
-            {!isLoading && !articles && (
-              <div style={{ fontSize: "40px", fontWeight: 600 }}>
-                Нет доступных блогов
-              </div>
-            )}
-            {error && <div style={{ color: "red" }}>error</div>}
+
             {articles.map((card) => (
               <BlogCard key={card.id} card={card} type="small" />
             ))}
