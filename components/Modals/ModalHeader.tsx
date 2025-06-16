@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "./page.module.css";
+import { linksFooter } from "@/lib/footerLinks";
 
 interface ModalHeaderProps {
   onClose: () => void;
@@ -12,34 +12,32 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
         <span className="close-btn" onClick={onClose}>
           ×
         </span>
+        {/*
         <div className="modal__switch">
+       
           <span className="text16">Светлая тема</span>
           <div className="switch">
             <input type="checkbox" id="toggle-switch1" />
             <label htmlFor="toggle-switch1"></label>
           </div>
-        </div>
+        </div>*/}
         <ul className="modal__list text16">
-          <Link href="">О компании</Link>
+          {/*
+          <Link href="">О компании</Link>*/}
           <Link href="/contacts">Контакты</Link>
-          <Link href="">Каталог</Link>
+          {/*
+          <Link href="">Каталог</Link>*/}
           <Link href=""></Link>
           <br />
-          <Link href="">Напольная акустика</Link>
-          <Link href="">Полочная акустика</Link>
-          <Link href="">Встраиваемая акустика</Link>
-          <Link href="">Dolby.Atmos</Link>
-          <Link href="">Сабвуферы</Link>
-          <Link href="">Сетевые проигрыватели</Link>
-          <Link href="">Проигрыватели винила</Link>
-          <Link href="">Проекторы и экраны</Link>
-          <Link href="">Фонокорректоры</Link>
-          <Link href="">ЦАПы</Link>
-          <Link href="">Комплекты акустики</Link>
-          <Link href="">AV Ресиверы</Link>
-          <Link href="">AV Процессоры</Link>
-          <Link href="">Предусилители</Link>
-          <Link href="">Усилители</Link>
+
+          {linksFooter?.map((item, i) => {
+            return (
+              <Link key={i} href={item.href}>
+                {item.label}
+              </Link>
+            );
+          })}
+
           <br />
           <Link href="tel:88007700473">8 (800) 770-04-73</Link>
           <Link href="/">Заказать обратный звонок</Link>

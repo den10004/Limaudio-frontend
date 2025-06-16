@@ -5,11 +5,8 @@ import { ModalQuestions } from "../Modals/ModalQuestions";
 import { useState } from "react";
 import { linksFooter } from "@/lib/footerLinks";
 
-
-
 export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
-
 
   return (
     <footer className={styles.footer}>
@@ -69,7 +66,7 @@ export default function Footer() {
                 </g>
               </svg>
             </Link>
-            <Link className="text14" href="#">
+            <Link className="text14" href="/polytic">
               Политика конфиденциальности
             </Link>
           </div>
