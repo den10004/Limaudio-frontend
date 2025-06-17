@@ -99,12 +99,15 @@
     font-family: "Roboto", "Arial", sans-serif;
     font-size: 24px;
     font-weight: 400;
-    color: black;
+
     margin-left: 50px;
+    display: flex;
+    flex-direction: column;
 }
 
-.brand_list li {
+.brand_list ul li>a {
     padding: 5px 0;
+    color: black;
 }
 
 
@@ -141,7 +144,6 @@
 .multi_column_list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
 }
 
 .multi_column-list .column {

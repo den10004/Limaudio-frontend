@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import CardSkeleton from "../Loading/CardSkeleton";
+import Link from "next/link";
 
 interface Brand {
   slug: string;
@@ -16,15 +17,12 @@ export default function BrandSearch() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLetter, setSelectedLetter] = useState<string>("A"); // Set "A" as default
-
-  // Latin alphabet array
+  const [selectedLetter, setSelectedLetter] = useState<string>("A");
   const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        // Only fetch if searchTerm is not a single letter or is empty
         if (!/^[a-zA-Z]$/.test(searchTerm) && searchTerm !== "") {
           const url = `/api/brandSearch?search=${encodeURIComponent(
             searchTerm
@@ -41,7 +39,6 @@ export default function BrandSearch() {
           setAllCards(card);
           setIsLoading(false);
         } else if (searchTerm === "") {
-          // Fetch all brands when search is cleared
           const url = "/api/brandSearch";
           const res = await fetch(url);
           if (!res.ok) {
@@ -68,23 +65,21 @@ export default function BrandSearch() {
     const value = e.target.value;
     setSearchTerm(value);
 
-    // Set selectedLetter only if input is exactly one letter
     if (/^[a-zA-Z]$/.test(value)) {
       setSelectedLetter(value.toUpperCase());
-      setIsLoading(false); // Prevent loading state for local filtering
+      setIsLoading(false);
     } else if (value === "") {
-      setSelectedLetter("A"); // Reset to "A" when search is cleared
+      setSelectedLetter("A");
     } else {
-      setSelectedLetter(null); // Clear selectedLetter for multi-letter searches
+      setSelectedLetter("");
     }
   };
 
   const handleLetterClick = (letter: string) => {
     setSelectedLetter(letter);
-    setSearchTerm(""); // Clear search term when clicking a letter
+    setSearchTerm("");
   };
 
-  // Filter brands based on selected letter or search term
   const filteredBrands =
     searchTerm && !/^[a-zA-Z]$/.test(searchTerm)
       ? allCards.filter((brand) =>
@@ -130,7 +125,6 @@ export default function BrandSearch() {
           </div>
         )}
 
-        {/* Latin Alphabet Buttons */}
         <div className={styles.alphabet_container}>
           <div className={styles.alphabet_row} id="englishAlphabetContainer">
             {latinAlphabet.map((letter) => (
@@ -148,14 +142,21 @@ export default function BrandSearch() {
           </div>
         </div>
 
-        {/* Selected Letter and Filtered Brands */}
         {selectedLetter && (
           <div className={styles.brand_list} id="brandList">
             <h2 id="selectedLetter">{selectedLetter}</h2>
             <ul id="brandItems" className={styles.multi_column_list}>
               {filteredBrands.length > 0 ? (
                 filteredBrands.map((brand, index) => (
-                  <li key={index}>{brand.title}</li>
+                  <li key={index}>
+                    <Link
+                      href={`/brands/${brand.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {brand.title}
+                    </Link>
+                  </li>
                 ))
               ) : (
                 <li>Нет брендов на букву {selectedLetter}</li>
@@ -163,26 +164,39 @@ export default function BrandSearch() {
             </ul>
           </div>
         )}
-
-        {/* All Brands (when no letter is selected and no search term) */}
         {!selectedLetter && !searchTerm && (
           <div className={styles.brand_list} id="brandList">
             <ul id="brandItems" className={styles.multi_column_list}>
               {filteredBrands.map((brand, index) => (
-                <li key={index}>{brand.title}</li>
+                <li key={index}>
+                  <Link
+                    href={`/brands/${brand.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {brand.title}
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>
         )}
 
-        {/* Search Results (for multi-letter searches) */}
         {searchTerm && !/^[a-zA-Z]$/.test(searchTerm) && (
           <div className={styles.brand_list} id="brandList">
             <h2>Результаты поиска: {searchTerm}</h2>
             <ul id="brandItems" className={styles.multi_column_list}>
               {filteredBrands.length > 0 ? (
                 filteredBrands.map((brand, index) => (
-                  <li key={index}>{brand.title}</li>
+                  <li key={index}>
+                    <Link
+                      href={`/brands/${brand.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {brand.title}
+                    </Link>
+                  </li>
                 ))
               ) : (
                 <li>Нет брендов, начинающихся с "{searchTerm}"</li>
