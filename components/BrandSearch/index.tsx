@@ -120,11 +120,6 @@ export default function BrandSearch() {
 
         {isLoading && <BrandSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
-        {!isLoading && allCards.length === 0 && (
-          <div style={{ fontSize: "40px", fontWeight: 600 }}>
-            Нет доступных брендов
-          </div>
-        )}
 
         <div className={styles.alphabet_container}>
           <div className={styles.alphabet_row} id="englishAlphabetContainer">
@@ -188,7 +183,6 @@ export default function BrandSearch() {
             className={`${styles.brand_list} ${styles.brand_list_result}`}
             id="brandList"
           >
-            <h2>Результаты поиска: {searchTerm}</h2>
             <ul id="brandItems" className={styles.multi_column_list}>
               {filteredBrands.length > 0 ? (
                 filteredBrands.map((brand, index) => (
@@ -203,7 +197,7 @@ export default function BrandSearch() {
                   </li>
                 ))
               ) : (
-                <li>Нет брендов, начинающихся с "{searchTerm}"</li>
+                <li className="text20">Бренды не найдены</li>
               )}
             </ul>
           </div>

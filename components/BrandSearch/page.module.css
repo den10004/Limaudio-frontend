@@ -94,15 +94,11 @@
 .brand_list h2 {
     margin-top: 0;
     color: var(--color-blue);
-    font-family: "Roboto", "Arial", sans-serif;
-    font-size: 48px;
-    font-weight: 500;
 }
 
 .brand_list ul {
     list-style: none;
     padding: 0;
-    font-family: "Roboto", "Arial", sans-serif;
     font-size: 24px;
     font-weight: 400;
     margin-left: 50px;
@@ -120,6 +116,16 @@
     min-height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+@media screen and (max-width: 767px) {
+    .brand_list {
+        flex-direction: column;
+    }
+
+    .brand_list ul {
+        margin-left: 0px;
+    }
 }
 
 @media screen and (max-width: 500px) {
