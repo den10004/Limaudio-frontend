@@ -1,7 +1,8 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
-import { COMPARION, INDEX } from "@/lib/breadcrumbs";
+import { INDEX } from "@/lib/breadcrumbs";
 import Link from "next/link";
 import Headline from "../UI/headline";
+import BrandSearch from "@/components/BrandSearch";
 
 const breadcrumbs = [
   { label: "Главная", href: INDEX },
@@ -13,7 +14,7 @@ export default function Brands() {
     <>
       <div className="container" style={{ width: "100%" }}>
         <Breadcrumbs items={breadcrumbs} />
-        <Headline text={"Бренды"} />
+        <BrandSearch />
       </div>
     </>
   );
