@@ -1,10 +1,21 @@
 import qs from "qs";
 
+const cache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_DURATION = 60 * 1000;
+
 if (!process.env.API_URL || !process.env.TOKEN) {
   throw new Error("Missing API_URL or TOKEN in environment variables");
 }
 
 export async function getBrandsBySlug(slug: string): Promise<any | null> {
+  // Check cache first
+  const cached = cache.get(slug);
+  const now = Date.now();
+
+  if (cached && now - cached.timestamp < CACHE_DURATION) {
+    return cached.data;
+  }
+
   const query = qs.stringify(
     {
       filters: { slug: { $eq: slug } },
@@ -31,6 +42,8 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
   const data = await res.json();
   const brand = data?.data?.[0] ?? null;
 
+  // Store in cache
+  cache.set(slug, { data: brand, timestamp: now });
+
   return brand;
-  // return data?.data?.[0] ?? null;
 }
