@@ -31,6 +31,7 @@ export default function BrandText({ content }: any) {
           </div>
 
           <div className={styles.brand_desc__content}>
+            <h3 className="text-h2">{content?.title}</h3>
             <h4 className="text">{content?.info}</h4>
           </div>
 
