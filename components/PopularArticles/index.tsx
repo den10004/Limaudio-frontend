@@ -58,7 +58,7 @@ export default function PopularArticles() {
             <div style={{ fontSize: "40px", fontWeight: 600 }}>
               Нет доступных блогов
             </div>
-          )}{" "}
+          )}
           <div className="cards_container">
             {sortedCards.map((card) => (
               <BlogCard key={card.id} card={card} type="small" />
