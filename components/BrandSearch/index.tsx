@@ -16,6 +16,10 @@ export default function BrandSearch() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedLetter, setSelectedLetter] = useState<string>("A"); // Set "A" as default
+
+  // Latin alphabet array
+  const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -46,9 +50,19 @@ export default function BrandSearch() {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setSelectedLetter("A"); // Reset to "A" on search
   };
 
-  console.log(allCards);
+  const handleLetterClick = (letter: string) => {
+    setSelectedLetter(letter);
+  };
+
+  // Filter brands based on selected letter
+  const filteredBrands = selectedLetter
+    ? allCards.filter((brand) =>
+        brand.title.toUpperCase().startsWith(selectedLetter)
+      )
+    : allCards;
 
   return (
     <section className={styles.search}>
@@ -73,7 +87,6 @@ export default function BrandSearch() {
               fill="#0055CC"
             />
           </svg>
-
           <button className="text16">Найти</button>
         </form>
 
@@ -85,24 +98,51 @@ export default function BrandSearch() {
           </div>
         )}
 
-        {allCards.map((brand, index) => (
-          <div key={index}>{brand.title}</div>
-        ))}
-
+        {/* Latin Alphabet Buttons */}
         <div className={styles.alphabet_container}>
-          <div
-            className={styles.alphabet_row}
-            id="englishAlphabetContainer"
-          ></div>
-          <div
-            className={styles.alphabet_row}
-            id="russianAlphabetContainer"
-          ></div>
+          <div className={styles.alphabet_row} id="englishAlphabetContainer">
+            {latinAlphabet.map((letter) => (
+              <button
+                key={letter}
+                onClick={() => handleLetterClick(letter)}
+                className={`${styles.alphabet_button} ${
+                  selectedLetter === letter ? styles.active : ""
+                }`}
+                type="button"
+              >
+                {letter}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className={styles.brand_list} id="brandList">
-          <h2 id="selectedLetter"></h2>
-          <ul id="brandItems" className={styles.multi_column_list}></ul>
-        </div>
+
+        {/* Selected Letter and Filtered Brands */}
+        {selectedLetter && (
+          <div className={styles.brand_list} id="brandList">
+            <h2 id="selectedLetter">{selectedLetter}</h2>
+            <ul id="brandItems" className={styles.multi_column_list}>
+              {filteredBrands.length > 0 ? (
+                filteredBrands.map((brand, index) => (
+                  <li key={index}>{brand.title}</li>
+                ))
+              ) : (
+                <li>Нет брендов на букву {selectedLetter}</li>
+              )}
+            </ul>
+          </div>
+        )}
+
+        {/* All Brands (when no letter is selected) */}
+        {!selectedLetter && (
+          <div className={styles.brand_list} id="brandList">
+            <ul id="brandItems" className={styles.multi_column_list}>
+              {filteredBrands.map((brand, index) => (
+                <li key={index}>{brand.title}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className={styles.load_more_container} style={{ display: "flex" }}>
           <button id="load-more" className="text showbtn">
             Показать ещё
