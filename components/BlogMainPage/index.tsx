@@ -98,7 +98,6 @@ export default function BlogMainPage() {
             ))}
           </div>
         ))}
-
         {isLoading && <CardSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
         {!isLoading && allCards.data.length === 0 && (

@@ -17,11 +17,29 @@
 }
 
 
-.card {
+.cardSkeleton {
     background: var(--color-grayFA);
     border-radius: 20px;
     padding: 20px;
     height: 353px;
+    /*width: calc(100vw - 50px);*/
+    width: 100%;
+    animation: colorChange 4s linear infinite;
+}
+
+.brandslider {
+    background: var(--color-grayFA);
+    border-radius: 20px;
+    height: 128px;
+    width: 100%;
+    animation: colorChange 4s linear infinite;
+}
+
+.brandSkeleton {
+    background: var(--color-grayFA);
+    height: 48px;
+    border-radius: 12px;
+    margin: 30px 0 21px;
     width: 100%;
     animation: colorChange 4s linear infinite;
 }

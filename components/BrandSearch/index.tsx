@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import CardSkeleton from "../Loading/CardSkeleton";
 import Link from "next/link";
+import BrandSkeleton from "../Loading/BrandSkeleton";
 
 interface Brand {
   slug: string;
@@ -117,7 +118,7 @@ export default function BrandSearch() {
           <button className="text16">Найти</button>
         </form>
 
-        {isLoading && <CardSkeleton />}
+        {isLoading && <BrandSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
         {!isLoading && allCards.length === 0 && (
           <div style={{ fontSize: "40px", fontWeight: 600 }}>

@@ -78,7 +78,7 @@ export default function MarkdownBrand({
           ),
           code: ({ children }) => (
             <code
-              style={{ fontFamily: "SFProText", fontSize: "18px" }}
+              style={{ fontFamily: "Roboto", fontSize: "18px" }}
               className={styles.text}
             >
               {children}

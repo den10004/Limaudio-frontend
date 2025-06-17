@@ -1,15 +1,15 @@
 "use client";
 
-import Image from "next/image";
-import styles from "./page.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import BrandSliderSkeleton from "../Loading/BrandSliderSkeleton";
+import Headline from "@/app/UI/headline";
+import Image from "next/image";
+import styles from "./page.module.css";
 import "swiper/css";
 import "swiper/css/navigation";
-import Link from "next/link";
-import CardSkeleton from "../Loading/CardSkeleton";
-import Headline from "@/app/UI/headline";
 
 interface Brand {
   slug: string;
@@ -59,7 +59,7 @@ export default function Brands() {
           <Headline text={"Бренды"} link={"/brands"} />
         </div>
 
-        {isLoading && <CardSkeleton />}
+        {isLoading && <BrandSliderSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
         {!isLoading && allCards.length === 0 && (
           <div style={{ fontSize: "40px", fontWeight: 600 }}>
