@@ -118,8 +118,8 @@
 
 @media screen and (max-width:767px) {
     .brand_desc__block {
-        grid-template-columns: 100px auto;
-        grid-template-rows: auto;
+        grid-template-columns: auto;
+        grid-template-rows: 100px auto;
     }
 
     .desc__block>img {
