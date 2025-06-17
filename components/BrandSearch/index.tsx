@@ -1,6 +1,43 @@
+"use client";
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
+interface Brand {
+  slug: string;
+  title: string;
+  logo: {
+    url: string;
+  };
+}
+
 export default function BrandSearch() {
+  const [allCards, setAllCards] = useState<Brand[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/brands");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+        const card = cards.data;
+
+        setAllCards(card);
+        setIsLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
   return (
     <section className={styles.search}>
       <div className="container">
