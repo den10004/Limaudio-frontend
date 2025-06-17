@@ -79,7 +79,13 @@
     background-color: var(--color-grayFA);
     padding: 20px;
     border-radius: 20px;
+    display: flex;
 }
+
+.brand_list_result {
+    display: block;
+}
+
 
 .brand_list.active {
     display: flex;
@@ -99,7 +105,6 @@
     font-family: "Roboto", "Arial", sans-serif;
     font-size: 24px;
     font-weight: 400;
-
     margin-left: 50px;
     display: flex;
     flex-direction: column;
@@ -144,6 +149,7 @@
 .multi_column_list {
     display: flex;
     flex-wrap: wrap;
+
 }
 
 .multi_column-list .column {

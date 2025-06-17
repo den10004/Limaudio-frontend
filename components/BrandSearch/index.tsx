@@ -183,7 +183,10 @@ export default function BrandSearch() {
         )}
 
         {searchTerm && !/^[a-zA-Z]$/.test(searchTerm) && (
-          <div className={styles.brand_list} id="brandList">
+          <div
+            className={`${styles.brand_list} ${styles.brand_list_result}`}
+            id="brandList"
+          >
             <h2>Результаты поиска: {searchTerm}</h2>
             <ul id="brandItems" className={styles.multi_column_list}>
               {filteredBrands.length > 0 ? (
