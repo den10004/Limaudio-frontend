@@ -40,8 +40,9 @@
 
 @media screen and (max-width: 767px) {
     .hero__background {
-        background-image: url(https://37490647-limaudio.s3.twcstorage.ru/banner_min_5c6f7a2bab.webp);
+        background-image: url(https://37490647-limaudio.s3.twcstorage.ru/banner_min_8b91073360.webp);
         height: 300px;
+        border-radius: 0px;
         padding-left: 30px;
         padding-left: 18px;
     }

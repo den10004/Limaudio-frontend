@@ -93,6 +93,23 @@
 
 
 
+.error_message {
+    color: #ff4d4f;
+    font-size: 14px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 45% !important;
+}
+
+.success_message {
+    color: #52c41a;
+    font-size: 14px;
+}
+
+
 
 @media screen and (max-width: 1100px) {
     .subscription__block {
