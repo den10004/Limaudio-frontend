@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 interface Brand {
   slug: string;
@@ -14,11 +15,16 @@ export default function BrandSearch() {
   const [allCards, setAllCards] = useState<Brand[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await fetch("/api/brands");
+        const url = searchTerm
+          ? `/api/brandSearch?search=${encodeURIComponent(searchTerm)}`
+          : "/api/brandSearch";
+
+        const res = await fetch(url);
         if (!res.ok) {
           const text = await res.text();
           throw new Error(text || "Ошибка при загрузке");
@@ -36,13 +42,24 @@ export default function BrandSearch() {
     };
 
     fetchCards();
-  }, []);
+  }, [searchTerm]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  console.log(allCards);
 
   return (
     <section className={styles.search}>
       <div className="container">
         <form className={styles.search__form}>
-          <input type="text" placeholder="Например, саундбар" />
+          <input
+            type="text"
+            placeholder="Например, саундбар"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
           <svg
             width="14"
             height="14"
@@ -59,6 +76,18 @@ export default function BrandSearch() {
 
           <button className="text16">Найти</button>
         </form>
+
+        {isLoading && <CardSkeleton />}
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        {!isLoading && allCards.length === 0 && (
+          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+            Нет доступных брендов
+          </div>
+        )}
+
+        {allCards.map((brand, index) => (
+          <div key={index}>{brand.title}</div>
+        ))}
 
         <div className={styles.alphabet_container}>
           <div
