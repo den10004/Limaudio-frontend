@@ -24,21 +24,37 @@ export default function BrandSearch() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const url = searchTerm
-          ? `/api/brandSearch?search=${encodeURIComponent(searchTerm)}`
-          : "/api/brandSearch";
+        // Only fetch if searchTerm is not a single letter or is empty
+        if (!/^[a-zA-Z]$/.test(searchTerm) && searchTerm !== "") {
+          const url = `/api/brandSearch?search=${encodeURIComponent(
+            searchTerm
+          )}`;
+          const res = await fetch(url);
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error(text || "Ошибка при загрузке");
+          }
 
-        const res = await fetch(url);
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || "Ошибка при загрузке");
+          const cards = await res.json();
+          const card = cards.data;
+
+          setAllCards(card);
+          setIsLoading(false);
+        } else if (searchTerm === "") {
+          // Fetch all brands when search is cleared
+          const url = "/api/brandSearch";
+          const res = await fetch(url);
+          if (!res.ok) {
+            const text = await res.text();
+            throw new Error(text || "Ошибка при загрузке");
+          }
+
+          const cards = await res.json();
+          const card = cards.data;
+
+          setAllCards(card);
+          setIsLoading(false);
         }
-
-        const cards = await res.json();
-        const card = cards.data;
-
-        setAllCards(card);
-        setIsLoading(false);
       } catch (err: any) {
         setError(err.message);
         setIsLoading(false);
@@ -49,20 +65,36 @@ export default function BrandSearch() {
   }, [searchTerm]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    setSelectedLetter("A"); // Reset to "A" on search
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    // Set selectedLetter only if input is exactly one letter
+    if (/^[a-zA-Z]$/.test(value)) {
+      setSelectedLetter(value.toUpperCase());
+      setIsLoading(false); // Prevent loading state for local filtering
+    } else if (value === "") {
+      setSelectedLetter("A"); // Reset to "A" when search is cleared
+    } else {
+      setSelectedLetter(null); // Clear selectedLetter for multi-letter searches
+    }
   };
 
   const handleLetterClick = (letter: string) => {
     setSelectedLetter(letter);
+    setSearchTerm(""); // Clear search term when clicking a letter
   };
 
-  // Filter brands based on selected letter
-  const filteredBrands = selectedLetter
-    ? allCards.filter((brand) =>
-        brand.title.toUpperCase().startsWith(selectedLetter)
-      )
-    : allCards;
+  // Filter brands based on selected letter or search term
+  const filteredBrands =
+    searchTerm && !/^[a-zA-Z]$/.test(searchTerm)
+      ? allCards.filter((brand) =>
+          brand.title.toUpperCase().startsWith(searchTerm.toUpperCase())
+        )
+      : selectedLetter
+      ? allCards.filter((brand) =>
+          brand.title.toUpperCase().startsWith(selectedLetter)
+        )
+      : allCards;
 
   return (
     <section className={styles.search}>
@@ -132,13 +164,29 @@ export default function BrandSearch() {
           </div>
         )}
 
-        {/* All Brands (when no letter is selected) */}
-        {!selectedLetter && (
+        {/* All Brands (when no letter is selected and no search term) */}
+        {!selectedLetter && !searchTerm && (
           <div className={styles.brand_list} id="brandList">
             <ul id="brandItems" className={styles.multi_column_list}>
               {filteredBrands.map((brand, index) => (
                 <li key={index}>{brand.title}</li>
               ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Search Results (for multi-letter searches) */}
+        {searchTerm && !/^[a-zA-Z]$/.test(searchTerm) && (
+          <div className={styles.brand_list} id="brandList">
+            <h2>Результаты поиска: {searchTerm}</h2>
+            <ul id="brandItems" className={styles.multi_column_list}>
+              {filteredBrands.length > 0 ? (
+                filteredBrands.map((brand, index) => (
+                  <li key={index}>{brand.title}</li>
+                ))
+              ) : (
+                <li>Нет брендов, начинающихся с "{searchTerm}"</li>
+              )}
             </ul>
           </div>
         )}
