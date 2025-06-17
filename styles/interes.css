@@ -2,7 +2,7 @@
     margin-top: 27px;
 }
 
-.interes__card {
+.interes__card>div {
     margin-top: 10px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -10,9 +10,7 @@
 }
 
 @media screen and (max-width:1000px) {
-    .interes__card {
-        display: grid;
+    .interes__card>div {
         grid-template-columns: repeat(1, 1fr);
-        gap: 22px;
     }
 }
