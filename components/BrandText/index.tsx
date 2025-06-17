@@ -32,7 +32,13 @@ export default function BrandText({ content }: any) {
 
           <div className={styles.brand_desc__content}>
             <h3 className="text-h2">{content?.title}</h3>
-            <h4 className="text">{content?.info}</h4>
+            <h4 className="text">
+              {content?.country ? `${content?.country}` : ""}
+              {content?.country && content?.year ? `, ` : ""}
+              <span style={{ whiteSpace: "nowrap" }}>
+                {content?.year ? `год основания - ${content?.year}` : ""}
+              </span>
+            </h4>
           </div>
 
           <div

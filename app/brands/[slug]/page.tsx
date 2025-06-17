@@ -48,6 +48,8 @@ export default async function BrandsPage({ params }: any) {
       isActive: true,
     },
   ];
+
+  console.log(content);
   return (
     <>
       <div className="container" style={{ width: "100%" }}>
