@@ -93,7 +93,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 58%;
+        width: 63%;
     }
 
     .header__block>nav>ul li:not(:last-child) {
@@ -101,7 +101,7 @@
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 935px) {
     .header__block {
         flex-direction: column;
         max-width: 365px;
