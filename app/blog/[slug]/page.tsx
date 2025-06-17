@@ -43,6 +43,14 @@ interface UnknownBloc {
 export default async function BlogPostPage({ params }: any) {
   const content: Articles | null = await getArticleBySlug(params.slug);
 
+  console.log(params);
+
+  if (!content) {
+    notFound();
+  }
+
+  const shareUrl = `${process.env.BLOGS_URL}/blog/${content.slug}`;
+
   const categoryName = content?.category?.name ?? "";
 
   const breadcrumbs = [
@@ -134,7 +142,7 @@ export default async function BlogPostPage({ params }: any) {
                   {tags && <Tags tags={tags} />}*/}
                 </div>
 
-                <Share />
+                <Share shareUrl={shareUrl} />
                 <ApplicationForm />
 
                 {/*

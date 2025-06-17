@@ -5,15 +5,29 @@ interface SubscribeRequest {
   email: string;
 }
 
+interface ApiResponse {
+  success?: boolean;
+  error?: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<ApiResponse>
 ) {
+  // Устанавливаем заголовок Content-Type
+  res.setHeader("Content-Type", "application/json");
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   const { email }: SubscribeRequest = req.body;
+
+  // Валидация email на сервере
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!email || !emailRegex.test(email)) {
+    return res.status(400).json({ error: "Некорректный email адрес" });
+  }
 
   try {
     const transporter = nodemailer.createTransport({
@@ -27,24 +41,17 @@ export default async function handler(
     });
 
     await transporter.sendMail({
-      from: `"Limaudio" <${process.env.SMTP_FROM_EMAIL}>`,
+      from: `"Название вашего магазина" <${process.env.SMTP_FROM_EMAIL}>`,
       to: email,
       subject: "Подтверждение подписки",
-      html: `
-        <div>
-          <h2>Спасибо за подписку!</h2>
-          <p>Вы успешно подписались на рассылку новостей и акций нашего магазина.</p>
-          <p>Если это произошло по ошибке, просто проигнорируйте это письмо.</p>
-        </div>
-      `,
+      html: `...`,
     });
-
-    // Также можно сохранить email в базу данных
-    // await saveEmailToDatabase(email);
 
     return res.status(200).json({ success: true });
   } catch (error) {
     console.error("Subscription error:", error);
-    return res.status(500).json({ error: "Failed to process subscription" });
+    return res
+      .status(500)
+      .json({ error: "Ошибка сервера при обработке подписки" });
   }
 }
