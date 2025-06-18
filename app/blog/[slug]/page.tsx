@@ -13,6 +13,7 @@ import MarkdownBlog from "@/components/MarkdownBlog";
 import { FormatDate } from "@/utils/formatDate";
 import BlockSimilarCard from "@/components/BlogSimilar/BlockSimilarCard";
 import Headline from "@/app/UI/headline";
+import { Metadata } from "next";
 
 interface PageProps {
   params: { slug: string };
@@ -38,6 +39,20 @@ interface UnknownBloc {
   [key: string]: any;
 }
 
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const content: any = await getArticleBySlug(params.slug);
+
+  return {
+    title: content.seo?.metaTitle || content.title,
+    description: content.seo?.metaDescription || content.description,
+    keywords: content.title ? [content.title] : [""],
+    openGraph: {
+      title: content.seo?.metaTitle || content.title,
+      description: content.seo?.metaDescription || content.description,
+    },
+  };
+}
+
 export default async function BlogPostPage({ params }: any) {
   const content: any = await getArticleBySlug(params.slug);
 
@@ -46,7 +61,7 @@ export default async function BlogPostPage({ params }: any) {
   const categoryName = content?.category?.name ?? "";
 
   const breadcrumbs = [
-    { label: "Акустика", href: INDEX },
+    { label: "Главная", href: INDEX },
     {
       label: categoryName,
       href: `/blog?category=${categoryName.toLowerCase()}`,

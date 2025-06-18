@@ -9,34 +9,22 @@ import { getBrandsBySlug } from "@/app/api/brands/api";
 import BlogMainPageWrapper from "@/components/BlogMainPageWrapper";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Название бренда",
-  description: "Описание бренда",
-  openGraph: {
-    title: "Название бренда",
-    description: "Описание бренда",
-  },
-  keywords: ["бренд", "товары", "магазин"],
-};
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const content: any = await getBrandsBySlug(params.slug);
+
+  return {
+    title: content.seo?.metaTitle || content.title,
+    description: content.seo?.metaDescription || content.description,
+    keywords: content.title ? [content.title] : [""],
+    openGraph: {
+      title: content.seo?.metaTitle || content.title,
+      description: content.seo?.metaDescription || content.description,
+    },
+  };
+}
 
 export default async function BrandsPage({ params }: any) {
   const content: any = await getBrandsBySlug(params.slug);
-
-  if (!content) return notFound();
-  metadata.title = content.seo?.metaTitle || "Заголовок";
-  metadata.description = content.seo?.metaDescription || "Описание бренда";
-  metadata.keywords = content?.title || ["бренд", "товары", "магазин"];
-  metadata.title = content.seo?.metaTitle || "Заголовок";
-  metadata.description = content.seo?.metaDescription || "Описание бренда";
-  metadata.keywords = content.title
-    ? [content.title]
-    : ["бренд", "товары", "магазин"];
-
-  if (metadata.openGraph) {
-    metadata.openGraph.title = content.seo?.metaTitle || "Заголовок";
-    metadata.openGraph.description =
-      content.seo?.metaDescription || "Описание бренда";
-  }
 
   const breadcrumbs = [
     { label: "Главная", href: INDEX },
