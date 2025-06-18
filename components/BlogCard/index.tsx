@@ -40,7 +40,7 @@ type CardItemProps = {
 
 export default function BlogCard({ card, type }: any) {
   return (
-    <Link href={`/blog/${card.slug}`} scroll={false}>
+    <Link href={`/blog/${card.slug}`}>
       <div
         className={`card ${type === "big" ? "wide" : "small"}`}
         style={{ position: "relative" }}

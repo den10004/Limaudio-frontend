@@ -9,11 +9,9 @@ export default function Subscription() {
     "idle" | "loading" | "success" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
@@ -24,8 +22,9 @@ export default function Subscription() {
 
     setStatus("loading");
     setErrorMessage("");
+
     try {
-      const response = await fetch("/api/subscribe/subscribe", {
+      const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,34 +32,21 @@ export default function Subscription() {
         body: JSON.stringify({ email }),
       });
 
-      // Проверяем content-type ответа
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        const text = await response.text();
-        throw new Error(`Ожидался JSON, но получили: ${text.slice(0, 100)}`);
+      if (response.ok) {
+        setStatus("success");
+        setEmail("");
+        setTimeout(() => setStatus("idle"), 3000);
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Ошибка при отправке");
       }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Ошибка при отправке");
-      }
-
-      setStatus("success");
-      setEmail("");
-      setTimeout(() => setStatus("idle"), 3000);
     } catch (error) {
       setStatus("error");
-      if (error instanceof Error) {
-        console.error("Ошибка подписки:", error.message);
-        setErrorMessage(
-          error.message.includes("Ожидался JSON")
-            ? "Ошибка сервера. Пожалуйста, попробуйте позже."
-            : error.message
-        );
-      } else {
-        setErrorMessage("Неизвестная ошибка. Пожалуйста, попробуйте позже.");
-      }
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Произошла ошибка. Пожалуйста, попробуйте позже."
+      );
     }
   };
 

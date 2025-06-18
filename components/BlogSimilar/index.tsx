@@ -5,9 +5,13 @@ import { FormatDate } from "@/utils/formatDate";
 import { getBackgroundColor } from "@/lib/getBackgroundColor";
 
 export default function BlogSimilar({ card }: any) {
+  const scrollClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <Link href={`/blog/${card.slug}`} scroll={false}>
-      <article className="similarArticle">
+      <article className="similarArticle" onClick={scrollClick}>
         <div className="similarArticle__img" style={{ position: "relative" }}>
           <img src={card.cover.url} alt="blog" />
           <div className="labelblock_min">
@@ -25,7 +29,6 @@ export default function BlogSimilar({ card }: any) {
             </div>
           </div>
         </div>
-
         <h3 className="text" style={{ fontWeight: 500 }}>
           {card.title}
         </h3>
