@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import "./styles.css";
 import { FormatDate } from "@/utils/formatDate";
 import { getBackgroundColor } from "@/lib/getBackgroundColor";
 
@@ -13,7 +12,16 @@ export default function BlogSimilar({ card }: any) {
     <Link href={`/blog/${card.slug}`} scroll={false}>
       <article className="similarArticle" onClick={scrollClick}>
         <div className="similarArticle__img" style={{ position: "relative" }}>
-          <img src={card.cover.url} alt="blog" />
+          {card.cover?.url ? (
+            <img src={card.cover?.url} alt="blog" />
+          ) : (
+            <img
+              className="similarArticle__img"
+              src="./../../public/empty.webp"
+              alt="blog"
+            />
+          )}
+
           <div className="labelblock_min">
             <div
               className="label article_label"
