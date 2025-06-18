@@ -11,7 +11,8 @@ export default function Blog() {
       <Suspense fallback={<div></div>}>
         <BlogPage />
       </Suspense>
-      <PopularArticles />
+      {/*
+      <PopularArticles />*/}
       <Brands />
       <Subscription />
       <ScrollBtn />
