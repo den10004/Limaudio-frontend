@@ -18,7 +18,24 @@ export default function Markdown({ blocs }: any) {
             switch (component.__component) {
               case "shared.rich-text":
                 return (
-                  <ReactMarkdown key={`richtext-${index}`}>
+                  <ReactMarkdown
+                    key={`richtext-${index}`}
+                    components={{
+                      img: ({ src, alt, title }) => (
+                        <img
+                          src={src}
+                          alt={alt || ""}
+                          title={title}
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            display: "block",
+                            maxWidth: "100%",
+                          }}
+                        />
+                      ),
+                    }}
+                  >
                     {component.body || ""}
                   </ReactMarkdown>
                 );

@@ -14,11 +14,7 @@ export default function BlogSimilar({ card }: any) {
           {card.cover?.url ? (
             <img src={card.cover?.url} alt="blog" />
           ) : (
-            <img
-              className="similarArticle__img"
-              src="./../../public/empty.webp"
-              alt="blog"
-            />
+            <img className="similarArticle__img" src="/empty.webp" alt="blog" />
           )}
 
           <div className="labelblock_min">
