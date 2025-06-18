@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { getBackgroundColor } from "@/lib/getBackgroundColor";
+import empty from "./../../public/empty.webp";
 
 type cover = {
   url: string;
@@ -46,13 +48,14 @@ export default function BlogCard({ card, type }: any) {
         style={{ position: "relative" }}
       >
         <div style={{ position: "relative" }}>
-          {card?.cover?.url && (
-            <img
-              className="card__img"
-              src={card.cover.url}
-              alt={card.title}
-              loading="lazy"
-            />
+          {card.cover?.url ? (
+            <div className="card__img">
+              <Image src={card.cover.url} alt={card.title} fill />
+            </div>
+          ) : (
+            <div className="card__img">
+              <Image src={empty} alt="blog" fill />
+            </div>
           )}
 
           <div className="labelblock-big">

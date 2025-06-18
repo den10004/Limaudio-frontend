@@ -17,12 +17,14 @@
         position: relative;
     }
 
+
     .similarArticle__img>img {
         width: 100%;
         border-radius: 20px;
         aspect-ratio: 16/9;
-
     }
+
+
 
     .similarArticle>h3 {
         margin-top: 13px;

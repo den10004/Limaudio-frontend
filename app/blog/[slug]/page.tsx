@@ -122,7 +122,11 @@ export default async function BlogPostPage({ params }: any) {
               <div className={styles.blog__content}>
                 <div className={styles.blog__part}>
                   {content?.cover?.url && (
-                    <img src={content?.cover?.url} alt={content.title} />
+                    <img
+                      src={content?.cover?.url}
+                      alt={content.title}
+                      loading="lazy"
+                    />
                   )}
                   <p className="text blog-main">{content.description}</p>
                   <br />
