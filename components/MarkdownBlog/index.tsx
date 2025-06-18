@@ -21,6 +21,27 @@ export default function Markdown({ blocs }: any) {
                   <ReactMarkdown
                     key={`richtext-${index}`}
                     components={{
+                      h1: ({ node, ...props }) => (
+                        <h1 style={{ marginBottom: "1rem" }} {...props} />
+                      ),
+                      h2: ({ node, ...props }) => (
+                        <h2 style={{ marginBottom: "0.8rem" }} {...props} />
+                      ),
+                      h3: ({ node, ...props }) => (
+                        <h3 style={{ marginBottom: "0.8rem" }} {...props} />
+                      ),
+                      h4: ({ node, ...props }) => (
+                        <h4 style={{ marginBottom: "0.8rem" }} {...props} />
+                      ),
+                      h5: ({ node, ...props }) => (
+                        <h5 style={{ marginBottom: "0.8rem" }} {...props} />
+                      ),
+                      h6: ({ node, ...props }) => (
+                        <h6 style={{ marginBottom: "0.8rem" }} {...props} />
+                      ),
+                      p: ({ node, ...props }) => (
+                        <p style={{ margin: "0.8rem 0" }} {...props} />
+                      ),
                       img: ({ src, alt, title }) => (
                         <img
                           src={src}

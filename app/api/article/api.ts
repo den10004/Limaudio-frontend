@@ -20,6 +20,7 @@ export async function getArticleBySlug(slug: string): Promise<Articles | null> {
         },
         category: { fields: ["name"] },
         comments: { count: true },
+        seo: { populate: "*" },
         topics: {
           populate: {
             title: {},

@@ -23,20 +23,19 @@ export default async function BrandsPage({ params }: any) {
   const content: any = await getBrandsBySlug(params.slug);
 
   if (!content) return notFound();
-
-  metadata.title = content.seo.metaTitle || "Заголовок";
-  metadata.description = content.seo.metaDescription || "Описание бренда";
-  metadata.keywords = content.title || ["бренд", "товары", "магазин"];
-  metadata.title = content.seo.metaTitle || "Заголовок";
-  metadata.description = content.seo.metaDescription || "Описание бренда";
+  metadata.title = content.seo?.metaTitle || "Заголовок";
+  metadata.description = content.seo?.metaDescription || "Описание бренда";
+  metadata.keywords = content?.title || ["бренд", "товары", "магазин"];
+  metadata.title = content.seo?.metaTitle || "Заголовок";
+  metadata.description = content.seo?.metaDescription || "Описание бренда";
   metadata.keywords = content.title
     ? [content.title]
     : ["бренд", "товары", "магазин"];
 
   if (metadata.openGraph) {
-    metadata.openGraph.title = content.seo.metaTitle || "Заголовок";
+    metadata.openGraph.title = content.seo?.metaTitle || "Заголовок";
     metadata.openGraph.description =
-      content.seo.metaDescription || "Описание бренда";
+      content.seo?.metaDescription || "Описание бренда";
   }
 
   const breadcrumbs = [

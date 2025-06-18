@@ -58,4 +58,16 @@ export type Articles = {
     count: number;
   };
   topics: Topic;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    metaImage?: string;
+  };
 };
+
+export interface PageProps {
+  params: {
+    slug: string;
+  };
+  searchParams?: Record<string, string>;
+}

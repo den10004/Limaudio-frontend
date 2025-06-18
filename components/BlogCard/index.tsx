@@ -3,7 +3,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getBackgroundColor } from "@/lib/getBackgroundColor";
-import empty from "./../../public/empty.webp";
 
 type cover = {
   url: string;
@@ -54,7 +53,7 @@ export default function BlogCard({ card, type }: any) {
             </div>
           ) : (
             <div className="card__img">
-              <Image src={empty} alt="blog" fill />
+              <Image src="/empty.webp" alt="blog" fill />
             </div>
           )}
 
