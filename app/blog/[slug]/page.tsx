@@ -39,11 +39,7 @@ interface UnknownBloc {
 }
 
 export default async function BlogPostPage({ params }: any) {
-  const content: Articles | null = await getArticleBySlug(params.slug);
-
-  if (!content) {
-    notFound();
-  }
+  const content: any = await getArticleBySlug(params.slug);
 
   const shareUrl = `${process.env.BLOGS_URL}/blog/${content.slug}`;
 
@@ -126,7 +122,7 @@ export default async function BlogPostPage({ params }: any) {
               <div className={styles.blog__content}>
                 <div className={styles.blog__part}>
                   {content?.cover?.url && (
-                    <img src={content.cover.url} alt={content.title} />
+                    <img src={content?.cover?.url} alt={content.title} />
                   )}
                   <p className="text blog-main">{content.description}</p>
                   <br />
@@ -144,6 +140,7 @@ export default async function BlogPostPage({ params }: any) {
                 {/*
                 <Comments />*/}
               </div>
+
               <BlockSimilarCard />
             </div>
           </div>
