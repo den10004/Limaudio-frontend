@@ -55,6 +55,7 @@ export default function BlogSimilar({ card }: any) {
             </svg>
             <span>{card.views}</span>
           </div>
+          {/*
           <div>
             <svg
               width="18"
@@ -71,7 +72,7 @@ export default function BlogSimilar({ card }: any) {
               ></path>
             </svg>
             <span>{card.comments.count}</span>
-          </div>
+          </div>*/}
         </div>
       </article>
     </Link>

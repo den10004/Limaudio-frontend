@@ -43,8 +43,6 @@ interface UnknownBloc {
 export default async function BlogPostPage({ params }: any) {
   const content: Articles | null = await getArticleBySlug(params.slug);
 
-  console.log(params);
-
   if (!content) {
     notFound();
   }

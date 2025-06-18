@@ -23,7 +23,7 @@ export default function BlockSimilarCard() {
   const [error, setError] = useState<string | null>(null);
   const sortedCards = [...allCards.data]
     .sort((a, b) => b.views - a.views)
-    .slice(0, 6);
+    .slice(0, 4);
 
   useEffect(() => {
     const fetchCards = async () => {
