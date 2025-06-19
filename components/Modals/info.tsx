@@ -2,10 +2,11 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
-export const Info: React.FC<{ res: string; colors?: string }> = ({
-  res,
-  colors,
-}) => {
+export const Info: React.FC<{
+  res: string;
+  colors?: string;
+  title?: string;
+}> = ({ res, colors }) => {
   const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
