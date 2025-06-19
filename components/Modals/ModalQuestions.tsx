@@ -1,10 +1,57 @@
-import styles from "./page.module.css";
+"use client";
+
+import PhoneInput from "@/utils/telMask";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Info } from "./info";
 
 interface ModalHeaderProps {
   onClose: () => void;
 }
 
 export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
+  const router = useRouter();
+  const [hedline, setHeadline] = useState("Есть вопрос");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/sendForm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ hedline, name, phone, email }),
+      });
+      router.push(`/thanks?name=${encodeURIComponent(name)}`);
+      onClose();
+      if (!res.ok) throw new Error("Ошибка отправки");
+
+      const resultData = await res.json();
+      setResult(
+        resultData.success ? "Успешно отправлено!" : "Ошибка отправки."
+      );
+
+      setPhone("");
+      setName("");
+      setEmail("");
+      setError(false);
+    } catch (err) {
+      setResult((err as Error).message);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div id="callback" className="modal">
       <div className="modal-content modal-position">
@@ -12,8 +59,15 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
           ×
         </span>
         <h3 className="text-h3-bold">Остались вопросы?</h3>
-        <form className="callbackform" action="/sendform" method="POST">
+        <form className="callbackform" onSubmit={handleSubmit}>
           <div className="comments__send__form-group">
+            <input
+              hidden
+              type="text"
+              name="headline"
+              value={hedline}
+              onChange={(e) => setHeadline(e.target.value)}
+            />
             <label className="text-small" htmlFor="name">
               Введите имя*
             </label>
@@ -22,6 +76,8 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
               className="inputform"
               id="name"
               minLength={3}
+              onChange={(e) => setName(e.target.value)}
+              value={name}
               name="name"
               required={true}
               placeholder="Гость"
@@ -31,14 +87,10 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
             <label className="text-small" htmlFor="phone">
               Введите номер телефона*
             </label>
-            <input
+            <PhoneInput
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="inputform"
-              type="tel"
-              id="phone"
-              name="phone"
-              pattern="(\+?\d[- .]*){7,}"
-              required={true}
-              placeholder="+7 (___) ___-__-__"
             />
           </div>
 
@@ -52,12 +104,18 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
               id="email"
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               name="email"
-              required={true}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
               placeholder="E-mail"
             />
           </div>
 
-          <button type="submit" className="blogbtnblue text-h3">
+          <button
+            type="submit"
+            className="blogbtnblue text-h3"
+            disabled={loading}
+          >
             Отправить
             <svg
               width="26"
@@ -73,6 +131,12 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
             </svg>
           </button>
         </form>
+        {!error && result && (
+          <Info
+            res={error ? "Ошибка" : "Письмо отправлено"}
+            colors={error ? "red" : "black"}
+          />
+        )}
       </div>
     </div>
   );
