@@ -2,12 +2,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
+import { Info } from "../Modals/info";
 
 export default function Subscription() {
-  const [subscribe, setSubscribe] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,8 +30,10 @@ export default function Subscription() {
         resultData.success ? "Успешно отправлено!" : "Ошибка отправки."
       );
       setEmail("");
+      setError(false);
     } catch (err) {
       setResult((err as Error).message);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -46,7 +49,6 @@ export default function Subscription() {
           <h3 className="text-h3-bold">
             Подпишитесь на рассылку и узнавайте о скидках и акциях
           </h3>
-
           <form onSubmit={handleSubmit}>
             <input
               type="email"
@@ -87,8 +89,12 @@ export default function Subscription() {
               </svg>
             </button>
           </form>
-          {result && <div>Письмо отправлено</div>}
-
+          {result && (
+            <Info
+              res={error ? "Ошибка" : "Письмо отправлено"}
+              colors={error ? "red" : "black"}
+            />
+          )}
           <div className="text-small">
             <span>
               Нажимая на стрелку "Далее", Вы даете согласие на получение

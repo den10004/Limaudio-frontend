@@ -1,0 +1,41 @@
+.infoModal {
+    display: block;
+    position: fixed;
+    top: auto;
+    bottom: 250px;
+    right: 60px;
+    background: var(--color-grayF1);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 5;
+    border: 1px solid var(--color-black1C);
+    animation: slideUp 0.3s ease-out forwards;
+}
+
+.infoModal.hide {
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
