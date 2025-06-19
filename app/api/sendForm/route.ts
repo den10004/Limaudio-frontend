@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
         Тема: ${hedline}
         Имя: ${name} 
         Телефон: ${phone}
-        Email: ${email}
-        Сообщение: ${comment}`,
+        Email:  ${email || ""}
+        Сообщение: ${comment || ""}`,
     };
 
     await transporter.sendMail(mailOptions);

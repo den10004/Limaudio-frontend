@@ -56,16 +56,16 @@ export default function QuestionForm() {
           <form className="comments__send__form" onSubmit={handleSubmit}>
             <div className={styles.contacts__form}>
               <div className={styles.comments__send__form_group}>
-                <label className="text-small" htmlFor="name">
-                  Введите имя*
-                </label>
                 <input
                   hidden
                   type="text"
-                  name="question"
+                  name="headline"
                   value={hedline}
                   onChange={(e) => setHeadline(e.target.value)}
                 />
+                <label className="text-small" htmlFor="name">
+                  Введите имя*
+                </label>
                 <input
                   type="text"
                   className="inputform"
