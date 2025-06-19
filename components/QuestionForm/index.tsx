@@ -1,16 +1,51 @@
+"use client";
+import { useState } from "react";
 import styles from "./page.module.css";
 
 export default function QuestionForm() {
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [comment, SetComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/sendForm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, name, phone, comment }),
+      });
+
+      if (!res.ok) throw new Error("Ошибка отправки");
+
+      const resultData = await res.json();
+      setResult(
+        resultData.success ? "Успешно отправлено!" : "Ошибка отправки."
+      );
+      setEmail("");
+      setError(false);
+    } catch (err) {
+      setResult((err as Error).message);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="sendForm">
       <div className="container">
         <div className={`${styles.comments__send} ${styles.comments__card} `}>
           <h3 className="text-h2">Остались вопросы?</h3>
-          <form
-            className="comments__send__form"
-            action="/sendform"
-            method="POST"
-          >
+          <form className="comments__send__form" onSubmit={handleSubmit}>
             <div className={styles.contacts__form}>
               <div className={styles.comments__send__form_group}>
                 <label className="text-small" htmlFor="name">
@@ -21,6 +56,8 @@ export default function QuestionForm() {
                   className="inputform"
                   id="name"
                   minLength={3}
+                  onChange={(e) => setName(e.target.value)}
+                  value={name}
                   name="name"
                   required
                   placeholder="Гость"
@@ -34,8 +71,9 @@ export default function QuestionForm() {
                   className="inputform"
                   type="tel"
                   id="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   name="phone"
-                  pattern="(\+?\d[- .]*){7,}"
                   required
                   placeholder="+7 (___) ___-__-__"
                 />
@@ -51,6 +89,8 @@ export default function QuestionForm() {
                   id="email"
                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="E-mail"
                 />
@@ -58,13 +98,15 @@ export default function QuestionForm() {
             </div>
 
             <div className={styles.comments__send__form_group}>
-              <label className="text-small" htmlFor="comment-area">
+              <label className="text-small" htmlFor="comment">
                 Ваш вопрос*
               </label>
               <textarea
                 className="inputform"
-                id="comments"
-                name="comment-area"
+                id="comment"
+                name="comment"
+                value={comment}
+                onChange={(e) => SetComment(e.target.value)}
                 required
                 placeholder="Ваш вопрос"
               ></textarea>

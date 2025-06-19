@@ -16,11 +16,7 @@ export default function ApplicationForm() {
             <p className="text-small">руководитель отдела Hi-END AV</p>
           </div>
         </div>
-        <form
-          className={styles.application__sendform}
-          action="/sendform"
-          method="POST"
-        >
+        <form className={styles.application__sendform}>
           <div className={styles.application__form_group}>
             <label className="text-small" htmlFor="name">
               Введите имя*

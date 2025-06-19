@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
-  const { email } = await req.json();
+  const { email, name, phone, comment } = await req.json();
 
   try {
     const transporter = nodemailer.createTransport({
@@ -19,8 +19,11 @@ export async function POST(req: NextRequest) {
       from: `"" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO,
       subject: "Сообщение с сайта Limaudio",
-      text: `Email: ${email}
-      Сообщение: "подписка на рассылку"`,
+      text: `
+        Имя: ${name} 
+        Телефон: ${phone},
+        Email: ${email},
+        Сообщение: ${comment}`,
     };
 
     await transporter.sendMail(mailOptions);
