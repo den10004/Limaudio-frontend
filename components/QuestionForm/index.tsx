@@ -3,9 +3,10 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import PhoneInput from "@/utils/telMask";
 import { Info } from "../Modals/info";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function QuestionForm() {
+  const router = useRouter();
   const [hedline, setHeadline] = useState("Есть вопрос");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -27,7 +28,7 @@ export default function QuestionForm() {
         },
         body: JSON.stringify({ hedline, email, name, phone, comment }),
       });
-      window.location.href = "/thanks";
+      router.push(`/thanks?name=${encodeURIComponent(name)}`);
       if (!res.ok) throw new Error("Ошибка отправки");
 
       const resultData = await res.json();
@@ -81,18 +82,6 @@ export default function QuestionForm() {
                 <label className="text-small" htmlFor="phone">
                   Введите номер телефона*
                 </label>
-                {/*
-                <input
-                  className="inputform"
-                  type="tel"
-                  id="phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  name="phone"
-                  required
-                  placeholder="+7 (___) ___-__-__"
-                />*/}
-
                 <PhoneInput
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
