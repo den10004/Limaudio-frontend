@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import styles from "./page.module.css";
+import PhoneInput from "@/utils/telMask";
+import { Info } from "../Modals/info";
 
 export default function QuestionForm() {
   const [email, setEmail] = useState("");
@@ -23,7 +25,7 @@ export default function QuestionForm() {
         },
         body: JSON.stringify({ email, name, phone, comment }),
       });
-
+      window.location.href = "/thanks";
       if (!res.ok) throw new Error("Ошибка отправки");
 
       const resultData = await res.json();
@@ -67,6 +69,7 @@ export default function QuestionForm() {
                 <label className="text-small" htmlFor="phone">
                   Введите номер телефона*
                 </label>
+                {/*
                 <input
                   className="inputform"
                   type="tel"
@@ -76,6 +79,12 @@ export default function QuestionForm() {
                   name="phone"
                   required
                   placeholder="+7 (___) ___-__-__"
+                />*/}
+
+                <PhoneInput
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="inputform"
                 />
               </div>
 
@@ -129,6 +138,13 @@ export default function QuestionForm() {
               </svg>
             </button>
           </form>
+
+          {!error && result && (
+            <Info
+              res={error ? "Ошибка" : "Письмо отправлено"}
+              colors={error ? "red" : "black"}
+            />
+          )}
         </div>
       </div>
     </section>
