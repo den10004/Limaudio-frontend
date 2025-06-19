@@ -18,7 +18,6 @@ export default function QuestionForm() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-    const router = useRouter();
 
     try {
       const res = await fetch("/api/sendForm", {
@@ -28,7 +27,7 @@ export default function QuestionForm() {
         },
         body: JSON.stringify({ hedline, email, name, phone, comment }),
       });
-      router.push("/thanks");
+      window.location.href = "/thanks";
       if (!res.ok) throw new Error("Ошибка отправки");
 
       const resultData = await res.json();
