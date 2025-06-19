@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
-  const { email, name, phone, comment } = await req.json();
+  const { hedline, email, name, phone, comment } = await req.json();
 
   try {
     const transporter = nodemailer.createTransport({
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       to: process.env.EMAIL_TO,
       subject: "Сообщение с сайта Limaudio",
       text: `
-        Тема: Задать вопрос
+        Тема: ${hedline}
         Имя: ${name} 
         Телефон: ${phone}
         Email: ${email}

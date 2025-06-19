@@ -6,6 +6,7 @@ import { Info } from "../Modals/info";
 import { useRouter } from "next/router";
 
 export default function QuestionForm() {
+  const [hedline, setHeadline] = useState("Есть вопрос");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
@@ -25,7 +26,7 @@ export default function QuestionForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, name, phone, comment }),
+        body: JSON.stringify({ hedline, email, name, phone, comment }),
       });
       router.push("/thanks");
       if (!res.ok) throw new Error("Ошибка отправки");
@@ -58,6 +59,13 @@ export default function QuestionForm() {
                 <label className="text-small" htmlFor="name">
                   Введите имя*
                 </label>
+                <input
+                  hidden
+                  type="text"
+                  name="question"
+                  value={hedline}
+                  onChange={(e) => setHeadline(e.target.value)}
+                />
                 <input
                   type="text"
                   className="inputform"
