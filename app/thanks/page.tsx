@@ -4,8 +4,6 @@ import { Suspense } from "react";
 import ThankYou from "@/components/ThankYou";
 
 export default function Thanks() {
-
-
   return (
     <div className={styles.pageWrapper}>
       <main className={styles.mainContent}>
@@ -14,9 +12,8 @@ export default function Thanks() {
             <div className={styles.thanks__wrap}>
               <div className={styles.thanks__info}>
                 <Suspense fallback={<div></div>}>
-<ThankYou />
-    </Suspense>
-            
+                  <ThankYou />
+                </Suspense>
               </div>
               <div className={styles.thanks__img}>
                 <Image fill src="/thanks.webp" alt="спасибо" />
