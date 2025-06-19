@@ -1,7 +1,7 @@
 "use client";
 
 import PhoneInput from "@/utils/telMask";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Info } from "./info";
 
@@ -11,7 +11,7 @@ interface ModalHeaderProps {
 
 export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
   const router = useRouter();
-  const [hedline, setHeadline] = useState("Есть вопрос");
+  const [hedline, setHeadline] = useState("Заказать звонок");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
