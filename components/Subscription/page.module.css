@@ -53,6 +53,12 @@
     transition: stroke 0.3s ease-in-out, fill 0.3s ease-in-out;
 }
 
+.send_btn_disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #999;
+    color: #ccc;
+}
 
 
 .subscription__block>div {
