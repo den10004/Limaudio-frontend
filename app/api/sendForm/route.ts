@@ -20,9 +20,10 @@ export async function POST(req: NextRequest) {
       to: process.env.EMAIL_TO,
       subject: "Сообщение с сайта Limaudio",
       text: `
+        Тема: Задать вопрос
         Имя: ${name} 
-        Телефон: ${phone},
-        Email: ${email},
+        Телефон: ${phone}
+        Email: ${email}
         Сообщение: ${comment}`,
     };
 

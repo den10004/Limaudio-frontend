@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import PhoneInput from "@/utils/telMask";
 import { Info } from "../Modals/info";
+import { useRouter } from "next/router";
 
 export default function QuestionForm() {
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ export default function QuestionForm() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
+    const router = useRouter();
 
     try {
       const res = await fetch("/api/sendForm", {
@@ -25,7 +27,7 @@ export default function QuestionForm() {
         },
         body: JSON.stringify({ email, name, phone, comment }),
       });
-      window.location.href = "/thanks";
+      router.push("/thanks");
       if (!res.ok) throw new Error("Ошибка отправки");
 
       const resultData = await res.json();
@@ -33,6 +35,9 @@ export default function QuestionForm() {
         resultData.success ? "Успешно отправлено!" : "Ошибка отправки."
       );
       setEmail("");
+      setPhone("");
+      setName("");
+      SetComment("");
       setError(false);
     } catch (err) {
       setResult((err as Error).message);
@@ -121,7 +126,11 @@ export default function QuestionForm() {
               ></textarea>
             </div>
 
-            <button type="submit" className="blogbtnblue standart-btn text-h3">
+            <button
+              type="submit"
+              className="blogbtnblue standart-btn text-h3"
+              disabled={loading}
+            >
               Отправить
               <svg
                 width="26"
