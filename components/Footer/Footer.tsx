@@ -101,10 +101,14 @@ export default function Footer() {
         <div className={styles.footer__right}>
           <div>
             <ul className="text16">
-              <li className="text">
+              <li className="text" style={{ cursor: "pointer" }}>
                 <Link href="tel:88007700473">8 (800) 770-04-73</Link>
               </li>
-              <li className="text-small" onClick={() => setCallbackModal(true)}>
+              <li
+                className="text-small"
+                onClick={() => setCallbackModal(true)}
+                style={{ cursor: "pointer" }}
+              >
                 Заказать обратный звонок
               </li>
             </ul>

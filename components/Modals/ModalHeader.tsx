@@ -1,11 +1,15 @@
+"use client";
 import Link from "next/link";
 import { linksFooter } from "@/lib/footerLinks";
+import { useState } from "react";
+import { ModalQuestions } from "./ModalQuestions";
 
 interface ModalHeaderProps {
   onClose: () => void;
 }
 
 export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
+  const [callbackModal, setCallbackModal] = useState(false);
   return (
     <div id="myModal" className="modal">
       <div className="modal-content">
@@ -40,10 +44,12 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
 
           <br />
           <Link href="tel:88007700473">8 (800) 770-04-73</Link>
-          <Link href="/">Заказать обратный звонок</Link>
+          <Link href="/" onClick={() => setCallbackModal(true)}>
+            Заказать обратный звонок
+          </Link>
         </ul>
         <ul className="modal__icons">
-          <Link href="https://wa.me/79200000000">
+          <Link href="https://t.me/example_user">
             <svg
               width="40"
               height="40"
@@ -64,7 +70,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
             </svg>
           </Link>
 
-          <Link href="https://t.me/example_user">
+          <Link href="https://wa.me/79200000000">
             <svg
               width="40"
               height="40"
@@ -80,6 +86,10 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
           </Link>
         </ul>
       </div>
+
+      {callbackModal && (
+        <ModalQuestions onClose={() => setCallbackModal(false)} />
+      )}
     </div>
   );
 };
