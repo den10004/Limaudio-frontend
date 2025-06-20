@@ -1,8 +1,9 @@
 "use client";
-import styles from "./page.module.css";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import styles from "./page.module.css";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -39,9 +40,88 @@ export default function Markdown({ blocs }: any) {
                       h6: ({ node, ...props }) => (
                         <h6 style={{ marginBottom: "0.8rem" }} {...props} />
                       ),
-                      p: ({ node, ...props }) => (
-                        <p style={{ margin: "0.8rem 0" }} {...props} />
+                      p: ({ node, children, ...props }) => {
+                        if (
+                          Array.isArray(children) &&
+                          children.length === 1 &&
+                          React.isValidElement(children[0]) &&
+                          (children[0].type === "ul" ||
+                            children[0].type === "ol")
+                        ) {
+                          return children[0];
+                        }
+                        return (
+                          <p style={{ margin: "0.8rem 0" }} {...props}>
+                            {children}
+                          </p>
+                        );
+                      },
+                      ul: ({ node, ...props }) => (
+                        <ul
+                          style={{
+                            margin: "0.8rem 0 0",
+                            paddingLeft: "1.5rem",
+                            listStyleType: "disc",
+                          }}
+                          {...props}
+                        />
                       ),
+                      ol: ({ node, ...props }) => (
+                        <ol
+                          style={{
+                            margin: "0.8rem 0",
+                            paddingLeft: "1.5rem",
+                            listStyleType: "decimal",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      li: ({ node, ...props }) => (
+                        <li
+                          style={{
+                            marginBottom: "0.4rem",
+                            lineHeight: "140%",
+                            fontFamily: '"Roboto", "Arial", sans-serif',
+                          }}
+                          {...props}
+                        />
+                      ),
+                      pre: ({ node, ...props }) => (
+                        <pre
+                          style={{
+                            overflowX: "auto",
+                            paddingLeft: "15px",
+                            margin: "1rem 0",
+                          }}
+                          {...props}
+                        />
+                      ),
+                      code: ({
+                        node,
+                        inline,
+                        className,
+                        children,
+                        ...props
+                      }: any) =>
+                        inline ? (
+                          <code
+                            style={{
+                              fontFamily: '"Roboto", "Arial", sans-serif',
+                            }}
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        ) : (
+                          <code
+                            style={{
+                              fontFamily: '"Roboto", "Arial", sans-serif',
+                            }}
+                            {...props}
+                          >
+                            {children}
+                          </code>
+                        ),
                       img: ({ src, alt, title }) => (
                         <img
                           src={src}
