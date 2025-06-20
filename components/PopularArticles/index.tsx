@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
 import { CardsResponse } from "@/types/card";
 import Headline from "@/app/UI/headline";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 export default function PopularArticles() {
   const [allCards, setAllCards] = useState<CardsResponse>({
@@ -53,6 +54,7 @@ export default function PopularArticles() {
         <Headline text="Популярные статьи" />
 
         <div className="interes__card">
+          {isLoading && <CardSkeleton />}
           {error && <div style={{ color: "red" }}>{error}</div>}
           {!isLoading && !allCards && (
             <div style={{ fontSize: "40px", fontWeight: 600 }}>

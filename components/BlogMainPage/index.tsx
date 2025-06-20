@@ -86,34 +86,37 @@ export default function BlogMainPage() {
   const showMore = () => setVisibleGroups((prev) => prev + 2);
 
   return (
-    <div className="container">
-      <div className="cards_container">
-        {visibleGrouped.map((group, index) => (
-          <div
-            key={index}
-            className={`row ${group.type === "big" ? "big-row" : "small-row"}`}
-          >
-            {group.cards.map((card, i) => (
-              <BlogCard key={i} card={card} type={group.type} />
-            ))}
-          </div>
-        ))}
-        {isLoading && <CardSkeleton />}
-        {error && <div style={{ color: "red" }}>{error}</div>}
-        {!isLoading && allCards.data.length === 0 && (
-          <div style={{ fontSize: "40px", fontWeight: 600 }}>
-            Нет доступных блогов
+    <>
+      <div className="container">
+        <div className="cards_container">
+          {visibleGrouped.map((group, index) => (
+            <div
+              key={index}
+              className={`row ${
+                group.type === "big" ? "big-row" : "small-row"
+              }`}
+            >
+              {group.cards.map((card, i) => (
+                <BlogCard key={i} card={card} type={group.type} />
+              ))}
+            </div>
+          ))}
+          {isLoading && <CardSkeleton />}
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          {!isLoading && allCards.data.length === 0 && (
+            <div style={{ fontSize: "40px", fontWeight: 600 }}>
+              Нет доступных блогов
+            </div>
+          )}
+        </div>
+        {visibleGroups < groupedCards.length && (
+          <div className="show-more-wrapper">
+            <button onClick={showMore} className="showbtn text">
+              Посмотреть все
+            </button>
           </div>
         )}
       </div>
-
-      {visibleGroups < groupedCards.length && (
-        <div className="show-more-wrapper">
-          <button onClick={showMore} className="showbtn text">
-            Посмотреть все
-          </button>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
