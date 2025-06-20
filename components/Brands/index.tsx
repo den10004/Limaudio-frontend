@@ -4,12 +4,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import BrandSliderSkeleton from "../Loading/BrandSliderSkeleton";
 import Headline from "@/app/UI/headline";
 import Image from "next/image";
 import styles from "./page.module.css";
 import "swiper/css";
 import "swiper/css/navigation";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 interface Brand {
   slug: string;
@@ -58,15 +58,13 @@ export default function Brands() {
         <div className={styles.brand_head}>
           <Headline text={"Бренды"} link={"/brands"} />
         </div>
-
-        {isLoading && <BrandSliderSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
         {!isLoading && allCards.length === 0 && (
           <div style={{ fontSize: "40px", fontWeight: 600 }}>
             Нет доступных брендов
           </div>
         )}
-
+        {isLoading && <CardSkeleton heightPx="242px" />}
         <div className="brands__block" style={{ position: "relative" }}>
           {!isExpanded && (
             <>

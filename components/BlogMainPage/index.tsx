@@ -101,7 +101,7 @@ export default function BlogMainPage() {
               ))}
             </div>
           ))}
-          {isLoading && <CardSkeleton />}
+          {isLoading && <CardSkeleton heightPx="1317px" />}
           {error && <div style={{ color: "red" }}>{error}</div>}
           {!isLoading && allCards.data.length === 0 && (
             <div style={{ fontSize: "40px", fontWeight: 600 }}>

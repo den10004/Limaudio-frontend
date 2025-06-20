@@ -54,7 +54,7 @@ export default function PopularArticles() {
         <Headline text="Популярные статьи" />
 
         <div className="interes__card">
-          {isLoading && <CardSkeleton />}
+          {isLoading && <CardSkeleton heightPx="551px" />}
           {error && <div style={{ color: "red" }}>{error}</div>}
           {!isLoading && !allCards && (
             <div style={{ fontSize: "40px", fontWeight: 600 }}>

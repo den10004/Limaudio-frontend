@@ -110,10 +110,12 @@ export default function BlogPage() {
           </>
         )}
         {!isLoading && !articles.length && (
-          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+          <div style={{ fontSize: "40px", fontWeight: 600, height: "20px" }}>
             Нет доступных блогов
           </div>
         )}
+
+        {isLoading && <CardSkeleton heightPx="531px" marginPx="20px" />}
         {error && <div style={{ color: "red" }}>{error}</div>}
         <div className="cards_container">
           <div
@@ -124,8 +126,6 @@ export default function BlogPage() {
               gap: "22px",
             }}
           >
-            {isLoading && <CardSkeleton />}
-
             {articles.map((card) => (
               <div key={card.id}>
                 <BlogCard card={card} type="small" />

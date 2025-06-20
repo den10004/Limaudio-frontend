@@ -2,10 +2,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import PopularSkeleton from "../Loading/PopularSkeleton";
 import Tags from "../Tags";
 import styles from "./page.module.css";
 import Headline from "@/app/UI/headline";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 interface Image {
   id: number;
@@ -231,7 +231,7 @@ export default function Popular() {
         id="linksList"
       >
         {uniqueTags && <Tags uniqueTags={topics} onTagClick={handleTagClick} />}
-        {isLoading && <PopularSkeleton />}
+        {isLoading && <CardSkeleton heightPx="112px" marginPx="10px" />}
         {error && <div style={{ color: "red" }}>{error}</div>}
       </ul>
 

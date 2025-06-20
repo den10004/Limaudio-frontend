@@ -4,6 +4,7 @@ import BlogSimilar from "@/components/BlogSimilar";
 import { CardsResponse } from "@/types/card";
 import "./styles.css";
 import Headline from "@/app/UI/headline";
+import CardSkeleton from "../Loading/CardSkeleton";
 
 export default function BlockSimilarCard() {
   const [allCards, setAllCards] = useState<CardsResponse>({
@@ -50,7 +51,9 @@ export default function BlockSimilarCard() {
   return (
     <div className="blog__similar">
       <Headline text="Похожие статьи" />
-      <h3 className="text-h3-bold"></h3>
+      {isLoading && (
+        <CardSkeleton heightPx="1558px" marginPx="20px" widthPx="100%" />
+      )}
       {sortedCards.map((card) => (
         <BlogSimilar key={card.id} card={card} type="small" />
       ))}
