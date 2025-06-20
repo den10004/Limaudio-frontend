@@ -1,35 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
-export async function POST(req: NextRequest) {
-  const { email } = await req.json();
+export async function POST(request: NextRequest) {
+  const { email } = await request.json();
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.timeweb.ru",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+    const res = await fetch(`${process.env.API_URL}/subscribers`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.TOKEN}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        data: {
+          Email: email,
+        },
+      }),
     });
 
-    const mailOptions = {
-      from: `"" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_TO,
-      subject: "Сообщение с сайта Limaudio",
-      text: `Email: ${email}
-      Сообщение: "подписка на рассылку"`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    return NextResponse.json({ success: true });
+    const data = await res.json();
+    return NextResponse.json(data);
   } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { error: "Ошибка отправки письма" },
+      { error: "Ошибка при отправке email" },
       { status: 500 }
     );
   }

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { Info } from "../Modals/info";
@@ -7,12 +7,17 @@ import { Info } from "../Modals/info";
 export default function Subscription() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState(false);
+  const [info, setInfo] = useState<{ message: string; color: string } | null>(
+    null
+  );
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     setLoading(true);
+    setError(false);
+    setInfo(null);
 
     try {
       const res = await fetch("/api/subscribe", {
@@ -23,22 +28,24 @@ export default function Subscription() {
         body: JSON.stringify({ email }),
       });
 
-      if (!res.ok) throw new Error("Ошибка отправки");
-
       const resultData = await res.json();
-      setResult(
-        resultData.success ? "Успешно отправлено!" : "Ошибка отправки."
-      );
-      setEmail("");
-      setError(false);
+
+      if (res.ok) {
+        setError(false);
+        setInfo({ message: "Вы успешно подписаны", color: "black" });
+        setEmail("");
+      } else {
+        setError(true);
+        setInfo({ message: resultData.message || "Ошибка", color: "red" });
+      }
     } catch (err) {
-      setResult((err as Error).message);
+      console.error(err);
       setError(true);
+      setInfo({ message: "Произошла ошибка при подписке", color: "red" });
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <section className={styles.subscription}>
       <div className="container">
@@ -89,12 +96,8 @@ export default function Subscription() {
               </svg>
             </button>
           </form>
-          {result && (
-            <Info
-              res={error ? "Ошибка" : "Письмо отправлено"}
-              colors={error ? "red" : "black"}
-            />
-          )}
+          {info && <Info res={info.message} colors={info.color} />}
+
           <div className="text-small">
             <span>
               Нажимая на стрелку "Далее", Вы даете согласие на получение
