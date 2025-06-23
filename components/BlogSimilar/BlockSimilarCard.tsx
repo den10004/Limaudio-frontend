@@ -29,8 +29,6 @@ export default function BlockSimilarCard({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log(slug, topic);
-
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -54,15 +52,13 @@ export default function BlockSimilarCard({
     }
   }, []);
 
-  console.log(allCards);
-
   return (
     <div className="blog__similar">
       <Headline text="Похожие статьи" />
       {isLoading && (
         <CardSkeleton heightPx="1558px" marginPx="20px" widthPx="100%" />
       )}
-
+      {error && <div style={{ color: "red" }}>{error}</div>}
       {allCards.data?.map((card) => (
         <BlogSimilar key={card.id} card={card} type="small" />
       ))}

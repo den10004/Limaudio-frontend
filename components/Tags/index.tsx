@@ -28,9 +28,14 @@ interface TagsProps {
   uniqueTags: any;
   // uniqueTags: uniqueTags;
   onTagClick?: (selectedTags: (string | null)[]) => void;
+  filter?: boolean;
 }
 
-export default function Tags({ uniqueTags = [], onTagClick }: TagsProps) {
+export default function Tags({
+  uniqueTags = [],
+  onTagClick,
+  filter,
+}: TagsProps) {
   const [selectedTags, setSelectedTags] = useState<(string | null)[]>([]);
   if (!uniqueTags) {
     return null;
@@ -59,10 +64,17 @@ export default function Tags({ uniqueTags = [], onTagClick }: TagsProps) {
           <li
             key={e.id}
             className={`${styles.tag} ${
-              selectedTags.includes(e.title ?? null) ? styles.selected : ""
+              filter
+                ? ""
+                : selectedTags.includes(e.title ?? null ?? null)
+                ? styles.selected
+                : ""
             }`}
           >
             <Link
+              style={{
+                cursor: filter ? "default" : "pointer",
+              }}
               href="/"
               onClick={(event) => {
                 event.preventDefault();

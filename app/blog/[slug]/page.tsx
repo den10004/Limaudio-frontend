@@ -150,8 +150,7 @@ export default async function BlogPostPage({ params }: any) {
                     <MarkdownBlog blocs={blocs} />
                   </div>
 
-                  {/*
-                  {tags && <Tags tags={tags} />}*/}
+                  {tags && <Tags uniqueTags={tags} filter={true} />}
                 </div>
 
                 <Share shareUrl={shareUrl} />
