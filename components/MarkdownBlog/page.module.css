@@ -6,3 +6,11 @@
     aspect-ratio: 16 / 9;
     border-radius: 20px;
 }
+
+.listUl>li {
+    list-style-type: disc;
+}
+
+.listOl>li {
+    list-style-type: decimal;
+}

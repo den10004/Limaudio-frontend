@@ -58,6 +58,7 @@ export default function Markdown({ blocs }: any) {
                       },
                       ul: ({ node, ...props }) => (
                         <ul
+                          className={styles.listUl}
                           style={{
                             margin: "0.8rem 0 0",
                             paddingLeft: "1.5rem",
@@ -68,6 +69,7 @@ export default function Markdown({ blocs }: any) {
                       ),
                       ol: ({ node, ...props }) => (
                         <ol
+                          className={styles.listOl}
                           style={{
                             margin: "0.8rem 0",
                             paddingLeft: "1.5rem",

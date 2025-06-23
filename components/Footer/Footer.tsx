@@ -66,7 +66,7 @@ export default function Footer() {
                 </g>
               </svg>
             </Link>
-            <Link className="text14" href="/polytic">
+            <Link className="text16" href="/polytic">
               Политика конфиденциальности
             </Link>
           </div>
@@ -76,9 +76,6 @@ export default function Footer() {
             <li>
               <Link href="/">О компании</Link>
             </li>*/}
-            <li>
-              <Link href="/contacts">Контакты</Link>
-            </li>
             {/*
             <li>
               <Link href="/">Каталог</Link>
@@ -105,19 +102,21 @@ export default function Footer() {
                 <Link href="tel:88007700473">8 (800) 770-04-73</Link>
               </li>
               <li
-                className="text-small"
                 onClick={() => setCallbackModal(true)}
                 style={{ cursor: "pointer" }}
               >
                 Заказать обратный звонок
+              </li>
+              <li>
+                <Link href="/contacts">Контакты</Link>
               </li>
             </ul>
             <ul className={styles.footer__icons}>
               <li>
                 <Link href="https://wa.me/79200000000">
                   <svg
-                    width="18"
-                    height="18"
+                    width="30"
+                    height="30"
                     viewBox="0 0 18 18"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,8 +131,8 @@ export default function Footer() {
               <li>
                 <Link href="https://t.me/example_user">
                   <svg
-                    width="17"
-                    height="18"
+                    width="30"
+                    height="30"
                     viewBox="0 0 17 18"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
