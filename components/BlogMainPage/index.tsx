@@ -51,8 +51,6 @@ export default function BlogMainPage() {
     length: undefined,
   });
 
-  console.log(allCards);
-
   const [visibleGroups, setVisibleGroups] = useState(INITIAL_VISIBLE_GROUPS);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

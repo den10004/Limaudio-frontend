@@ -41,6 +41,7 @@ type CardItemProps = {
 };
 
 export default function BlogCard({ card, type }: any) {
+  console.log(card);
   return (
     <Link href={`/blog/${card.slug}`}>
       <div
@@ -59,18 +60,20 @@ export default function BlogCard({ card, type }: any) {
           )}
 
           <div className="labelblock-big">
-            <div
-              className="label comparison-label label-color"
-              style={{
-                backgroundColor: getBackgroundColor(card.category.name),
-                color:
-                  card.type === "silver" || card.type === "gold"
-                    ? "black"
-                    : "white",
-              }}
-            >
-              {card.category.name}
-            </div>
+            {card.category?.name && (
+              <div
+                className="label comparison-label label-color"
+                style={{
+                  backgroundColor: getBackgroundColor(card.category?.name),
+                  color:
+                    card.type === "silver" || card.type === "gold"
+                      ? "black"
+                      : "white",
+                }}
+              >
+                {card.category.name}
+              </div>
+            )}
             <div className="label show-label show-label-min label-color">
               <svg
                 width="18"
