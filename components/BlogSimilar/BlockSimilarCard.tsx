@@ -51,7 +51,6 @@ export default function BlockSimilarCard() {
   return (
     <div className="blog__similar">
       <Headline text="Похожие статьи" />
-      <div style={{ height: "20px" }}></div>
       {isLoading && (
         <CardSkeleton heightPx="1558px" marginPx="20px" widthPx="100%" />
       )}
