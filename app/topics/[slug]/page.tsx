@@ -87,10 +87,11 @@ export default function TopicPage() {
   const displayTopic = normalizedSlug;
 
   return (
-    <div className="container">
-      <h1>{displayTopic}</h1>
-
-      <div className="interes__card">
+    <>
+      <div className="container">
+        <div style={{ height: "20px" }}></div>
+        <h1>{displayTopic}</h1>
+        <div style={{ height: "20px" }}></div>
         {loading && <CardSkeleton />}
         {error && <div style={{ color: "red" }}>{error}</div>}
         {!loading && articles.length === 0 && (
@@ -98,13 +99,17 @@ export default function TopicPage() {
             Нет доступных блогов
           </div>
         )}
-        {articles.map((card) => (
-          <BlogCard key={card.id} card={card} type="small" />
-        ))}
-      </div>
 
-      <PopularArticles />
+        <div className="interes__card">
+          <div className="cards_container">
+            {articles.map((card) => (
+              <BlogCard key={card.id} card={card} type="small" />
+            ))}
+          </div>
+        </div>
+        <PopularArticles />
+      </div>
       <Brands />
-    </div>
+    </>
   );
 }
