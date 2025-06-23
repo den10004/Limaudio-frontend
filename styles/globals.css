@@ -97,6 +97,14 @@ button {
     line-height: 114%;
 }
 
+.text-h2d {
+    font-family: "Roboto", "Arial", sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 114%;
+}
+
+
 .text-h3-bold {
     font-family: "Roboto", "Arial", sans-serif;
     font-size: 24px;
@@ -386,6 +394,11 @@ textarea {
         font-size: 22px;
         font-weight: 500;
         line-height: 100%;
+    }
+
+    .text-h2d {
+        font-size: 24px;
+
     }
 
     .text-h3-bold {

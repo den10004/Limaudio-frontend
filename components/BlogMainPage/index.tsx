@@ -20,9 +20,9 @@ const groupCards = (cards: Card[]): GroupedCard[] => {
     grouped.push({ type: "big", cards: [cards[i]] });
     i++;
     if (i < cards.length) {
-      const group = cards.slice(i, i + 3);
+      const group = cards.slice(i, i + 2);
       grouped.push({ type: "small", cards: group });
-      i += 3;
+      i += 2;
     }
   }
 
@@ -36,7 +36,7 @@ export default function BlogMainPage() {
   const searchQuery = searchParams.get("searchQuery") || "";
   const tags = searchParams.getAll("tags[]");
 
-  const INITIAL_VISIBLE_GROUPS = 4;
+  const INITIAL_VISIBLE_GROUPS = 3;
 
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],
@@ -50,6 +50,8 @@ export default function BlogMainPage() {
     },
     length: undefined,
   });
+
+  console.log(allCards);
 
   const [visibleGroups, setVisibleGroups] = useState(INITIAL_VISIBLE_GROUPS);
   const [isLoading, setIsLoading] = useState(true);

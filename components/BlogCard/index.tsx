@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getBackgroundColor } from "@/lib/getBackgroundColor";
+import { formatIsoToDDMMYYYY } from "@/utils/mainFormatDate";
 
 type cover = {
   url: string;
@@ -111,9 +112,9 @@ export default function BlogCard({ card, type }: any) {
           </div>
         </div>
         <div className="card__desc">
-          <h2 className="text-h2">{card.title}</h2>
+          <h2 className="text-h2d">{card.title}</h2>
           <p className="text">{card.description}</p>
-          <span className="text16">{card.date}</span>
+          <span className="text16">{formatIsoToDDMMYYYY(card.createdAt)}</span>
         </div>
       </div>
     </Link>

@@ -14,7 +14,7 @@
     margin-top: 15px;
     margin-bottom: 15px;
     display: -webkit-box;
-    -webkit-line-clamp: 7;
+    -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -50,7 +50,7 @@
 .row.small-row {
     display: grid;
     gap: 24px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     width: 100%;
 }
 

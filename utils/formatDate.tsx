@@ -2,7 +2,7 @@ export const FormatDate = (dateString: string): string => {
   const date = new Date(dateString);
 
   if (isNaN(date.getTime())) {
-    return "Invalid date"; // или return "";
+    return "Invalid date";
   }
 
   return date.toLocaleDateString("en-US", {
