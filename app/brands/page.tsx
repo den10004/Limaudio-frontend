@@ -12,7 +12,7 @@ const breadcrumbs = [
 export default function Brands() {
   return (
     <>
-      <div className="container" style={{ width: "100%" }}>
+      <div className="container" style={{ width: "100%", flex: 1 }}>
         <Breadcrumbs items={breadcrumbs} />
         <BrandSearch />
       </div>

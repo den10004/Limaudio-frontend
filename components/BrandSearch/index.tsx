@@ -117,7 +117,6 @@ export default function BrandSearch() {
           <button className="text16">Найти</button>
         </form>
 
-        <CardSkeleton heightPx="531px" />
         {error && <div style={{ color: "red" }}>{error}</div>}
 
         <div className={styles.alphabet_container}>
@@ -146,7 +145,6 @@ export default function BrandSearch() {
                   <li key={index}>
                     <Link
                       href={`/brands/${brand.slug}`}
-                      target="_blank"
                       rel="noopener noreferrer"
                     >
                       {brand.title}
@@ -166,7 +164,6 @@ export default function BrandSearch() {
                 <li key={index}>
                   <Link
                     href={`/brands/${brand.slug}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     {brand.title}
@@ -188,7 +185,6 @@ export default function BrandSearch() {
                   <li key={index}>
                     <Link
                       href={`/brands/${brand.slug}`}
-                      target="_blank"
                       rel="noopener noreferrer"
                     >
                       {brand.title}
@@ -201,13 +197,13 @@ export default function BrandSearch() {
             </ul>
           </div>
         )}
-
+        {/*
         <div className={styles.load_more_container} style={{ display: "flex" }}>
           <button id="load-more" className="text showbtn">
             Показать ещё
           </button>
           <div className={styles.pagination} id="pagination"></div>
-        </div>
+        </div>*/}
       </div>
     </section>
   );

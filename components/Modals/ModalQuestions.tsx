@@ -58,7 +58,7 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
         <span className="close-btn" onClick={onClose}>
           ×
         </span>
-        <h3 className="text-h3-bold">Остались вопросы?</h3>
+        <h3 className="text-h3-bold">Заказать обратный звонок</h3>
         <form className="callbackform" onSubmit={handleSubmit}>
           <div className="comments__send__form-group">
             <label className="text-small" htmlFor="name">
@@ -91,23 +91,6 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className="inputform"
-            />
-          </div>
-
-          <div className="comments__send__form-group">
-            <label className="text-small" htmlFor="email">
-              Введите почту*
-            </label>
-            <input
-              type="email"
-              className="inputform"
-              id="email"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="E-mail"
             />
           </div>
 
