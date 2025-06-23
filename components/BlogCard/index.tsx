@@ -41,7 +41,6 @@ type CardItemProps = {
 };
 
 export default function BlogCard({ card, type }: any) {
-  console.log(card);
   return (
     <Link href={`/blog/${card.slug}`}>
       <div

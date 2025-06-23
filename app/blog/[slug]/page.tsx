@@ -77,6 +77,7 @@ export default async function BlogPostPage({ params }: any) {
   const blocs: any = content?.blocks;
 
   if (!content) return notFound();
+
   return (
     <>
       <div className="container" style={{ width: "100%" }}>
@@ -160,7 +161,10 @@ export default async function BlogPostPage({ params }: any) {
                 <Comments />*/}
               </div>
 
-              <BlockSimilarCard />
+              <BlockSimilarCard
+                slug={content.slug}
+                topic={content.topics[0].title}
+              />
             </div>
           </div>
         </div>

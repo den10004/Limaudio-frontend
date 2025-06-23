@@ -6,7 +6,13 @@ import "./styles.css";
 import Headline from "@/app/UI/headline";
 import CardSkeleton from "../Loading/CardSkeleton";
 
-export default function BlockSimilarCard() {
+export default function BlockSimilarCard({
+  slug,
+  topic,
+}: {
+  slug?: string;
+  topic?: string;
+}) {
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],
     meta: {
@@ -22,21 +28,19 @@ export default function BlockSimilarCard() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const sortedCards = [...allCards.data]
-    .sort((a, b) => b.views - a.views)
-    .slice(0, 4);
+
+  console.log(slug, topic);
 
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await fetch("/api/blogs");
+        const res = await fetch(`/api/blogSimilar?slug=${slug}&topic=${topic}`);
         if (!res.ok) {
           const text = await res.text();
           throw new Error(text || "Ошибка при загрузке");
         }
 
         const cards = await res.json();
-
         setAllCards(cards);
         setIsLoading(false);
       } catch (err: any) {
@@ -45,8 +49,12 @@ export default function BlockSimilarCard() {
       }
     };
 
-    fetchCards();
+    if (slug && topic) {
+      fetchCards();
+    }
   }, []);
+
+  console.log(allCards);
 
   return (
     <div className="blog__similar">
@@ -54,7 +62,8 @@ export default function BlockSimilarCard() {
       {isLoading && (
         <CardSkeleton heightPx="1558px" marginPx="20px" widthPx="100%" />
       )}
-      {sortedCards.map((card) => (
+
+      {allCards.data?.map((card) => (
         <BlogSimilar key={card.id} card={card} type="small" />
       ))}
     </div>
