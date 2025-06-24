@@ -26,7 +26,10 @@ export default function ApplicationForm({ title }: { title: string }) {
         },
         body: JSON.stringify({ hedline, name, phone }),
       });
-      router.push(`/thanks?name=${encodeURIComponent(name)}`);
+
+      if (res.ok) {
+        router.push(`/thanks?name=${encodeURIComponent(name)}`);
+      }
       if (!res.ok) throw new Error("Ошибка отправки");
 
       const resultData = await res.json();

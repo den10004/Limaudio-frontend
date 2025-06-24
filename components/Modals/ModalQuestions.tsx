@@ -31,8 +31,12 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
         },
         body: JSON.stringify({ hedline, name, phone, email }),
       });
-      router.push(`/thanks?name=${encodeURIComponent(name)}`);
-      onClose();
+
+      if (res.ok) {
+        router.push(`/thanks?name=${encodeURIComponent(name)}`);
+        onClose();
+      }
+
       if (!res.ok) throw new Error("Ошибка отправки");
 
       const resultData = await res.json();

@@ -28,7 +28,9 @@ export default function QuestionForm() {
         },
         body: JSON.stringify({ hedline, email, name, phone, comment }),
       });
-      router.push(`/thanks?name=${encodeURIComponent(name)}`);
+      if (res.ok) {
+        router.push(`/thanks?name=${encodeURIComponent(name)}`);
+      }
       if (!res.ok) throw new Error("Ошибка отправки");
 
       const resultData = await res.json();
