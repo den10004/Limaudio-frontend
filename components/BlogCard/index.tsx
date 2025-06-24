@@ -45,7 +45,10 @@ export default function BlogCard({ card, type }: any) {
     <Link href={`/blog/${card.slug}`}>
       <div
         className={`card ${type === "big" ? "wide" : "small"}`}
-        style={{ position: "relative" }}
+        style={{
+          position: "relative",
+          height: "100%",
+        }}
       >
         <div style={{ position: "relative" }}>
           {card.cover?.url ? (

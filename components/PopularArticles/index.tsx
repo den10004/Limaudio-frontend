@@ -49,25 +49,23 @@ export default function PopularArticles() {
   }, []);
 
   return (
-    <section className="interes">
-      <div className="container2">
-        <Headline text="Популярные статьи" />
+    <div className="container2" style={{ marginTop: "30px" }}>
+      <Headline text="Популярные статьи" />
 
-        <div className="interes__card">
-          {isLoading && <CardSkeleton heightPx="551px" />}
-          {error && <div style={{ color: "red" }}>{error}</div>}
-          {!isLoading && !allCards && (
-            <div style={{ fontSize: "40px", fontWeight: 600 }}>
-              Нет доступных блогов
-            </div>
-          )}
-          <div className="cards_container">
-            {sortedCards.map((card) => (
-              <BlogCard key={card.id} card={card} type="small" />
-            ))}
+      <div className="interes__card">
+        {isLoading && <CardSkeleton heightPx="551px" />}
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        {!isLoading && !allCards && (
+          <div style={{ fontSize: "40px", fontWeight: 600 }}>
+            Нет доступных блогов
           </div>
+        )}
+        <div className="cards_container">
+          {sortedCards.map((card) => (
+            <BlogCard key={card.id} card={card} type="small" />
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

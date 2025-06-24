@@ -87,7 +87,7 @@ export default function BlogMainPage() {
 
   return (
     <>
-      <div className="container2">
+      <div className="container2" style={{ marginTop: "20px" }}>
         <div className="cards_container">
           {visibleGrouped.map((group, index) => (
             <div
