@@ -87,7 +87,7 @@ export default function BlogMainPage() {
 
   return (
     <>
-      <div className="container">
+      <div className="container2">
         <div className="cards_container">
           {visibleGrouped.map((group, index) => (
             <div

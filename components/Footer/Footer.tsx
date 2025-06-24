@@ -66,7 +66,7 @@ export default function Footer() {
                 </g>
               </svg>
             </Link>
-            <Link className="text16" href="/polytic">
+            <Link className="text-small" href="/polytic">
               Политика конфиденциальности
             </Link>
           </div>

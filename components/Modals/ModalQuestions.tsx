@@ -96,11 +96,13 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
 
           <button
             type="submit"
-            className="blogbtnblue text-h3"
+            className="blogbtnblue text20"
             disabled={loading}
+            style={{ width: "auto", height: "50px" }}
           >
-            Отправить
+            Заказать
             <svg
+              style={{ marginLeft: "10px" }}
               width="26"
               height="25"
               viewBox="0 0 26 25"

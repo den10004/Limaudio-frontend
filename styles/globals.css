@@ -83,6 +83,14 @@ button {
 }
 
 
+.container2 {
+    max-width: 1225px;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin: 0 auto;
+}
+
+
 .text-h1 {
     font-family: "Roboto", "Arial", sans-serif;
     font-size: 54px;
@@ -99,7 +107,7 @@ button {
 
 .text-h2d {
     font-family: "Roboto", "Arial", sans-serif;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 500;
     line-height: 114%;
 }
@@ -397,7 +405,7 @@ textarea {
     }
 
     .text-h2d {
-        font-size: 24px;
+        font-size: 22px;
 
     }
 
@@ -432,5 +440,18 @@ textarea {
 
     .send-img {
         width: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .text-h1 {
+        font-size: 26px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .container2 {
+        padding-left: 0;
+        padding-right: 0;
     }
 }

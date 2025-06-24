@@ -1,5 +1,4 @@
 .cards_container {
-    padding-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -134,11 +133,6 @@
 }
 
 @media (max-width: 500px) {
-    .cards_container {
-        padding-top: 20px;
-        margin: 0 -20px;
-    }
-
     .card__img>img {
         border-radius: 0px;
     }

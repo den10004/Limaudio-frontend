@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 export default function Hero() {
   return (
     <div className={styles.hero}>
-      <div className="container">
+      <div className="container2">
         <div className="cards_container">
           <section className={styles.hero__background}>
             <h1>

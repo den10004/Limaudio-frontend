@@ -50,7 +50,7 @@ export default function PopularArticles() {
 
   return (
     <section className="interes">
-      <div className="container">
+      <div className="container2">
         <Headline text="Популярные статьи" />
 
         <div className="interes__card">

@@ -21,14 +21,14 @@ export default function BlogSimilar({ card }: any) {
             <div
               className="label article_label"
               style={{
-                backgroundColor: getBackgroundColor(card.category.name),
+                backgroundColor: getBackgroundColor(card.category?.name),
                 color:
                   card.type === "silver" || card.type === "gold"
                     ? "black"
                     : "white",
               }}
             >
-              {card.category.name}
+              {card.category?.name}
             </div>
           </div>
         </div>
