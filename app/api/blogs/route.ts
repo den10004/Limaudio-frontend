@@ -83,6 +83,10 @@ export async function GET(req: NextRequest) {
             },
           },
         },
+        pagination: {
+          pageSize: 500,
+          page: 1,
+        },
       },
       { encodeValuesOnly: true }
     );

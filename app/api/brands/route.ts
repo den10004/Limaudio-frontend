@@ -18,6 +18,10 @@ export async function GET() {
             fields: ["name", "documentId", "url"],
           },
         },
+        pagination: {
+          pageSize: 500,
+          page: 1,
+        },
       },
       {
         encodeValuesOnly: true,
@@ -34,14 +38,14 @@ export async function GET() {
 
     if (!res.ok) {
       const text = await res.text();
-      console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);
-      throw new Error(`Strapi API error: ${res.status}`);
+      console.error(`Ошибка API: ${res.status} - ${text}`);
+      throw new Error(` API error: ${res.status}`);
     }
     const data = await res.json();
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Ошибка при получении данных из Strapi:", error);
+    console.error("Ошибка при получении данных:", error);
     return NextResponse.json(
       { error: "Ошибка при получении данных" },
       { status: 500 }
