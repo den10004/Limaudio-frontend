@@ -32,7 +32,10 @@ export async function GET(req: NextRequest) {
     const filters: any = {};
 
     if (searchQuery) {
-      filters.$or = [{ title: { $containsi: searchQuery } }];
+      filters.$or = [
+        { title: { $containsi: searchQuery } },
+        { description: { $containsi: searchQuery } },
+      ];
     }
 
     if (tags.length > 0) {

@@ -73,7 +73,7 @@ export default function BlogCard({ card, type }: any) {
                       : "white",
                 }}
               >
-                {card.category.name}
+                {card.category?.name}
               </div>
             )}
             <div className="label show-label show-label-min label-color">
