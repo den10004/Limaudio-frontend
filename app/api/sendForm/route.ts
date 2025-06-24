@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const transporter = nodemailer.createTransport({
-      host: "smtp.timeweb.ru",
+      host: process.env.EMAIL_HOST,
       port: 465,
       secure: true,
       auth: {
