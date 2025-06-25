@@ -7,7 +7,7 @@ import { Info } from "../Modals/info";
 
 export default function ApplicationForm({ form }: { form: string | null }) {
   const router = useRouter();
-  const [headline, setHeadline] = useState(form);
+  const [headline, setHeadline] = useState(form || "");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
