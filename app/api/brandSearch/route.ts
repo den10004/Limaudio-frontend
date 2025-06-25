@@ -27,6 +27,10 @@ export async function GET(request: Request) {
             fields: ["name"],
           },
         },
+        pagination: {
+          pageSize: 500,
+          page: 1,
+        },
       },
       {
         encodeValuesOnly: true,

@@ -20,9 +20,10 @@ export async function POST(req: NextRequest) {
     });
 
     let emailText = `
-    Тема: ${headline}
-    Имя: ${name}
-    Телефон: ${phone}`;
+Форма:   ${headline}
+Имя:     ${name}
+Телефон: ${phone}
+    `.trim();
 
     if (email) {
       emailText += `
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
     const mailOptions = {
       from: `"" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_TO,
-      subject: "Сообщение с сайта Limaudio",
+      subject: "Заявка с сайта Limaudio",
       text: emailText.trim(),
     };
 

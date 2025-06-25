@@ -32,7 +32,7 @@ export default function RootLayout({
           flexDirection: "column",
         }}
       >
-        <Suspense fallback={<div>Загрузка...</div>}>
+        <Suspense fallback={<div></div>}>
           <Header />
         </Suspense>
         {children}
