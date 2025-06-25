@@ -47,6 +47,7 @@ export default function ApplicationForm({ form }: { form: string | null }) {
       setLoading(false);
     }
   };
+  console.log(headline);
 
   return (
     <div className={styles.application}>

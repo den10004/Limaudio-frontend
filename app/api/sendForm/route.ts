@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
-  const { hedline, email, name, phone, comment } = await req.json();
+  const { headline, email, name, phone, comment } = await req.json();
 
   try {
     const transporter = nodemailer.createTransport({
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     });
 
     let emailText = `
-    Тема: ${hedline}
+    Тема: ${headline}
     Имя: ${name}
     Телефон: ${phone}`;
 
