@@ -11,7 +11,7 @@ interface ModalHeaderProps {
 
 export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
   const router = useRouter();
-  const [hedline, setHeadline] = useState("Заказать звонок");
+  const [headline, setHeadline] = useState("Заказать звонок");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -29,7 +29,7 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ hedline, name, phone, email }),
+        body: JSON.stringify({ headline, name, phone, email }),
       });
 
       if (res.ok) {
@@ -72,7 +72,7 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
               hidden
               type="text"
               name="headline"
-              value={hedline}
+              value={headline}
               onChange={(e) => setHeadline(e.target.value)}
             />
             <input
