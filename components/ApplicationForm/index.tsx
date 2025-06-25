@@ -5,7 +5,15 @@ import PhoneInput from "@/utils/telMask";
 import { useRouter } from "next/navigation";
 import { Info } from "../Modals/info";
 
-export default function ApplicationForm({ form }: { form: string | null }) {
+interface ApplicationFormProps {
+  form?: string;
+  formAdjective?: string;
+}
+
+export default function ApplicationForm({
+  form,
+  formAdjective,
+}: ApplicationFormProps) {
   const router = useRouter();
   const [headline, setHeadline] = useState(form || "");
   const [name, setName] = useState("");
@@ -47,12 +55,13 @@ export default function ApplicationForm({ form }: { form: string | null }) {
       setLoading(false);
     }
   };
-  console.log(headline);
 
   return (
     <div className={styles.application}>
       <h2 className="text-h2">Оставьте заявку</h2>
-      <p>Мы поможем подобрать {form}</p>
+      <p>
+        Мы поможем подобрать {formAdjective} {form}
+      </p>
 
       <div className={styles.application__form}>
         <div style={{ position: "relative" }}>
