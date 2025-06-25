@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function QuestionForm() {
   const router = useRouter();
-  const [hedline, setHeadline] = useState("Есть вопрос");
+  const [headline, setHeadline] = useState("Есть вопрос");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
@@ -26,7 +26,7 @@ export default function QuestionForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ hedline, email, name, phone, comment }),
+        body: JSON.stringify({ headline, email, name, phone, comment }),
       });
       if (res.ok) {
         router.push(`/thanks?name=${encodeURIComponent(name)}`);
@@ -62,7 +62,7 @@ export default function QuestionForm() {
                   hidden
                   type="text"
                   name="headline"
-                  value={hedline}
+                  value={headline}
                   onChange={(e) => setHeadline(e.target.value)}
                 />
                 <label className="text-small" htmlFor="name">
