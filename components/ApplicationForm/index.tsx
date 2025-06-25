@@ -7,7 +7,7 @@ import { Info } from "../Modals/info";
 
 export default function ApplicationForm({ title }: { title: string }) {
   const router = useRouter();
-  const [hedline, setHeadline] = useState(title);
+  const [headline, setHeadline] = useState(title);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function ApplicationForm({ title }: { title: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ hedline, name, phone }),
+        body: JSON.stringify({ headline, name, phone }),
       });
 
       if (res.ok) {
@@ -51,7 +51,7 @@ export default function ApplicationForm({ title }: { title: string }) {
   return (
     <div className={styles.application}>
       <h2 className="text-h2">Оставьте заявку</h2>
-      <p>Мы поможем подобрать лучшую напольную акустику для ваших задач</p>
+      <p>Мы поможем подобрать лучшую напольную акустику</p>
 
       <div className={styles.application__form}>
         <div style={{ position: "relative" }}>
@@ -89,7 +89,7 @@ export default function ApplicationForm({ title }: { title: string }) {
               hidden
               type="text"
               name="headline"
-              value={hedline}
+              value={headline}
               onChange={(e) => setHeadline(e.target.value)}
             />
             <label className="text-small" htmlFor="name">
