@@ -77,6 +77,7 @@ export async function GET(req: NextRequest) {
           topics: {
             populate: {
               title: {},
+              form: {},
               image: {
                 fields: ["url"],
               },

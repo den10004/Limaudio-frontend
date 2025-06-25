@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: any) {
                 </div>
 
                 <Share shareUrl={shareUrl} />
-                <ApplicationForm title={content.title} />
+                <ApplicationForm form={content.form} />
 
                 {/*
                 <Comments />*/}
