@@ -137,7 +137,7 @@ export default function Brands() {
                   <SwiperSlide key={index} className={styles.brand_style}>
                     <Link href={`/brands/${brand.slug}`}>
                       <Image
-                        src={brand?.logo?.url}
+                        src={brand?.logo?.url || "/empty.webp"}
                         alt={brand?.title}
                         width={119}
                         height={122}
@@ -156,7 +156,7 @@ export default function Brands() {
                 <div key={index} className={styles.brand_card}>
                   <Link href={`/brands/${brand.slug}`}>
                     <Image
-                      src={brand?.logo?.url}
+                      src={brand?.logo?.url || "/empty.webp"}
                       alt={brand?.title}
                       width={119}
                       height={122}

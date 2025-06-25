@@ -92,7 +92,6 @@ export default function BrandSearch() {
       : allCards;
 
   console.log(allCards);
-
   return (
     <section className={styles.search}>
       <div className="container">

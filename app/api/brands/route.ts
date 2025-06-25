@@ -10,40 +10,55 @@ export async function GET() {
     );
   }
 
+  const allData = [];
+  let page = 1;
+  const pageSize = 100; // безопасный максимум, если maxLimit не изменён
+
   try {
-    const query = qs.stringify(
-      {
-        populate: {
-          logo: {
-            fields: ["name", "documentId", "url"],
+    while (true) {
+      const query = qs.stringify(
+        {
+          populate: {
+            logo: {
+              fields: ["name", "documentId", "url"],
+            },
+          },
+          pagination: {
+            pageSize,
+            page,
           },
         },
-        pagination: {
-          pageSize: 500,
-          page: 1,
+        {
+          encodeValuesOnly: true,
+        }
+      );
+
+      const res = await fetch(`${process.env.API_URL}/brends?${query}`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${process.env.TOKEN}`,
         },
-      },
-      {
-        encodeValuesOnly: true,
+        next: { revalidate: 60 },
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error(`Ошибка API: ${res.status} - ${text}`);
+        throw new Error(`API error: ${res.status}`);
       }
-    );
 
-    const res = await fetch(`${process.env.API_URL}/brends?${query}`, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${process.env.TOKEN}`,
-      },
-      next: { revalidate: 60 },
-    });
+      const json = await res.json();
+      const items = json?.data || [];
 
-    if (!res.ok) {
-      const text = await res.text();
-      console.error(`Ошибка API: ${res.status} - ${text}`);
-      throw new Error(` API error: ${res.status}`);
+      allData.push(...items);
+
+      const pagination = json?.meta?.pagination;
+      if (!pagination || page >= pagination.pageCount) break;
+
+      page++;
     }
-    const data = await res.json();
 
-    return NextResponse.json(data);
+    return NextResponse.json({ data: allData });
   } catch (error) {
     console.error("Ошибка при получении данных:", error);
     return NextResponse.json(
