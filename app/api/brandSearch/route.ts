@@ -12,19 +12,20 @@ export async function GET(request: Request) {
 
   const allData = [];
   let page = 1;
-  const pageSize = 100; // Стандартное безопасное значение
+  const pageSize = 100;
 
   try {
     const { searchParams } = new URL(request.url);
     const searchQuery = searchParams.get("search") || "";
+    const startsWith = searchParams.get("startsWith") || "";
 
     while (true) {
       const query = qs.stringify(
         {
           filters: {
-            title: {
-              $containsi: searchQuery,
-            },
+            title: startsWith
+              ? { $startsWithi: startsWith }
+              : { $containsi: searchQuery },
           },
           populate: {
             logo: {

@@ -22,44 +22,33 @@ export default function BrandSearch() {
 
   useEffect(() => {
     const fetchCards = async () => {
+      setIsLoading(true);
       try {
-        if (!/^[a-zA-Z]$/.test(searchTerm) && searchTerm !== "") {
-          const url = `/api/brandSearch?search=${encodeURIComponent(
-            searchTerm
-          )}`;
-          const res = await fetch(url);
-          if (!res.ok) {
-            const text = await res.text();
-            throw new Error(text || "Ошибка при загрузке");
-          }
+        let url = "/api/brandSearch";
 
-          const cards = await res.json();
-          const card = cards.data;
-
-          setAllCards(card);
-          setIsLoading(false);
-        } else if (searchTerm === "") {
-          const url = "/api/brandSearch";
-          const res = await fetch(url);
-          if (!res.ok) {
-            const text = await res.text();
-            throw new Error(text || "Ошибка при загрузке");
-          }
-
-          const cards = await res.json();
-          const card = cards.data;
-
-          setAllCards(card);
-          setIsLoading(false);
+        if (searchTerm && !/^[a-zA-Z]$/.test(searchTerm)) {
+          url += `?search=${encodeURIComponent(searchTerm)}`;
+        } else if (selectedLetter) {
+          url += `?startsWith=${encodeURIComponent(selectedLetter)}`;
         }
+
+        const res = await fetch(url);
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+        setAllCards(cards.data);
       } catch (err: any) {
         setError(err.message);
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchCards();
-  }, [searchTerm]);
+  }, [searchTerm, selectedLetter]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -67,7 +56,6 @@ export default function BrandSearch() {
 
     if (/^[a-zA-Z]$/.test(value)) {
       setSelectedLetter(value.toUpperCase());
-      setIsLoading(false);
     } else if (value === "") {
       setSelectedLetter("A");
     } else {
@@ -80,18 +68,9 @@ export default function BrandSearch() {
     setSearchTerm("");
   };
 
-  const filteredBrands =
-    searchTerm && !/^[a-zA-Z]$/.test(searchTerm)
-      ? allCards.filter((brand) =>
-          brand.title.toUpperCase().startsWith(searchTerm.toUpperCase())
-        )
-      : selectedLetter
-      ? allCards.filter((brand) =>
-          brand.title.toUpperCase().startsWith(selectedLetter)
-        )
-      : allCards;
-
+  const filteredBrands = allCards;
   console.log(allCards);
+
   return (
     <section className={styles.search}>
       <div className="container">
@@ -137,49 +116,11 @@ export default function BrandSearch() {
           </div>
         </div>
 
-        {selectedLetter && (
-          <div className={styles.brand_list} id="brandList">
-            <h2 id="selectedLetter">{selectedLetter}</h2>
-            <ul id="brandItems" className={styles.multi_column_list}>
-              {filteredBrands.length > 0 ? (
-                filteredBrands.map((brand, index) => (
-                  <li key={index}>
-                    <Link
-                      href={`/brands/${brand.slug}`}
-                      rel="noopener noreferrer"
-                    >
-                      {brand.title}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li>Нет брендов на букву {selectedLetter}</li>
-              )}
-            </ul>
-          </div>
-        )}
-        {!selectedLetter && !searchTerm && (
-          <div className={styles.brand_list} id="brandList">
-            <ul id="brandItems" className={styles.multi_column_list}>
-              {filteredBrands.map((brand, index) => (
-                <li key={index}>
-                  <Link
-                    href={`/brands/${brand.slug}`}
-                    rel="noopener noreferrer"
-                  >
-                    {brand.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {isLoading && <CardSkeleton />}
 
-        {searchTerm && !/^[a-zA-Z]$/.test(searchTerm) && (
-          <div
-            className={`${styles.brand_list} ${styles.brand_list_result}`}
-            id="brandList"
-          >
+        {!isLoading && (
+          <div className={styles.brand_list} id="brandList">
+            {selectedLetter && <h2 id="selectedLetter">{selectedLetter}</h2>}
             <ul id="brandItems" className={styles.multi_column_list}>
               {filteredBrands.length > 0 ? (
                 filteredBrands.map((brand, index) => (
@@ -193,18 +134,15 @@ export default function BrandSearch() {
                   </li>
                 ))
               ) : (
-                <li className="text20">Бренды не найдены</li>
+                <li>
+                  {searchTerm
+                    ? "Бренды не найдены"
+                    : `Нет брендов на букву ${selectedLetter}`}
+                </li>
               )}
             </ul>
           </div>
         )}
-        {/*
-        <div className={styles.load_more_container} style={{ display: "flex" }}>
-          <button id="load-more" className="text showbtn">
-            Показать ещё
-          </button>
-          <div className={styles.pagination} id="pagination"></div>
-        </div>*/}
       </div>
     </section>
   );
