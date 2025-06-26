@@ -9,6 +9,7 @@ import "./../styles/interes.css";
 import { Suspense } from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
+import YandexMetrika from "@/components/YandexMetrika";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
         </Suspense>
         {children}
         <Footer />
+        <YandexMetrika />
       </body>
     </html>
   );
