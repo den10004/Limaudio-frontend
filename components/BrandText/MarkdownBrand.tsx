@@ -5,7 +5,7 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 import Image from "next/image";
-import { JSX } from "react";
+import { useEffect, useRef, JSX } from "react";
 
 interface MarkdownBrandProps {
   content: {
@@ -14,20 +14,40 @@ interface MarkdownBrandProps {
   expanded: boolean;
 }
 
+const LAST_ELEMENT = 6;
+
 export default function MarkdownBrand({
   content,
   expanded,
 }: MarkdownBrandProps) {
+
+  const blocksWrapperRef = useRef(null);
+
+  useEffect(() => {
+    if (expanded) {
+      if (blocksWrapperRef.current) {
+        const children = blocksWrapperRef.current.children;
+        const targetChild = children[LAST_ELEMENT + 1];
+        if (targetChild) {
+          targetChild.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+  }, [expanded]);
+
   if (!content?.content || !Array.isArray(content.content)) {
     return <div>No content available</div>;
   }
 
   const visibleBlocks = expanded
     ? content.content
-    : content.content.slice(0, 6);
+    : content.content.slice(0, LAST_ELEMENT);
 
   return (
-    <div className={styles.markdownContainer}>
+    <div className={styles.markdownContainer} ref={blocksWrapperRef}>
       <BlocksRenderer
         content={visibleBlocks}
         blocks={{

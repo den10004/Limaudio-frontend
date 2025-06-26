@@ -79,7 +79,16 @@
 
 .toggle_btn {
     background: none;
-    color: var(--color-gray);
+    font-size: 18px;
+    background: var(--color-blue);
+    color: var(--color-white);
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    outline: none;
+    margin: 20px auto;
+    padding: 10px 20px;
+    display: flex;
 }
 
 .markdownContainer {
