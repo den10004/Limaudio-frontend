@@ -92,9 +92,8 @@ export default function BlogMainPage() {
           {visibleGrouped.map((group, index) => (
             <div
               key={index}
-              className={`row ${
-                group.type === "big" ? "big-row" : "small-row"
-              }`}
+              className={`row ${group.type === "big" ? "big-row" : "small-row"
+                }`}
             >
               {group.cards.map((card, i) => (
                 <BlogCard key={i} card={card} type={group.type} />
@@ -112,7 +111,7 @@ export default function BlogMainPage() {
         {visibleGroups < groupedCards.length && (
           <div className="show-more-wrapper">
             <button onClick={showMore} className="showbtn text">
-              Посмотреть все
+              Показать еще
             </button>
           </div>
         )}
