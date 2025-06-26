@@ -53,7 +53,13 @@ export default function BlogCard({ card, type }: any) {
         <div style={{ position: "relative" }}>
           {card.cover?.url ? (
             <div className="card__img" style={{ position: "relative" }}>
-              <Image src={card.cover.url} alt={card.title} fill />
+              <Image
+                src={card.cover.url}
+                alt={card.title}
+                fill
+                sizes="100%"
+                priority
+              />
             </div>
           ) : (
             <div className="card__img" style={{ position: "relative" }}>
