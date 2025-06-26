@@ -102,7 +102,7 @@ export default function Subscription() {
             <span>
               Нажимая на стрелку "Далее", Вы даете согласие на получение
               рекламной рассылки и обработку &nbsp;
-              <Link href="/privacy-policy">персональных данных</Link>
+              <Link href="/polytic">персональных данных</Link>
             </span>
           </div>
         </div>
