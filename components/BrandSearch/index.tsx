@@ -69,7 +69,6 @@ export default function BrandSearch() {
   };
 
   const filteredBrands = allCards;
-  console.log(allCards);
 
   return (
     <section className={styles.search}>

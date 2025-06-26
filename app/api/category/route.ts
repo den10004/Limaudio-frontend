@@ -1,3 +1,4 @@
+/*
 import { NextResponse } from "next/server";
 import qs from "qs";
 
@@ -40,7 +41,6 @@ export async function GET(request: Request) {
     );
 
     const strapiUrl = `${process.env.API_URL}/articles?${query}`;
-    console.log("Запрос к БД:", strapiUrl);
 
     const res = await fetch(strapiUrl, {
       headers: {
@@ -65,3 +65,4 @@ export async function GET(request: Request) {
     );
   }
 }
+*/

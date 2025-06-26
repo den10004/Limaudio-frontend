@@ -6,6 +6,7 @@ import { ModalHeader } from "../Modals/ModalHeader";
 import { ModalQuestions } from "../Modals/ModalQuestions";
 import { usePathname, useSearchParams } from "next/navigation";
 import styles from "./page.module.css";
+import { TEL, TELLINK, TG, WHATSAPP } from "@/lib/breadcrumbs";
 
 export default function Header() {
   const [headerMenu, setHeaderMenu] = useState(false);
@@ -188,7 +189,7 @@ export default function Header() {
 
           <ul className={styles.header__contacts}>
             <li>
-              <Link href="tel: 88007700473"> 8 (800) 770-04-73</Link>
+              <Link href={TELLINK}>{TEL}</Link>
             </li>
             <li
               className={styles.header__btn}
@@ -198,7 +199,7 @@ export default function Header() {
               Заказать звонок
             </li>
             <li>
-              <Link href="https://wa.me/79200000000">
+              <Link href={WHATSAPP}>
                 <svg
                   width="25"
                   height="25"
@@ -214,7 +215,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="https://t.me/example_user">
+              <Link href={TG}>
                 <svg
                   width="25"
                   height="25"

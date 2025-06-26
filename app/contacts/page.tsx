@@ -4,10 +4,11 @@ import ScrollBtn from "@/components/ScrollBtn";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Subscription from "@/components/Subscription/Subscription";
 import styles from "./page.module.css";
-import { INDEX } from "@/lib/breadcrumbs";
+import { INDEX, TEL, TELLINK, TG, WHATSAPP } from "@/lib/breadcrumbs";
 import QuestionForm from "@/components/QuestionForm";
 import MapComponent from "@/components/Map";
 import { Suspense } from "react";
+import Link from "next/link";
 
 const breadcrumbs = [
   { label: "Главная", href: INDEX },
@@ -32,16 +33,16 @@ export default function Contacts() {
                   <span className="text20">с 9:00 до 18:00</span>
                 </li>
                 <li>
-                  <label className="text">E-mail:</label>
+                  <label className="text">E-mail: </label>
                   <a className="text20" href="mailto:blog@yandex.ru">
                     blog@yandex.ru
                   </a>
                 </li>
                 <li>
-                  <label className="text">Телефон:</label>
-                  <a className="text20" href="tel:88007700473">
-                    8 (800) 770-04-73
-                  </a>
+                  <label className="text">Телефон: </label>
+                  <Link className="text20" href={TELLINK}>
+                    {TEL}
+                  </Link>
                 </li>
               </ul>
               <p className="text">Адреса</p>
@@ -51,7 +52,7 @@ export default function Contacts() {
               </ul>
 
               <div className={`text16 ${styles.contacts__btn}`}>
-                <a href="https://t.me/example_user">
+                <Link href={TG}>
                   <svg
                     width="21"
                     height="20"
@@ -67,8 +68,8 @@ export default function Contacts() {
                     />
                   </svg>
                   <span>Написать нам в Телеграм</span>
-                </a>
-                <a href="https://wa.me/79200000000">
+                </Link>
+                <Link href={WHATSAPP}>
                   <svg
                     width="28"
                     height="28"
@@ -82,7 +83,7 @@ export default function Contacts() {
                     />
                   </svg>
                   <span>Написать нам в WhatsApp</span>
-                </a>
+                </Link>
               </div>
             </div>
             <div className={styles.contacts__map}>

@@ -71,7 +71,7 @@ export default function BlogPage() {
 
         const fetchPromises = categories.map(async (cat) => {
           const res = await fetch(
-            `/api/category?category=${encodeURIComponent(cat)}`
+            `/api/blogs?category=${encodeURIComponent(cat)}`
           );
 
           if (!res.ok) {
@@ -109,7 +109,7 @@ export default function BlogPage() {
             <BlogMainWrapper />
           </>
         )}
-        {!isLoading && !articles.length && (
+        {!isLoading && articles.length === 0 && (
           <div style={{ fontSize: "40px", fontWeight: 600, height: "20px" }}>
             Нет доступных блогов
           </div>

@@ -23,22 +23,22 @@ export default function Markdown({ blocs }: any) {
                     key={`richtext-${index}`}
                     components={{
                       h1: ({ node, ...props }) => (
-                        <h1 style={{ marginBottom: "1rem" }} {...props} />
+                        <h1 style={{ margin: "30px 0px 10px 0" }} {...props} />
                       ),
                       h2: ({ node, ...props }) => (
-                        <h2 style={{ marginBottom: "0.8rem" }} {...props} />
+                        <h2 style={{ margin: "30px 0px 10px 0" }} {...props} />
                       ),
                       h3: ({ node, ...props }) => (
-                        <h3 style={{ marginBottom: "0.8rem" }} {...props} />
+                        <h3 style={{ margin: "30px 0px 10px 0" }} {...props} />
                       ),
                       h4: ({ node, ...props }) => (
-                        <h4 style={{ marginBottom: "0.8rem" }} {...props} />
+                        <h4 style={{ margin: "30px 0px 10px 0" }} {...props} />
                       ),
                       h5: ({ node, ...props }) => (
-                        <h5 style={{ marginBottom: "0.8rem" }} {...props} />
+                        <h5 style={{ margin: "30px 0px 10px 0" }} {...props} />
                       ),
                       h6: ({ node, ...props }) => (
-                        <h6 style={{ marginBottom: "0.8rem" }} {...props} />
+                        <h6 style={{ margin: "30px 0px 10px 0" }} {...props} />
                       ),
                       p: ({ node, children, ...props }) => {
                         if (

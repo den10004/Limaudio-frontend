@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { ModalQuestions } from "../Modals/ModalQuestions";
 import { useState } from "react";
 import { linksFooter } from "@/lib/footerLinks";
+import { TEL, TELLINK, TG, WHATSAPP } from "@/lib/breadcrumbs";
 
 export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
@@ -99,7 +100,7 @@ export default function Footer() {
           <div>
             <ul className="text16">
               <li className="text" style={{ cursor: "pointer" }}>
-                <Link href="tel:88007700473">8 (800) 770-04-73</Link>
+                <Link href={TELLINK}>{TEL}</Link>
               </li>
               <li
                 onClick={() => setCallbackModal(true)}
@@ -113,7 +114,7 @@ export default function Footer() {
             </ul>
             <ul className={styles.footer__icons}>
               <li>
-                <Link href="https://wa.me/79200000000">
+                <Link href={WHATSAPP}>
                   <svg
                     width="30"
                     height="30"
@@ -129,7 +130,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="https://t.me/example_user">
+                <Link href={TG}>
                   <svg
                     width="30"
                     height="30"

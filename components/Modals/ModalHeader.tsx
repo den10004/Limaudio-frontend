@@ -49,7 +49,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
           </Link>
         </ul>
         <ul className="modal__icons">
-          <Link href="https://t.me/example_user">
+          <Link href="#">
             <svg
               width="40"
               height="40"

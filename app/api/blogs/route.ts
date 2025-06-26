@@ -12,9 +12,9 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url);
-    const sortByDate = searchParams.get("sortByDate") || "asc";
-    const sortByPopularity =
-      searchParams.get("sortByPopularity") || "not_popular";
+    const sortByDate = searchParams.get("sortByDate") || "";
+    const categoryName = searchParams.get("category");
+    const sortByPopularity = searchParams.get("sortByPopularity") || "";
     const searchQuery = searchParams.get("searchQuery") || "";
     const tags = searchParams.getAll("tags[]");
     const topic = searchParams.get("topic");
@@ -23,10 +23,10 @@ export async function GET(req: NextRequest) {
 
     if (sortByPopularity === "popular") {
       sortParams.push("views:desc");
-    }
-
-    if (sortByDate) {
+    } else if (sortByDate === "asc" || sortByDate === "desc") {
       sortParams.push(`publishedAt:${sortByDate}`);
+    } else {
+      sortParams.push("publishedAt:asc");
     }
 
     const filters: any = {};
@@ -58,6 +58,17 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    if (categoryName) {
+      filters.$or = filters.$or || [];
+      filters.$or.push({
+        category: {
+          name: {
+            $in: [categoryName],
+          },
+        },
+      });
+    }
+
     if (topic) {
       filters.topics = {
         title: {
@@ -66,10 +77,12 @@ export async function GET(req: NextRequest) {
       };
     }
 
+    // console.log(sortParams);
+
     const query = qs.stringify(
       {
-        sort: sortParams,
         filters,
+        sort: sortParams,
         populate: {
           cover: { fields: ["url"] },
           category: { fields: ["name"] },
@@ -92,6 +105,8 @@ export async function GET(req: NextRequest) {
       },
       { encodeValuesOnly: true }
     );
+
+    console.log(query);
 
     const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
       headers: {
