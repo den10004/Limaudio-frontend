@@ -20,8 +20,7 @@ export default function MarkdownBrand({
   content,
   expanded,
 }: MarkdownBrandProps) {
-
-  const blocksWrapperRef = useRef(null);
+  const blocksWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (expanded) {
@@ -29,13 +28,12 @@ export default function MarkdownBrand({
         const children = blocksWrapperRef.current.children;
         const targetChild = children[LAST_ELEMENT + 1];
         if (targetChild) {
-          targetChild.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          targetChild.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-
   }, [expanded]);
 
   if (!content?.content || !Array.isArray(content.content)) {

@@ -30,7 +30,8 @@
     "components/Tags/index.jsx",
     "app/blog/[slug]/page.jsx",
     "test-views-count.js",
-    "app/api/article/controllers/lifecycles.js"
+    "app/api/article/controllers/lifecycles.js",
+    "lib/yandexMetrika.js"
   ],
   "exclude": ["node_modules"]
 }
