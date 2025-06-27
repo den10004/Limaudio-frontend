@@ -12,21 +12,29 @@ export async function GET(req: NextRequest) {
 
   try {
     const { searchParams } = new URL(req.url);
-    const sortByDate = searchParams.get("sortByDate") || "";
-    const categoryName = searchParams.get("category");
-    const sortByPopularity = searchParams.get("sortByPopularity") || "";
+    const sortByDate = searchParams.get("sortByDate");
+    const sortByPopularity = searchParams.get("sortByPopularity");
     const searchQuery = searchParams.get("searchQuery") || "";
     const tags = searchParams.getAll("tags[]");
     const topic = searchParams.get("topic");
 
     const sortParams: string[] = [];
 
-    if (sortByPopularity === "popular") {
-      sortParams.push("views:desc");
-    } else if (sortByDate === "asc" || sortByDate === "desc") {
-      sortParams.push(`publishedAt:${sortByDate}`);
-    } else {
-      sortParams.push("publishedAt:asc");
+    // Сортировка по дате (если указана)
+    if (sortByDate === "asc" || sortByDate === "desc") {
+      sortParams.push(`createdAt:${sortByDate}`);
+    }
+
+    // Сортировка по популярности (если указана и не конфликтует с сортировкой по дате)
+    if (sortByPopularity === "popular" || sortByPopularity === "not_popular") {
+      sortParams.push(
+        `views:${sortByPopularity === "popular" ? "desc" : "asc"}`
+      );
+    }
+
+    // Сортировка по умолчанию (если ничего не указано)
+    if (sortParams.length === 0) {
+      sortParams.push("createdAt:desc");
     }
 
     const filters: any = {};
@@ -58,17 +66,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (categoryName) {
-      filters.$or = filters.$or || [];
-      filters.$or.push({
-        category: {
-          name: {
-            $in: [categoryName],
-          },
-        },
-      });
-    }
-
     if (topic) {
       filters.topics = {
         title: {
@@ -77,12 +74,10 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    // console.log(sortParams);
-
     const query = qs.stringify(
       {
-        filters,
         sort: sortParams,
+        filters,
         populate: {
           cover: { fields: ["url"] },
           category: { fields: ["name"] },
@@ -106,8 +101,6 @@ export async function GET(req: NextRequest) {
       { encodeValuesOnly: true }
     );
 
-    console.log(query);
-
     const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
       headers: {
         Accept: "application/json",
@@ -123,6 +116,7 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await res.json();
+
     return NextResponse.json(data);
   } catch (error: any) {
     console.error("Ошибка при получении данных:", error);

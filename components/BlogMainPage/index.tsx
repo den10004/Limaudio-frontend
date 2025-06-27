@@ -32,7 +32,7 @@ const groupCards = (cards: Card[]): GroupedCard[] => {
 export default function BlogMainPage() {
   const searchParams = useSearchParams();
   const sortByDate = searchParams.get("sortByDate") || "desc";
-  const sortByPopularity = searchParams.get("sortByPopularity") || "popular";
+  const sortByPopularity = searchParams.get("sortByPopularity");
   const searchQuery = searchParams.get("searchQuery") || "";
   const tags = searchParams.getAll("tags[]");
 
@@ -58,11 +58,13 @@ export default function BlogMainPage() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const queryParams = new URLSearchParams({
-          sortByDate,
-          sortByPopularity,
-        });
+        setIsLoading(true);
+        const queryParams = new URLSearchParams();
 
+        // Добавляем только те параметры, которые заданы
+        if (sortByDate) queryParams.set("sortByDate", sortByDate);
+        if (sortByPopularity)
+          queryParams.set("sortByPopularity", sortByPopularity);
         if (searchQuery) queryParams.set("searchQuery", searchQuery);
         tags.forEach((tag) => tag && queryParams.append("tags[]", tag));
 
@@ -92,8 +94,9 @@ export default function BlogMainPage() {
           {visibleGrouped.map((group, index) => (
             <div
               key={index}
-              className={`row ${group.type === "big" ? "big-row" : "small-row"
-                }`}
+              className={`row ${
+                group.type === "big" ? "big-row" : "small-row"
+              }`}
             >
               {group.cards.map((card, i) => (
                 <BlogCard key={i} card={card} type={group.type} />
