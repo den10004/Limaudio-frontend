@@ -58,6 +58,11 @@ export default function BlockSimilarCard({
       {isLoading && (
         <CardSkeleton heightPx="1558px" marginPx="20px" widthPx="100%" />
       )}
+      {!isLoading && allCards.data.length === 0 && (
+        <div style={{ fontSize: "40px", fontWeight: 600 }}>
+          Нет доступных статей
+        </div>
+      )}
       {error && <div style={{ color: "red" }}>{error}</div>}
       {allCards.data?.map((card) => (
         <BlogSimilar key={card.id} card={card} type="small" />

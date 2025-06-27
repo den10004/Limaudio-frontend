@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: any) {
 
               <BlockSimilarCard
                 slug={content.slug}
-                topic={content.topics[0].title}
+                topic={content.topics[0]?.title}
               />
             </div>
           </div>
