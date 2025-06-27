@@ -60,7 +60,7 @@ export default function BlockSimilarCard({
       )}
       {!isLoading && allCards.data.length === 0 && (
         <div style={{ fontSize: "40px", fontWeight: 600 }}>
-          Нет доступных статей
+          Нет похожих статей
         </div>
       )}
       {error && <div style={{ color: "red" }}>{error}</div>}
