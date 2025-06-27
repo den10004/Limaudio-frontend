@@ -31,7 +31,7 @@ const groupCards = (cards: Card[]): GroupedCard[] => {
 
 export default function BlogMainPage() {
   const searchParams = useSearchParams();
-  const sortByDate = searchParams.get("sortByDate") || "desc";
+  const sortByDate = searchParams.get("sortByDate");
   const sortByPopularity = searchParams.get("sortByPopularity");
   const searchQuery = searchParams.get("searchQuery") || "";
   const tags = searchParams.getAll("tags[]");

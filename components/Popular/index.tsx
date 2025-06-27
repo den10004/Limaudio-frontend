@@ -89,8 +89,7 @@ export default function Popular() {
     const initialSortByDate = searchParams.get("sortByDate") as
       | "asc"
       | "desc"
-      | null
-      | "desc";
+      | null;
     const initialSortByPopularity = searchParams.get("sortByPopularity") as
       | "popular"
       | "not_popular"
@@ -102,12 +101,6 @@ export default function Popular() {
     setSortByPopularity(initialSortByPopularity);
     setSearchQuery(initialSearchQuery);
     setSelectedTags(initialTags.length > 0 ? initialTags : []);
-    if (
-      !searchParams.get("sortByDate") &&
-      !searchParams.get("sortByPopularity")
-    ) {
-      updateURLParams({ sortByDate: "desc" });
-    }
   }, [searchParams]);
 
   // Обновление URL при изменении debouncedSearchQuery
