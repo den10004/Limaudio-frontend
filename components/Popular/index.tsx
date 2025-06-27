@@ -97,10 +97,19 @@ export default function Popular() {
     const initialSearchQuery = searchParams.get("searchQuery") || "";
     const initialTags = searchParams.getAll("tags[]");
 
-    setSortByDate(initialSortByDate);
-    setSortByPopularity(initialSortByPopularity);
-    setSearchQuery(initialSearchQuery);
-    setSelectedTags(initialTags.length > 0 ? initialTags : []);
+    if (!initialSortByDate && !initialSortByPopularity) {
+      setSortByDate("desc");
+      updateURLParams({
+        sortByDate: "desc",
+        tags: initialTags,
+        searchQuery: initialSearchQuery,
+      });
+    } else {
+      setSortByDate(initialSortByDate);
+      setSortByPopularity(initialSortByPopularity);
+      setSearchQuery(initialSearchQuery);
+      setSelectedTags(initialTags.length > 0 ? initialTags : []);
+    }
   }, [searchParams]);
 
   // Обновление URL при изменении debouncedSearchQuery
