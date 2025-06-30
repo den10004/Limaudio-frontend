@@ -61,7 +61,6 @@ export default function BlogMainPage() {
         setIsLoading(true);
         const queryParams = new URLSearchParams();
 
-        // Добавляем только те параметры, которые заданы
         if (sortByDate) queryParams.set("sortByDate", sortByDate);
         if (sortByPopularity)
           queryParams.set("sortByPopularity", sortByPopularity);

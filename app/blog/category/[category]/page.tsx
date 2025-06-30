@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { use } from "react"; // Ensure React's use is imported
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CardsResponse } from "@/types/card";
 import CardSkeleton from "@/components/Loading/CardSkeleton";
 import PopularWrapper from "@/components/PopularWrapper";
@@ -37,7 +37,7 @@ export default function CategoryPage({
 }: {
   params: Promise<CategoryPageParams>;
 }) {
-  const { category } = use(params); // Unwrap params with React.use()
+  const { category } = use(params);
   const decodedCategory = decodeURIComponent(category);
   const displayCategory =
     categoryMap[decodedCategory as keyof CategoryMap] || decodedCategory;
@@ -58,28 +58,40 @@ export default function CategoryPage({
     length: undefined,
   });
 
+  const searchParams = useSearchParams();
+  const sortByDate = searchParams.get("sortByDate");
+  const sortByPopularity = searchParams.get("sortByPopularity");
+  const searchQuery = searchParams.get("searchQuery") || "";
+  const tags = searchParams.getAll("tags[]");
+
+  const tagsString = tags.join(",");
   useEffect(() => {
     const fetchCards = async () => {
+      const queryParams = new URLSearchParams();
+
+      if (sortByDate) queryParams.set("sortByDate", sortByDate);
+      if (sortByPopularity)
+        queryParams.set("sortByPopularity", sortByPopularity);
+      if (searchQuery) queryParams.set("searchQuery", searchQuery);
+      tags.forEach((tag) => tag && queryParams.append("tags[]", tag));
+      queryParams.set("category", displayCategory);
+
       try {
         setIsLoading(true);
-        const res = await fetch(
-          `/api/categories?category=${encodeURIComponent(displayCategory)}`
-        );
+        const res = await fetch(`/api/blogs?${queryParams.toString()}`);
         if (!res.ok) throw new Error(await res.text());
 
         const cards = await res.json();
         setAllCards(cards);
-        setIsLoading(false);
       } catch (err: any) {
         setError(err.message);
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchCards();
-  }, [displayCategory]);
-
-  console.log(allCards.data.length);
+  }, [displayCategory, sortByDate, sortByPopularity, searchQuery, tagsString]);
 
   return (
     <>
@@ -90,7 +102,8 @@ export default function CategoryPage({
         <br />
         <div className="interes__card">
           <div className="cards_container">
-            {isLoading && <CardSkeleton heightPx="551px" />}
+            {/*
+            {isLoading && <CardSkeleton heightPx="551px" />}*/}
             {error && <div style={{ color: "red" }}>{error}</div>}
             {!isLoading && allCards.data.length === 0 && (
               <div style={{ fontSize: "40px", fontWeight: 600 }}>

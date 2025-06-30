@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     const searchQuery = searchParams.get("searchQuery") || "";
     const tags = searchParams.getAll("tags[]");
     const topic = searchParams.get("topic");
-    const category = searchParams.get("category"); // Добавляем параметр category
+    const category = searchParams.get("category");
 
     const sortParams: string[] = [];
 
@@ -46,6 +46,14 @@ export async function GET(req: NextRequest) {
         { title: { $containsi: searchQuery } },
         { description: { $containsi: searchQuery } },
       ];
+    }
+
+    if (category) {
+      filters.category = {
+        name: {
+          $eq: category, // Точное совпадение с категорией
+        },
+      };
     }
 
     // Фильтрация по тегам
