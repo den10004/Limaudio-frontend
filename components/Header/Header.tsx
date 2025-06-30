@@ -18,10 +18,10 @@ export default function Header() {
   const currentCategory = searchParams.get("category");
 
   const links = [
-    { href: "/blog?category=обзоры", label: "Обзоры" },
-    { href: "/blog?category=сравнения", label: "Сравнения" },
-    { href: "/blog?category=топы", label: "Топы" },
-    { href: "/blog?category=гайды-и-советы", label: "Гайды и советы" },
+    { href: "/blog?category=Обзоры", label: "Обзоры" },
+    { href: "/blog?category=Сравнения", label: "Сравнения" },
+    { href: "/blog?category=Топы", label: "Топы" },
+    { href: "/blog?category=Гайды-и-советы", label: "Гайды и советы" },
   ];
 
   return (
