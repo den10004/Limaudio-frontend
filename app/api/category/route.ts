@@ -1,0 +1,59 @@
+import { Articles } from "@/types/articles";
+import qs from "qs";
+
+if (!process.env.API_URL || !process.env.TOKEN) {
+  throw new Error("Missing API_URL or TOKEN in environment variables");
+}
+
+export async function getArticlesByCategoryName(
+  categoryName: string
+): Promise<Articles[] | null> {
+  const query = qs.stringify(
+    {
+      filters: {
+        category: {
+          name: { $containsi: categoryName },
+        },
+      },
+      populate: {
+        cover: { fields: ["url"] },
+        blocks: {
+          populate: "*",
+          on: {
+            "shared.rich-text": { populate: "*" },
+            "shared.slider": { populate: "*" },
+          },
+        },
+        category: { fields: ["name"] },
+        comments: { count: true },
+        seo: { populate: "*" },
+        topics: {
+          populate: {
+            title: {},
+            image: {
+              fields: ["url"],
+            },
+          },
+        },
+      },
+      publicationState: "live",
+    },
+    { encodeValuesOnly: true }
+  );
+
+  const res = await fetch(`${process.env.API_URL}/articles?${query}`, {
+    headers: {
+      Authorization: `Bearer ${process.env.TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    console.error("Error fetching articles by category:", res.status);
+    return null;
+  }
+
+  const data = await res.json();
+  return data?.data ?? null;
+}
