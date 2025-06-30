@@ -126,6 +126,7 @@ export default function Markdown({ blocs }: any) {
                         ),
                       img: ({ src, alt, title }) => (
                         <img
+                          loading="lazy"
                           src={src}
                           alt={alt || ""}
                           title={title}
@@ -162,6 +163,7 @@ export default function Markdown({ blocs }: any) {
                       {component.files?.map((file, fileIndex) => (
                         <SwiperSlide key={`slide-${index}-${fileIndex}`}>
                           <img
+                            loading="lazy"
                             src={file.url}
                             alt={`Slide ${fileIndex}`}
                             className={styles.img_slider}

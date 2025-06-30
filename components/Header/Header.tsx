@@ -31,6 +31,8 @@ export default function Header() {
     },
   ];
 
+  console.log(currentCategory);
+
   return (
     <>
       <header className={styles.header}>
@@ -172,11 +174,10 @@ export default function Header() {
             <nav>
               <ul>
                 {links.map((link) => {
-                  const linkCategory = new URLSearchParams(
-                    link.href.split("?")[1]
-                  ).get("category");
+                  const linkCategory = link.href.split("/blog/category/")[1];
                   const isActive =
-                    pathname === "/blog" && currentCategory === linkCategory;
+                    pathname.startsWith(link.href) ||
+                    (pathname === "/blog" && currentCategory === linkCategory);
                   return (
                     <li key={link.href}>
                       <Link

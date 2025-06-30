@@ -22,7 +22,7 @@ export default function BlogSlider({ card }: any) {
         >
           {["/blog.webp", "/blog.webp", "/blog.webp"].map((num, i) => (
             <SwiperSlide key={i}>
-              <img src={num} alt="слайдер" />
+              <img src={num} alt="слайдер" loading="lazy" />
             </SwiperSlide>
           ))}
         </Swiper>

@@ -12,9 +12,14 @@ export default function BlogSimilar({ card }: any) {
       <article className="similarArticle" onClick={scrollClick}>
         <div className="similarArticle__img" style={{ position: "relative" }}>
           {card.cover?.url ? (
-            <img src={card.cover?.url} alt="blog" />
+            <img src={card.cover?.url} alt="blog" loading="lazy" />
           ) : (
-            <img className="similarArticle__img" src="/empty.webp" alt="blog" />
+            <img
+              className="similarArticle__img"
+              src="/empty.webp"
+              alt="blog"
+              loading="lazy"
+            />
           )}
 
           <div className="labelblock_min">

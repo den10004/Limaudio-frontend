@@ -85,6 +85,7 @@ export default function ApplicationForm({
             className={styles.application__img}
             src="/manager.webp"
             alt="менеджер"
+            loading="lazy"
           />
           <div className={styles.form__expert}>
             <h3 className="text" style={{ fontWeight: "600" }}>

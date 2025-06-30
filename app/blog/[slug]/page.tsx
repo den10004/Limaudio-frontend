@@ -132,7 +132,7 @@ export default async function BlogPostPage({ params }: any) {
             </div>*/}
           </div>
           <div className={styles.blog__container}>
-            <h2 className="text-h2">{content.title}</h2>
+            <h1 className="text-h2">{content.title}</h1>
 
             <div className={styles.blog__block}>
               <div className={styles.blog__content}>
