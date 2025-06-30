@@ -4,7 +4,7 @@ import ScrollBtn from "@/components/ScrollBtn";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import Subscription from "@/components/Subscription/Subscription";
 import styles from "./page.module.css";
-import { INDEX, TEL, TELLINK, TG, WHATSAPP } from "@/lib/breadcrumbs";
+import { EMAIL, INDEX, TEL, TELLINK, TG, WHATSAPP } from "@/lib/breadcrumbs";
 import QuestionForm from "@/components/QuestionForm";
 import MapComponent from "@/components/Map";
 import { Suspense } from "react";
@@ -35,7 +35,7 @@ export default function Contacts() {
                 <li>
                   <label className="text">E-mail: </label>
                   <a className="text20" href="mailto:blog@yandex.ru">
-                    blog@yandex.ru
+                    {EMAIL}
                   </a>
                 </li>
                 <li>
