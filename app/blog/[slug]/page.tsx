@@ -14,6 +14,7 @@ import { FormatDate } from "@/utils/formatDate";
 import BlockSimilarCard from "@/components/BlogSimilar/BlockSimilarCard";
 import Headline from "@/app/UI/headline";
 import { Metadata } from "next";
+import { transliterate } from "transliteration";
 
 interface PageProps {
   params: { slug: string };
@@ -60,11 +61,18 @@ export default async function BlogPostPage({ params }: any) {
 
   const categoryName = content?.category?.name ?? "";
 
+  const categorySlug = transliterate(categoryName)
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+
   const breadcrumbs = [
     { label: "Главная", href: INDEX },
     {
       label: categoryName,
-      href: `/blog?category=${categoryName.toLowerCase()}`,
+      href: `/blog/category/${transliterate(categorySlug)}`,
     },
     {
       label: content?.title ?? "",

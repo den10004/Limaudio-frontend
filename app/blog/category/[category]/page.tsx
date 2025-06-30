@@ -95,15 +95,13 @@ export default function CategoryPage({
 
   return (
     <>
-      <PopularWrapper />
       <div className="container2">
         <br />
         <Headline text={displayCategory} />
         <br />
         <div className="interes__card">
           <div className="cards_container">
-            {/*
-            {isLoading && <CardSkeleton heightPx="551px" />}*/}
+            {isLoading && <CardSkeleton heightPx="551px" />}
             {error && <div style={{ color: "red" }}>{error}</div>}
             {!isLoading && allCards.data.length === 0 && (
               <div style={{ fontSize: "40px", fontWeight: 600 }}>
@@ -116,10 +114,6 @@ export default function CategoryPage({
           </div>
         </div>
       </div>
-      <PopularArticles />
-      <Brands />
-      <Subscription />
-      <ScrollBtn />
     </>
   );
 }

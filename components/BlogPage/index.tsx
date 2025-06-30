@@ -103,7 +103,7 @@ export default function BlogPage() {
     <>
       <div className="container">
         <Headline text={"Блог"} stylecss={{ marginTop: "40px" }} />
-        <PopularWrapper />
+
         {!category && (
           <>
             <BlogMainWrapper />

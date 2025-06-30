@@ -31,8 +31,6 @@ export default function Header() {
     },
   ];
 
-  console.log(currentCategory);
-
   return (
     <>
       <header className={styles.header}>
