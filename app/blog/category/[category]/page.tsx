@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { use } from "react"; // Ensure React's use is imported
 import { useRouter } from "next/navigation";
-import { use } from "react";
 import { CardsResponse } from "@/types/card";
 import CardSkeleton from "@/components/Loading/CardSkeleton";
 import PopularWrapper from "@/components/PopularWrapper";
@@ -10,28 +10,41 @@ import Brands from "@/components/Brands";
 import ScrollBtn from "@/components/ScrollBtn";
 import Subscription from "@/components/Subscription/Subscription";
 import PopularArticles from "@/components/PopularArticles";
-import Hero from "@/components/Hero";
-import BlogSimilar from "@/components/BlogSimilar";
 import BlogCard from "@/components/BlogCard";
 import Headline from "@/app/UI/headline";
 
-const categoryMap = {
+type CategoryPageParams = {
+  category: string;
+};
+
+type CategoryMap = {
+  obzory: string;
+  sravneniya: string;
+  topy: string;
+  "gaydy-i-sovety": string;
+  [key: string]: string;
+};
+
+const categoryMap: CategoryMap = {
   obzory: "Обзоры",
   sravneniya: "Сравнения",
   topy: "Топы",
   "gaydy-i-sovety": "Гайды и советы",
 };
 
-export default function CategoryPage({ params }: any) {
-  const resolvedParams = use(params);
-  const category = resolvedParams.category;
+export default function CategoryPage({
+  params,
+}: {
+  params: Promise<CategoryPageParams>;
+}) {
+  const { category } = use(params); // Unwrap params with React.use()
   const decodedCategory = decodeURIComponent(category);
-  const displayCategory = categoryMap[decodedCategory] || decodedCategory;
+  const displayCategory =
+    categoryMap[decodedCategory as keyof CategoryMap] || decodedCategory;
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],
     meta: {
@@ -66,20 +79,20 @@ export default function CategoryPage({ params }: any) {
     fetchCards();
   }, [displayCategory]);
 
-  console.log(allCards);
+  console.log(allCards.data.length);
 
   return (
     <>
+      <PopularWrapper />
       <div className="container2">
+        <br />
         <Headline text={displayCategory} />
-      </div>
-      <PopularWrapper />{" "}
-      <div className="container2">
+        <br />
         <div className="interes__card">
           <div className="cards_container">
             {isLoading && <CardSkeleton heightPx="551px" />}
             {error && <div style={{ color: "red" }}>{error}</div>}
-            {!isLoading && !allCards && (
+            {!isLoading && allCards.data.length === 0 && (
               <div style={{ fontSize: "40px", fontWeight: 600 }}>
                 Нет доступных блогов
               </div>
