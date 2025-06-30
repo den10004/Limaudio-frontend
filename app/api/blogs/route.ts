@@ -17,28 +17,30 @@ export async function GET(req: NextRequest) {
     const searchQuery = searchParams.get("searchQuery") || "";
     const tags = searchParams.getAll("tags[]");
     const topic = searchParams.get("topic");
+    const category = searchParams.get("category"); // Добавляем параметр category
 
     const sortParams: string[] = [];
 
-    // Сортировка по дате (если указана)
+    // Сортировка по дате
     if (sortByDate === "asc" || sortByDate === "desc") {
       sortParams.push(`createdAt:${sortByDate}`);
     }
 
-    // Сортировка по популярности (если указана и не конфликтует с сортировкой по дате)
+    // Сортировка по популярности
     if (sortByPopularity === "popular" || sortByPopularity === "not_popular") {
       sortParams.push(
         `views:${sortByPopularity === "popular" ? "desc" : "asc"}`
       );
     }
 
-    // Сортировка по умолчанию (если ничего не указано)
+    // Сортировка по умолчанию
     if (sortParams.length === 0) {
       sortParams.push("createdAt:desc");
     }
 
     const filters: any = {};
 
+    // Поиск по заголовку или описанию
     if (searchQuery) {
       filters.$or = [
         { title: { $containsi: searchQuery } },
@@ -46,6 +48,7 @@ export async function GET(req: NextRequest) {
       ];
     }
 
+    // Фильтрация по тегам
     if (tags.length > 0) {
       filters.$or = filters.$or || [];
       filters.$or.push(
@@ -66,10 +69,20 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // Фильтрация по topic
     if (topic) {
       filters.topics = {
         title: {
           $eq: topic,
+        },
+      };
+    }
+
+    // Фильтрация по category
+    if (category) {
+      filters.category = {
+        name: {
+          $eq: category, // Точное совпадение с категорией
         },
       };
     }
