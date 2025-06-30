@@ -7,6 +7,7 @@ import { ModalQuestions } from "../Modals/ModalQuestions";
 import { usePathname, useSearchParams } from "next/navigation";
 import styles from "./page.module.css";
 import { TEL, TELLINK, TG, WHATSAPP } from "@/lib/breadcrumbs";
+import { transliterate } from "transliteration";
 
 export default function Header() {
   const [headerMenu, setHeaderMenu] = useState(false);
@@ -18,10 +19,16 @@ export default function Header() {
   const currentCategory = searchParams.get("category");
 
   const links = [
-    { href: "/blog?category=обзоры", label: "Обзоры" },
-    { href: "/blog?category=сравнения", label: "Сравнения" },
-    { href: "/blog?category=топы", label: "Топы" },
-    { href: "/blog?category=гайды-и-советы", label: "Гайды и советы" },
+    { href: `/blog/category/${transliterate("обзоры")}`, label: "Обзоры" },
+    {
+      href: `/blog/category/${transliterate("сравнения")}`,
+      label: "Сравнения",
+    },
+    { href: `/blog/category/${transliterate("топы")}`, label: "Топы" },
+    {
+      href: `/blog/category/${transliterate("гайды-и-советы")}`,
+      label: "Гайды и советы",
+    },
   ];
 
   return (
