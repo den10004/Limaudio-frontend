@@ -14,8 +14,6 @@ export default function CategoryLayout({
       <PopularWrapper />
       {children}
       <PopularArticles />
-      <Brands />
-      <Subscription />
       <ScrollBtn />
     </>
   );
