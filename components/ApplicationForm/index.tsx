@@ -135,7 +135,7 @@ export default function ApplicationForm({
             className="blogbtnblue standart-btn text-h3"
             disabled={loading}
           >
-            Подобрать акустику
+            Получить подборку
           </button>
         </form>
         {!error && result && (
