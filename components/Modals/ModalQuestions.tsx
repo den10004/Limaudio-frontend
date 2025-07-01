@@ -70,7 +70,7 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
           ...utmParams, // Добавляем UTM-метки к данным формы
         }),
       });
-
+      console.log(res);
       if (res.ok) {
         router.push(`/thanks?name=${encodeURIComponent(name)}`);
         onClose();
