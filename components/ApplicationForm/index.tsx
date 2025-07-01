@@ -28,8 +28,16 @@ export default function ApplicationForm({
     const utm_source = localStorage.getItem("utm_source");
     const utm_medium = localStorage.getItem("utm_medium");
     const utm_campaign = localStorage.getItem("utm_campaign");
+    const utm_campaign_name = localStorage.getItem("utm_campaign_name");
     const utm_content = localStorage.getItem("utm_content");
     const utm_term = localStorage.getItem("utm_term");
+    const utm_placement = localStorage.getItem("utm_placement");
+    const utm_device = localStorage.getItem("utm_device");
+    const utm_region_name = localStorage.getItem("utm_region_name");
+    const utm_position = localStorage.getItem("utm_position");
+    const utm_position_type = localStorage.getItem("utm_position_type");
+    const utm_source_type = localStorage.getItem("utm_source_type");
+    const utm_yclid = localStorage.getItem("yclid");
 
     try {
       const res = await fetch("/api/sendForm", {
@@ -44,8 +52,16 @@ export default function ApplicationForm({
           utm_source,
           utm_medium,
           utm_campaign,
+          utm_campaign_name,
           utm_content,
           utm_term,
+          utm_placement,
+          utm_device,
+          utm_region_name,
+          utm_position,
+          utm_position_type,
+          utm_source_type,
+          utm_yclid,
         }),
       });
 

@@ -12,8 +12,16 @@ export default function UtmSaver() {
       "utm_source",
       "utm_medium",
       "utm_campaign",
+      "utm_campaign_name",
       "utm_content",
       "utm_term",
+      "utm_placement",
+      "utm_device",
+      "utm_region_name",
+      "utm_position",
+      "utm_position_type",
+      "utm_source_type",
+      "yclid",
     ];
     params.forEach((param) => {
       const value = searchParams.get(param);

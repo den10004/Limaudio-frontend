@@ -11,8 +11,16 @@ export async function POST(req: NextRequest) {
     utm_source,
     utm_medium,
     utm_campaign,
+    utm_campaign_name,
     utm_content,
     utm_term,
+    utm_placement,
+    utm_device,
+    utm_region_name,
+    utm_position,
+    utm_position_type,
+    utm_source_type,
+    utm_yclid,
   } = await req.json();
 
   try {
@@ -31,14 +39,24 @@ export async function POST(req: NextRequest) {
     });
 
     let emailText = `
+Форма:   ${headline}
+Имя:     ${name}
+Телефон: ${phone}
 utm_source: ${utm_source || ""}
 utm_medium: ${utm_medium || ""}
+utm_campaign_name: ${utm_campaign_name || ""}
 utm_campaign: ${utm_campaign || ""}
 utm_content: ${utm_content || ""}
 utm_term: ${utm_term || ""}
-Форма:   ${headline}
-Имя:     ${name}
-Телефон: ${phone}`.trim();
+utm_placement: ${utm_placement || ""}
+utm_device: ${utm_device || ""}
+utm_region_name: ${utm_region_name || ""}
+utm_position: ${utm_position || ""}
+utm_position_type: ${utm_position_type || ""}
+utm_term: ${utm_term || ""}
+utm_source_type: ${utm_source_type || ""}
+utm_yclid: ${utm_yclid || ""}
+`.trim();
 
     if (email) {
       emailText += `
