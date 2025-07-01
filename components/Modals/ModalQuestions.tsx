@@ -2,7 +2,7 @@
 
 import PhoneInput from "@/utils/telMask";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Info } from "./info";
 
 interface ModalHeaderProps {
@@ -18,6 +18,39 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState(false);
+  const [utmParams, setUtmParams] = useState<Record<string, string>>({});
+
+  // Получаем UTM-метки при загрузке компонента
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Проверяем URL на наличие UTM-меток
+      const params = new URLSearchParams(window.location.search);
+      const utm: Record<string, string> = {};
+
+      [
+        "utm_source",
+        "utm_medium",
+        "utm_campaign",
+        "utm_term",
+        "utm_content",
+      ].forEach((key) => {
+        const value = params.get(key);
+        if (value) utm[key] = value;
+      });
+
+      if (Object.keys(utm).length > 0) {
+        setUtmParams(utm);
+        // Сохраняем в localStorage для последующих отправок
+        localStorage.setItem("utm_params", JSON.stringify(utm));
+      } else {
+        // Если в URL нет UTM, проверяем localStorage
+        const savedUtm = localStorage.getItem("utm_params");
+        if (savedUtm) {
+          setUtmParams(JSON.parse(savedUtm));
+        }
+      }
+    }
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,7 +62,13 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ headline, name, phone, email }),
+        body: JSON.stringify({
+          headline,
+          name,
+          phone,
+          email,
+          ...utmParams, // Добавляем UTM-метки к данным формы
+        }),
       });
 
       if (res.ok) {
