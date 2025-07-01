@@ -5,6 +5,7 @@ import { CardsResponse } from "@/types/card";
 import "./styles.css";
 import Headline from "@/app/UI/headline";
 import CardSkeleton from "../Loading/CardSkeleton";
+import PopularArticles from "../PopularArticles";
 
 export default function BlockSimilarCard({
   slug,
@@ -52,16 +53,25 @@ export default function BlockSimilarCard({
     }
   }, []);
 
+  if (!isLoading && allCards.data.length === 0) {
+    return (
+      <div className="blog__similar" style={{ padding: 0 }}>
+        <div style={{ fontSize: "40px", fontWeight: 600 }}>
+          <PopularArticles
+            gridStyle="none"
+            paddingStyle="0"
+            headstyle={{ paddingLeft: "20px" }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="blog__similar">
       <Headline text="Похожие статьи" />
       {isLoading && (
         <CardSkeleton heightPx="1558px" marginPx="20px" widthPx="100%" />
-      )}
-      {!isLoading && allCards.data.length === 0 && (
-        <div style={{ fontSize: "40px", fontWeight: 600 }}>
-          Нет похожих статей
-        </div>
       )}
       {error && <div style={{ color: "red" }}>{error}</div>}
       {allCards.data?.map((card) => (

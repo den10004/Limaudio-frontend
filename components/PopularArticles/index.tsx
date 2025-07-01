@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import BlogCard from "../BlogCard";
 import { CardsResponse } from "@/types/card";
 import Headline from "@/app/UI/headline";
 import CardSkeleton from "../Loading/CardSkeleton";
 
-export default function PopularArticles() {
+export default function PopularArticles({
+  gridStyle,
+  paddingStyle,
+  headstyle,
+}: {
+  gridStyle?: string;
+  paddingStyle?: string;
+  headstyle?: CSSProperties;
+}) {
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],
     meta: {
@@ -49,8 +57,11 @@ export default function PopularArticles() {
   }, []);
 
   return (
-    <div className="container2" style={{ marginTop: "30px" }}>
-      <Headline text="Популярные статьи" />
+    <div
+      className="container2"
+      style={{ marginTop: "30px", padding: paddingStyle }}
+    >
+      <Headline text="Популярные статьи" headstyle={headstyle} />
 
       <div className="interes__card">
         {isLoading && <CardSkeleton heightPx="551px" />}
@@ -60,7 +71,7 @@ export default function PopularArticles() {
             Нет доступных блогов
           </div>
         )}
-        <div className="cards_container">
+        <div className="cards_container" style={{ grid: gridStyle }}>
           {sortedCards.map((card) => (
             <BlogCard key={card.id} card={card} type="small" />
           ))}
