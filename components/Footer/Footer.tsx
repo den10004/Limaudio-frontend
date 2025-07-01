@@ -2,12 +2,32 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { ModalQuestions } from "../Modals/ModalQuestions";
-import { useState } from "react";
-import { linksFooter } from "@/lib/footerLinks";
+import { useEffect, useState } from "react";
 import { TEL, TELLINK, TG, WHATSAPP } from "@/lib/breadcrumbs";
 
 export default function Footer() {
   const [callbackModal, setCallbackModal] = useState(false);
+  const [topics, setTopics] = useState<any>();
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/topic");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+        const topics = cards.data;
+        setTopics(topics);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+
+    fetchCards();
+  }, []);
 
   return (
     <footer className={styles.footer}>
@@ -86,10 +106,10 @@ export default function Footer() {
 
         <div className={styles.footer__center}>
           <ul className="text-small">
-            {linksFooter?.map((item, i) => {
+            {topics?.map((item: { slug: string; title: string }, i: number) => {
               return (
                 <li key={i}>
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link href={item.slug}>{item.title}</Link>
                 </li>
               );
             })}

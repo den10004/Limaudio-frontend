@@ -100,6 +100,7 @@ export async function GET(req: NextRequest) {
         sort: sortParams,
         filters,
         populate: {
+          seo: { populate: "*" },
           cover: { fields: ["url"] },
           category: { fields: ["name"] },
           comments: { count: true },

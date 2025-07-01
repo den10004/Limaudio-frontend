@@ -85,8 +85,6 @@ button {
 
 .container2 {
     max-width: 1225px;
-    padding-left: 16px;
-    padding-right: 16px;
     margin: 0 auto;
 }
 
@@ -446,12 +444,5 @@ textarea {
 @media screen and (max-width: 600px) {
     .text-h1 {
         font-size: 26px;
-    }
-}
-
-@media screen and (max-width: 500px) {
-    .container2 {
-        padding-left: 0;
-        padding-right: 0;
     }
 }

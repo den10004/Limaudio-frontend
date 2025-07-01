@@ -20,7 +20,7 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
       Authorization: `Bearer ${process.env.TOKEN}`,
       "Content-Type": "application/json",
     },
-    next: { revalidate: 1 },
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {
@@ -30,6 +30,7 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
 
   const data = await res.json();
   const brand = data?.data?.[0] ?? null;
+  console.log(brand);
   return brand;
   // return data?.data?.[0] ?? null;
 }
