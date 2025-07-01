@@ -10,6 +10,7 @@ import { Suspense } from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import YandexMetrika from "@/components/YandexMetrika";
+import UtmSaver from "@/components/UtmSaver";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({
       >
         <Suspense fallback={<div></div>}>
           <Header />
+          <UtmSaver />
         </Suspense>
         {children}
         <Footer />

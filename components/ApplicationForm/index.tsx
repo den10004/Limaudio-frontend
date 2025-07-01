@@ -25,6 +25,11 @@ export default function ApplicationForm({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
+    const utm_source = localStorage.getItem("utm_source");
+    const utm_medium = localStorage.getItem("utm_medium");
+    const utm_campaign = localStorage.getItem("utm_campaign");
+    const utm_content = localStorage.getItem("utm_content");
+    const utm_term = localStorage.getItem("utm_term");
 
     try {
       const res = await fetch("/api/sendForm", {
@@ -32,7 +37,16 @@ export default function ApplicationForm({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ headline, name, phone }),
+        body: JSON.stringify({
+          headline,
+          name,
+          phone,
+          utm_source,
+          utm_medium,
+          utm_campaign,
+          utm_content,
+          utm_term,
+        }),
       });
 
       if (res.ok) {
