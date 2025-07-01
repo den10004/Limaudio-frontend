@@ -42,6 +42,13 @@ export async function POST(req: NextRequest) {
 Форма:   ${headline}
 Имя:     ${name}
 Телефон: ${phone}
+${email ? `Email: ${email}` : ""}
+${comment ? `Сообщение: ${comment}` : ""}
+
+----------------------------
+📝 UTM данные заявки
+----------------------------
+
 utm_source: ${utm_source || ""}
 utm_medium: ${utm_medium || ""}
 utm_campaign_name: ${utm_campaign_name || ""}
@@ -53,20 +60,9 @@ utm_device: ${utm_device || ""}
 utm_region_name: ${utm_region_name || ""}
 utm_position: ${utm_position || ""}
 utm_position_type: ${utm_position_type || ""}
-utm_term: ${utm_term || ""}
 utm_source_type: ${utm_source_type || ""}
 utm_yclid: ${utm_yclid || ""}
 `.trim();
-
-    if (email) {
-      emailText += `
-    Email: ${email}`;
-    }
-
-    if (comment) {
-      emailText += `
-    Сообщение: ${comment}`;
-    }
 
     const mailOptions = {
       from: `"" <${process.env.EMAIL_USER}>`,
