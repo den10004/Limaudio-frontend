@@ -115,7 +115,7 @@ export default function ApplicationForm({
               value={name}
               name="name"
               required
-              placeholder="Гость"
+              placeholder="Иван Иванов"
             />
           </div>
 

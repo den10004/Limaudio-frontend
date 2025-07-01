@@ -10,7 +10,7 @@ export default function Comments() {
           <time className="text-small" dateTime="16-04-2025">
             16/04/2025
           </time>
-          <h3>Гость</h3>
+          <h3>Иван Иванов</h3>
 
           <div>
             <p className="text">
@@ -34,7 +34,7 @@ export default function Comments() {
           <time className="text-small" dateTime="16-04-2025">
             16/04/2025
           </time>
-          <h3>Гость</h3>
+          <h3>Иван Иванов</h3>
 
           <div>
             <p className="text">

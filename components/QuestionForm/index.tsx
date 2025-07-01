@@ -77,7 +77,7 @@ export default function QuestionForm() {
                   value={name}
                   name="name"
                   required
-                  placeholder="Гость"
+                  placeholder="Иван Иванов"
                 />
               </div>
               <div className={styles.comments__send__form_group}>

@@ -153,7 +153,6 @@ export default async function BlogPostPage({ params }: any) {
                     />
                   )}
                   <p className="text blog-main">{content.description}</p>
-                  <br />
                   <div className="text blog-main">
                     <MarkdownBlog blocs={blocs} />
                   </div>

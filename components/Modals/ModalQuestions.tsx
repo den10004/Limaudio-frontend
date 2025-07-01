@@ -62,7 +62,7 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
         <span className="close-btn" onClick={onClose}>
           ×
         </span>
-        <h3 className="text-h3-bold">Заказать обратный звонок</h3>
+        <h3 className="text-h3-bold">Закажите обратный звонок</h3>
         <form className="callbackform" onSubmit={handleSubmit}>
           <div className="comments__send__form-group">
             <label className="text-small" htmlFor="name">
@@ -84,7 +84,7 @@ export const ModalQuestions: React.FC<ModalHeaderProps> = ({ onClose }) => {
               value={name}
               name="name"
               required={true}
-              placeholder="Гость"
+              placeholder="Иван Иванов"
             />
           </div>
           <div className="comments__send__form-group">
