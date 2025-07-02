@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { linksTopics } from "@/lib/footerLinks";
 import TopicPage from "./TopicPage";
-import qs from "qs";
+import { getMatchingTopics } from "@/app/api/topic/api";
 
+// Move these interfaces to a separate types file if used elsewhere
 interface Article {
   id: number;
   documentId: string;
@@ -33,40 +34,10 @@ interface Topic {
   seo?: Seo;
 }
 
-interface Params {
-  slug: string;
-}
-
-export async function getMatchingTopics(topicLabel: string): Promise<Topic[]> {
-  const query = qs.stringify(
-    {
-      populate: {
-        image: {
-          fields: ["url"],
-        },
-        articles: { populate: "*" },
-        seo: { populate: "*" },
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    }
-  );
-
-  const res = await fetch(`${process.env.API_URL}/topics?${query}`, {
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${process.env.TOKEN}`,
-    },
-    next: { revalidate: 60 },
-  });
-
-  if (!res.ok) {
-    throw new Error("Ошибка при загрузке данных");
-  }
-  const topicsData: { data: Topic[] } = await res.json();
-  return topicsData.data.filter((topic: Topic) => topic.title === topicLabel);
-}
+// Update PageProps to use Promise for params
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
 
 function getTopicLabel(slug: string): string | null {
   const topic = linksTopics.find(
@@ -77,10 +48,10 @@ function getTopicLabel(slug: string): string | null {
 
 export async function generateMetadata({
   params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
-  const label = getTopicLabel(params.slug);
+}: PageProps): Promise<Metadata> {
+  // Await the params to get the slug
+  const { slug } = await params;
+  const label = getTopicLabel(slug);
 
   if (!label) {
     return {
@@ -90,7 +61,7 @@ export async function generateMetadata({
   }
 
   try {
-    const matchingTopics: Topic[] = await getMatchingTopics(label);
+    const matchingTopics = await getMatchingTopics(label);
     if (matchingTopics.length > 0 && matchingTopics[0].seo) {
       const { metaTitle, metaDescription, metaKeys } = matchingTopics[0].seo;
       return {
@@ -110,8 +81,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function TopicPageWrapper({ params }: { params: Params }) {
-  const label = getTopicLabel(params.slug);
+export default async function TopicPageWrapper({ params }: PageProps) {
+  // Await the params to get the slug
+  const { slug } = await params;
+  const label = getTopicLabel(slug);
 
   if (!label) {
     notFound();
@@ -128,7 +101,7 @@ export default async function TopicPageWrapper({ params }: { params: Params }) {
 
   return (
     <TopicPage
-      slug={params.slug}
+      slug={slug}
       topicLabel={label}
       matchingTopics={matchingTopics}
       error={error}

@@ -36,9 +36,8 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
   // return data?.data?.[0] ?? null;
 }
 */
-// lib/topics.ts
+// lib/topicUtils.ts
 import qs from "qs";
-import { linksTopics } from "@/lib/footerLinks";
 
 interface Article {
   id: number;
@@ -98,11 +97,4 @@ export async function getMatchingTopics(topicLabel: string): Promise<Topic[]> {
   }
   const topicsData: { data: Topic[] } = await res.json();
   return topicsData.data.filter((topic: Topic) => topic.title === topicLabel);
-}
-
-export function getTopicLabel(slug: string): string | null {
-  const topic = linksTopics.find(
-    (l) => l.slug.toLowerCase() === decodeURIComponent(slug).toLowerCase()
-  );
-  return topic ? topic.label : null;
 }
