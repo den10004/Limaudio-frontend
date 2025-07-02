@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
   return {
     title: content.seo?.metaTitle || content.title,
     description: content.seo?.metaDescription || content.description,
-    keywords: content.title ? [content.title] : [""],
+    keywords: content.seo?.metaKeys ? [content.seo?.metaKeys] : [""],
     openGraph: {
       title: content.seo?.metaTitle || content.title,
       description: content.seo?.metaDescription || content.description,

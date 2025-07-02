@@ -64,6 +64,7 @@ export async function generateMetadata({
 
   try {
     const categoryData = await getMatchingCategory();
+    console.log(categoryData);
     const matchingCategory = categoryData?.data?.find(
       (cat: any) => cat.name === displayCategory
     );
