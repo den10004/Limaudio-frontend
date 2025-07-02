@@ -120,7 +120,7 @@ const CategoryPage: NextPage<PageProps> = async ({ params }) => {
   return (
     <div className="container2">
       <br />
-      <Headline text={displayCategory} />
+      <Headline text={displayCategory} left={true} />
       <br />
       <ClientCategoryPage displayCategory={displayCategory} />
     </div>

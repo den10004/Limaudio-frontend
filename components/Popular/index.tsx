@@ -84,7 +84,6 @@ export default function Popular() {
 
   const debouncedSearchQuery = useDebounce(searchQuery, 1000);
 
-  // Синхронизация начального состояния с URL-параметрами
   useEffect(() => {
     const initialSortByDate = searchParams.get("sortByDate") as
       | "asc"
@@ -112,7 +111,6 @@ export default function Popular() {
     }
   }, [searchParams]);
 
-  // Обновление URL при изменении debouncedSearchQuery
   useEffect(() => {
     if (debouncedSearchQuery !== searchParams.get("searchQuery")) {
       updateURLParams({
@@ -130,7 +128,6 @@ export default function Popular() {
   }) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    // Управление параметрами сортировки
     if (newParams.sortByDate !== undefined) {
       if (newParams.sortByDate) {
         params.set("sortByDate", newParams.sortByDate);
@@ -189,7 +186,6 @@ export default function Popular() {
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
-    // Не обновляем URL здесь - это сделает debounce эффект
   };
 
   useEffect(() => {
@@ -283,8 +279,8 @@ export default function Popular() {
         }`}
         id="linksList"
       >
+        {isLoadingTags && <CardSkeleton heightPx="112px" marginPx="10px" />}
         {uniqueTags && <Tags uniqueTags={topics} onTagClick={handleTagClick} />}
-        {isLoading && <CardSkeleton heightPx="112px" marginPx="10px" />}
         {error && <div style={{ color: "red" }}>{error}</div>}
       </ul>
 

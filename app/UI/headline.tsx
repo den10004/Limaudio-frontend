@@ -6,24 +6,31 @@ type HeadlineProps = {
   stylecss?: CSSProperties;
   link?: string;
   headstyle?: CSSProperties;
+  left?: boolean;
 };
-
 export default function Headline({
   text,
   stylecss,
   link,
   headstyle,
+  left,
 }: HeadlineProps) {
   return (
     <>
       {link ? (
-        <Link href={link} style={{ color: "var( --color-black1C)" }}>
-          <h2 className="text-h3-bold" style={{ ...stylecss, ...headstyle }}>
+        <Link href={link} style={{ color: "var(--color-black1C)" }}>
+          <h2
+            className={`text-h3-bold ${left ? "headline-left" : ""}`}
+            style={{ ...stylecss, ...headstyle }}
+          >
             {text}
           </h2>
         </Link>
       ) : (
-        <h2 className="text-h3-bold" style={{ ...stylecss, ...headstyle }}>
+        <h2
+          className={`text-h3-bold ${left ? "headline-left" : ""}`}
+          style={{ ...stylecss, ...headstyle }}
+        >
           {text}
         </h2>
       )}

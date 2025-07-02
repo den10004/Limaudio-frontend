@@ -76,7 +76,7 @@ button {
 }
 
 .container {
-    max-width: 1225px;
+    max-width: 1232px;
     padding-left: 16px;
     padding-right: 16px;
     margin: 0 auto;
@@ -84,7 +84,7 @@ button {
 
 
 .container2 {
-    max-width: 1225px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -389,6 +389,21 @@ textarea {
     height: 58px;
     margin-top: 5px;
 }
+
+.headline {
+    margin-left: 16px;
+}
+
+.headline-left {
+    margin-left: 0px;
+}
+
+@media (max-width: 1230px) {
+    .headline-left {
+        margin-left: 16px;
+    }
+}
+
 
 @media screen and (max-width: 767px) {
     .text-h1 {

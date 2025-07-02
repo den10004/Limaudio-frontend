@@ -26,7 +26,6 @@ interface uniqueTags {
 
 interface TagsProps {
   uniqueTags: any;
-  // uniqueTags: uniqueTags;
   onTagClick?: (selectedTags: (string | null)[]) => void;
   filter?: boolean;
 }
