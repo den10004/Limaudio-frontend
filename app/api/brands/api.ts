@@ -8,7 +8,6 @@ if (!process.env.API_URL || !process.env.TOKEN) {
 }
 
 export async function getBrandsBySlug(slug: string): Promise<any | null> {
-  // Check cache first
   const cached = cache.get(slug);
   const now = Date.now();
 

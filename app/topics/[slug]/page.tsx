@@ -7,7 +7,6 @@ interface Params {
   slug: string;
 }
 
-// Получаем название темы по slug
 function getTopicLabel(slug: string): string | null {
   const topic = linksTopics.find(
     (l) => l.slug.toLowerCase() === decodeURIComponent(slug).toLowerCase()
@@ -15,7 +14,6 @@ function getTopicLabel(slug: string): string | null {
   return topic ? topic.label : null;
 }
 
-// SEO
 export async function generateMetadata({
   params,
 }: {
@@ -40,7 +38,7 @@ export default function TopicPageWrapper({ params }: { params: Params }) {
   const label = getTopicLabel(params.slug);
 
   if (!label) {
-    notFound(); // 404 если тема не найдена
+    notFound();
   }
 
   return <TopicPage slug={params.slug} topicLabel={label} />;
