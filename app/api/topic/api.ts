@@ -36,3 +36,73 @@ export async function getBrandsBySlug(slug: string): Promise<any | null> {
   // return data?.data?.[0] ?? null;
 }
 */
+// lib/topics.ts
+import qs from "qs";
+import { linksTopics } from "@/lib/footerLinks";
+
+interface Article {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  views: number;
+  category: { name: string };
+  topics: { title: string }[];
+}
+
+interface Seo {
+  id: number;
+  metaTitle: string;
+  metaDescription: string;
+  metaKeys: string;
+  shareImage: any;
+}
+
+interface Topic {
+  title: string;
+  articles: Article[];
+  image?: { id: number; documentId: string; url: string };
+  seo?: Seo;
+}
+
+export async function getMatchingTopics(topicLabel: string): Promise<Topic[]> {
+  const query = qs.stringify(
+    {
+      populate: {
+        image: {
+          fields: ["url"],
+        },
+        articles: { populate: "*" },
+        seo: { populate: "*" },
+      },
+    },
+    {
+      encodeValuesOnly: true,
+    }
+  );
+
+  const res = await fetch(`${process.env.API_URL}/topics?${query}`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${process.env.TOKEN}`,
+    },
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    throw new Error("Ошибка при загрузке данных");
+  }
+  const topicsData: { data: Topic[] } = await res.json();
+  return topicsData.data.filter((topic: Topic) => topic.title === topicLabel);
+}
+
+export function getTopicLabel(slug: string): string | null {
+  const topic = linksTopics.find(
+    (l) => l.slug.toLowerCase() === decodeURIComponent(slug).toLowerCase()
+  );
+  return topic ? topic.label : null;
+}

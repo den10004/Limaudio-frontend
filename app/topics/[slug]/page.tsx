@@ -37,7 +37,7 @@ interface Params {
   slug: string;
 }
 
-export async function getMatchingTopics(topicLabel: string) {
+export async function getMatchingTopics(topicLabel: string): Promise<Topic[]> {
   const query = qs.stringify(
     {
       populate: {
@@ -64,10 +64,8 @@ export async function getMatchingTopics(topicLabel: string) {
   if (!res.ok) {
     throw new Error("Ошибка при загрузке данных");
   }
-  const topicsData: any = await res.json();
-  return topicsData.data.filter(
-    (topic: { title: string }) => topic.title === topicLabel
-  );
+  const topicsData: { data: Topic[] } = await res.json();
+  return topicsData.data.filter((topic: Topic) => topic.title === topicLabel);
 }
 
 function getTopicLabel(slug: string): string | null {
@@ -94,10 +92,11 @@ export async function generateMetadata({
   try {
     const matchingTopics: Topic[] = await getMatchingTopics(label);
     if (matchingTopics.length > 0 && matchingTopics[0].seo) {
-      const { metaTitle, metaDescription } = matchingTopics[0].seo;
+      const { metaTitle, metaDescription, metaKeys } = matchingTopics[0].seo;
       return {
         title: metaTitle || label,
         description: metaDescription || `Читайте статьи на тему ${label}.`,
+        keywords: metaKeys || "",
       };
     }
   } catch (err) {
@@ -105,8 +104,9 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${label}`,
+    title: label,
     description: `Читайте статьи на тему ${label}.`,
+    keywords: "",
   };
 }
 

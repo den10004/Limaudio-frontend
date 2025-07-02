@@ -1,3 +1,4 @@
+import { type NextPage } from "next";
 import { CardsResponse } from "@/types/card";
 import Headline from "@/app/UI/headline";
 import ClientCategoryPage from "./ClientCategoryPage";
@@ -22,7 +23,21 @@ const categoryMap: CategoryMap = {
   "gaydy-i-sovety": "Гайды и советы",
 };
 
-async function getMatchingCategory() {
+// Define the API response type for better type safety
+interface Category {
+  name: string;
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    metaKeys?: string;
+  };
+}
+
+interface CategoryResponse {
+  data: Category[];
+}
+
+async function getMatchingCategory(): Promise<CategoryResponse> {
   const query = qs.stringify(
     {
       populate: {
@@ -45,32 +60,33 @@ async function getMatchingCategory() {
   if (!res.ok) {
     throw new Error("Ошибка при загрузке данных");
   }
-  const categoryData: any = await res.json();
-  return categoryData;
+  return res.json();
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: CategoryPageParams;
-}) {
-  const { category } = params;
+// Define PageProps with params as a Promise
+interface PageProps {
+  params: Promise<CategoryPageParams>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { category } = await params; // Await the params
   const decodedCategory = decodeURIComponent(category);
   const displayCategory =
     categoryMap[decodedCategory as keyof CategoryMap] || decodedCategory;
 
   let metaTitle = displayCategory;
   let metaDescription = "";
+  let metaKeys = "";
 
   try {
     const categoryData = await getMatchingCategory();
-    console.log(categoryData);
     const matchingCategory = categoryData?.data?.find(
-      (cat: any) => cat.name === displayCategory
+      (cat: Category) => cat.name === displayCategory
     );
     if (matchingCategory?.seo) {
       metaTitle = matchingCategory.seo.metaTitle || displayCategory;
       metaDescription = matchingCategory.seo.metaDescription || "";
+      metaKeys = matchingCategory.seo.metaKeys || "";
     }
   } catch (error) {
     console.error("generateMetadata Error:", error);
@@ -79,30 +95,24 @@ export async function generateMetadata({
   return {
     title: metaTitle,
     description: metaDescription,
+    keywords: metaKeys || "",
+    openGraph: {
+      title: metaTitle || "",
+      description: metaDescription || "",
+      keywords: metaKeys || "",
+    },
   };
 }
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: CategoryPageParams;
-}) {
-  const { category } = params;
+const CategoryPage: NextPage<PageProps> = async ({ params }) => {
+  const { category } = await params; // Await the params
   const decodedCategory = decodeURIComponent(category);
   const displayCategory =
     categoryMap[decodedCategory as keyof CategoryMap] || decodedCategory;
 
-  let categoryData = null;
+  let categoryData: CategoryResponse | null = null;
   try {
     categoryData = await getMatchingCategory();
-    const matchingCategory = categoryData?.data?.find(
-      (cat: any) => cat.name === displayCategory
-    );
-    console.log("displayCategory", displayCategory);
-    console.log(
-      "Matching Category Data:",
-      JSON.stringify(matchingCategory, null, 2)
-    );
   } catch (error) {
     console.error("CategoryPage Error:", error);
   }
@@ -115,4 +125,6 @@ export default async function CategoryPage({
       <ClientCategoryPage displayCategory={displayCategory} />
     </div>
   );
-}
+};
+
+export default CategoryPage;
