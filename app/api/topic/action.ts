@@ -1,5 +1,5 @@
 import qs from "qs";
-
+/*
 export async function getMatchingTopics(topicLabel: string) {
   const query = qs.stringify(
     {
@@ -32,3 +32,4 @@ export async function getMatchingTopics(topicLabel: string) {
     (topic: { title: string }) => topic.title === topicLabel
   );
 }
+*/

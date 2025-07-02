@@ -23,7 +23,7 @@ interface Seo {
   metaTitle: string;
   metaDescription: string;
   metaKeys: string;
-  shareImage: any; // Adjust based on actual structure if needed
+  shareImage: any;
 }
 
 interface Topic {
@@ -101,7 +101,7 @@ export async function generateMetadata({
       };
     }
   } catch (err) {
-    // Log error if needed, but proceed with fallback
+    console.error(err);
   }
 
   return {
