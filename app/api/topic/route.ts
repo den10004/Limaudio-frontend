@@ -17,6 +17,8 @@ export async function GET() {
           image: {
             fields: ["url"],
           },
+          articles: { populate: "*" },
+          seo: { populate: "*" },
         },
       },
       {
@@ -37,9 +39,8 @@ export async function GET() {
       console.error(`Ошибка от Strapi API: ${res.status} - ${text}`);
       throw new Error(`Strapi API error: ${res.status}`);
     }
-    const data = await res.json();
-
-    return NextResponse.json(data);
+    const topic = await res.json();
+    return NextResponse.json(topic);
   } catch (error) {
     console.error("Ошибка при получении данных из Strapi:", error);
     return NextResponse.json(

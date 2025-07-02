@@ -19,8 +19,7 @@ export default function Footer() {
         }
 
         const cards = await res.json();
-        const topics = cards.data;
-        setTopics(topics);
+        setTopics(cards.data);
       } catch (err: any) {
         console.log(err);
       }
