@@ -45,13 +45,14 @@ export async function GET(req: NextRequest) {
       filters.$or = [
         { title: { $containsi: searchQuery } },
         { description: { $containsi: searchQuery } },
+        { seo: { metaKeys: { $containsi: searchQuery } } },
       ];
     }
 
     if (category) {
       filters.category = {
         name: {
-          $eq: category, // Точное совпадение с категорией
+          $eq: category,
         },
       };
     }
