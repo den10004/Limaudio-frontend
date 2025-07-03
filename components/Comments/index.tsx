@@ -1,60 +1,55 @@
+import { FormatDate } from "@/utils/formatDate";
 import styles from "./page.module.css";
 
-export default function Comments() {
+interface Comment {
+  createdAt: string;
+  documentId: string;
+  id: number;
+  name: string;
+  publishedAt: string;
+  reply: string | null;
+  text: string;
+  updatedAt: string;
+}
+
+interface CommentsProps {
+  comments: Comment[];
+  commentsLength: number;
+}
+
+export default function Comments({ comments, commentsLength }: CommentsProps) {
+  console.log(comments);
   return (
     <div className={styles.comments}>
-      <h3 className="text-h3-bold">Комментарии (60)</h3>
+      <h3 className="text-h3-bold">
+        {commentsLength === 0
+          ? "комментариев нет"
+          : `Комментарии (${commentsLength})`}
+      </h3>
 
       <div className={styles.comments__cards}>
-        <article className={styles.comments__card}>
-          <time className="text-small" dateTime="16-04-2025">
-            16/04/2025
-          </time>
-          <h3>Иван Иванов</h3>
+        {comments.map((comment) => (
+          <article key={comment.id} className={styles.comments__card}>
+            <time className="text-small" dateTime="16-04-2025">
+              {FormatDate(comment.createdAt)}
+            </time>
+            <h3>{comment.name}</h3>
 
-          <div>
-            <p className="text">
-              Обычная блютуз моногарнитура для разговоров. Музыку через нее не
-              слушаю разумеется. Есть два варианта кодеков sbc и аac. При sbc в
-              принципе голос мой и собеседника можно охарактеризовать как HD
-              аудио. Нет глухости или обрезки каких то частот.  Где то слышал
-              что лучше отключить aac и выбрать sbc , якобы у sbc потребление
-              процессором гарнитуры меньше, и в моем случае дольше на 4 часа
-              будет работать ( аккумулятор гарнитуры 300 мАч). Есть такое?
-            </p>
-          </div>
+            <div>
+              <p className="text">{comment.text}</p>
+            </div>
 
-          <div className={styles.comments__btn}>
-            <a href="#reply" className={`text16 ${styles.comment_reply} `}>
-              Ответить на комментарий
-            </a>
-          </div>
-        </article>
-        <article className={styles.comments__card}>
-          <time className="text-small" dateTime="16-04-2025">
-            16/04/2025
-          </time>
-          <h3>Иван Иванов</h3>
-
-          <div>
-            <p className="text">
-              Обычная блютуз моногарнитура для разговоров. Музыку через нее не
-              слушаю разумеется. Есть два варианта кодеков sbc и аac. При sbc в
-              принципе голос мой и собеседника можно охарактеризовать как HD
-              аудио. Нет глухости или обрезки каких то частот.  Где то слышал
-              что лучше отключить aac и выбрать sbc , якобы у sbc потребление
-              процессором гарнитуры меньше, и в моем случае дольше на 4 часа
-              будет работать ( аккумулятор гарнитуры 300 мАч). Есть такое?
-            </p>
-          </div>
-
-          <div className={styles.comments__btn}>
-            <a href="#reply" className={`text16 ${styles.comment_reply} `}>
-              Ответить на комментарий
-            </a>
-          </div>
-        </article>
-
+            {/*
+            <div className={styles.comments__btn}>
+              <a href="#reply" className={`text16 ${styles.comment_reply} `}>
+                Ответить на комментарий
+              </a>
+            </div>*/}
+          </article>
+        ))}
+      </div>
+      <div className={styles.comments__cards}>
+        {/*
         <div className={styles.comments__nav}>
           <div className={styles.number_buttons}>
             <button className={`text16 ${styles.number_button}`}>1</button>
@@ -76,7 +71,7 @@ export default function Comments() {
               </svg>
             </button>
           </div>
-        </div>
+        </div>*/}
 
         <div
           className={`${styles.comments__send} ${styles.comments__card}`}

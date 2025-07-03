@@ -83,6 +83,8 @@ export default async function BlogPostPage({ params }: any) {
 
   const tags: any = content?.topics;
   const blocs: any = content?.blocks;
+  const comments: any = content?.comments;
+  const commentsLength: number = comments.length;
 
   if (!content) return notFound();
 
@@ -166,8 +168,7 @@ export default async function BlogPostPage({ params }: any) {
                   formAdjective={content.formAdjective}
                 />
 
-                {/*
-                <Comments />*/}
+                <Comments comments={comments} commentsLength={commentsLength} />
               </div>
 
               <BlockSimilarCard
