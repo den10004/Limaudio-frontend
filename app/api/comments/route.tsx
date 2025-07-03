@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   try {
     const { name, text, id } = await req.json();
     console.log("Received data:", { name, text, id }); // Debug log
-
+    const articleID = id;
     if (!name || !text || !id) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -12,23 +12,22 @@ export async function POST(req: Request) {
       );
     }
 
-    const response = await fetch(`${process.env.API_URL}/comments/`, {
+    const pubDate = new Date();
+
+    const response = await fetch(`${process.env.API_URL}/comments/new/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.TOKEN}`,
       },
       body: JSON.stringify({
-        data: {
-          name,
-          text,
-          article: id,
-        },
+        name,
+        text,
+        articleID,
       }),
     });
 
     const data = await response.json();
-    console.log("Strapi response:", data); // Debug log
 
     if (!response.ok) {
       console.error("Strapi error:", data);

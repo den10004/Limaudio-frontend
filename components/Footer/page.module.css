@@ -33,6 +33,8 @@
     flex-direction: column;
 }
 
+
+
 .footer__left>ul>li>a {
     color: var(--color-grayF8);
     line-height: 200%;
@@ -62,11 +64,18 @@
     color: var(--color-grayF8);
 }
 
+/*
 .footer__right>div {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+}*/
+
+.footer__left>div {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
 
 .footer__right>div>ul {
@@ -98,7 +107,7 @@
 
 
 .footer__icons>li {
-    margin-right: 5px;
+    margin-right: 15px;
 }
 
 

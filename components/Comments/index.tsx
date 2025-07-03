@@ -76,17 +76,19 @@ export default function Comments({
     <div className={styles.comments}>
       <h3 className="text-h3-bold">Комментарии ({commentsLength})</h3>
       <div className={styles.comments__cards}>
-        {comments.map((comment) => (
-          <article key={comment.id} className={styles.comments__card}>
-            <time className="text-small" dateTime="16-04-2025">
-              {FormatDate(comment.createdAt)}
-            </time>
-            <h3>{comment.name}</h3>
-            <div>
-              <p className="text">{comment.text}</p>
-            </div>
-          </article>
-        ))}
+        {comments?.map((comment) =>
+          comment?.id ? (
+            <article key={comment?.id} className={styles.comments__card}>
+              <time className="text-small" dateTime="16-04-2025">
+                {FormatDate(comment?.createdAt)}
+              </time>
+              <h3>{comment?.name}</h3>
+              <div>
+                <p className="text">{comment?.text}</p>
+              </div>
+            </article>
+          ) : null
+        )}
       </div>
 
       <div className={styles.comments__cards}>
