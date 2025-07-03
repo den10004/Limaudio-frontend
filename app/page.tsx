@@ -6,15 +6,17 @@ import ScrollBtn from "@/components/ScrollBtn";
 import BlogMainWrapper from "@/components/BlogMainPageWrapper";
 import PopularWrapper from "@/components/PopularWrapper";
 import { Metadata } from "next";
+import { getGlobal } from "./api/getGlobal/api";
 
-export async function generateMetadata({ params }: any): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
+  const global = await getGlobal();
   return {
-    title: "Главная",
-    description: "",
-    keywords: [""],
+    title: global.data.siteName || "Главная",
+    description: global.data.siteDescription || "",
+    keywords: global.data.defaultSeo.metaKeys || [],
     openGraph: {
-      title: "Главная",
-      description: "",
+      title: global.data.siteName || "Главная",
+      description: global.data.siteDescription || "",
     },
   };
 }
