@@ -2,6 +2,7 @@
 import { FormatDate } from "@/utils/formatDate";
 import styles from "./page.module.css";
 import { useState } from "react";
+import { Info } from "../Modals/info";
 
 interface Comment {
   createdAt: string;
@@ -37,9 +38,6 @@ export default function Comments({
     setError("");
     setSuccess(false);
 
-    const articleId = parseInt(id); // Convert to number
-    console.log("Sending articleId:", articleId); // Debug: Should log 794
-
     try {
       const res = await fetch("/api/comments", {
         method: "POST",
@@ -62,7 +60,7 @@ export default function Comments({
         setSuccess(true);
         setName("");
         setText("");
-        comments.push(data.data); // Consider refetching comments
+        comments.push(data.data);
       }
     } catch (err) {
       console.error("Error:", err);
@@ -130,6 +128,13 @@ export default function Comments({
             </div>
             {error && <p style={{ color: "red" }}>{error}</p>}
             {success && <p style={{ color: "green" }}>Комментарий отправлен</p>}
+            {!error && success && (
+              <Info
+                res={error ? "Ошибка" : "Комментарий отправлен"}
+                colors={error ? "red" : "black"}
+              />
+            )}
+
             <button
               type="submit"
               className="blogbtnblue standart-btn text-h3"
