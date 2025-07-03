@@ -1,5 +1,7 @@
+"use client";
 import { FormatDate } from "@/utils/formatDate";
 import styles from "./page.module.css";
+import { useState } from "react";
 
 interface Comment {
   createdAt: string;
@@ -15,18 +17,58 @@ interface Comment {
 interface CommentsProps {
   comments: Comment[];
   commentsLength: number;
+  postId: string;
+  slug: string;
 }
 
-export default function Comments({ comments, commentsLength }: CommentsProps) {
-  console.log(comments);
+export default function Comments({
+  comments,
+  commentsLength,
+  postId,
+  slug,
+}: CommentsProps) {
+  const [name, setName] = useState("");
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          text,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Ошибка при отправке комментария");
+      } else {
+        setSuccess(true);
+        setName("");
+        setText("");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Ошибка сервера");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className={styles.comments}>
-      <h3 className="text-h3-bold">
-        {commentsLength === 0
-          ? "комментариев нет"
-          : `Комментарии (${commentsLength})`}
-      </h3>
-
+      <h3 className="text-h3-bold">Комментарии ({commentsLength})</h3>
       <div className={styles.comments__cards}>
         {comments.map((comment) => (
           <article key={comment.id} className={styles.comments__card}>
@@ -48,7 +90,9 @@ export default function Comments({ comments, commentsLength }: CommentsProps) {
           </article>
         ))}
       </div>
+
       <div className={styles.comments__cards}>
+        {" "}
         {/*
         <div className={styles.comments__nav}>
           <div className={styles.number_buttons}>
@@ -72,18 +116,13 @@ export default function Comments({ comments, commentsLength }: CommentsProps) {
             </button>
           </div>
         </div>*/}
-
         <div
           className={`${styles.comments__send} ${styles.comments__card}`}
           id="reply"
         >
           <h3 className="text-h3-bold">Оставить комментарий</h3>
 
-          <form
-            className={styles.comments__send__form}
-            action="/sendform"
-            method="POST"
-          >
+          <form className={styles.comments__send__form} onSubmit={handleSubmit}>
             <div className={styles.comments__send__form_group}>
               <label className="text-small" htmlFor="name">
                 Введите имя*
@@ -96,6 +135,7 @@ export default function Comments({ comments, commentsLength }: CommentsProps) {
                 name="name"
                 required
                 placeholder="Гость"
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className={styles.comments__send__form_group}>
@@ -108,11 +148,17 @@ export default function Comments({ comments, commentsLength }: CommentsProps) {
                 name="comment-area"
                 required
                 placeholder="Введите ваш комментарий"
+                onChange={(e) => setText(e.target.value)}
               ></textarea>
             </div>
-
-            <button type="submit" className="blogbtnblue standart-btn text-h3">
-              Отправить
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success && <p style={{ color: "green" }}>Комментарий отправлен</p>}
+            <button
+              type="submit"
+              className="blogbtnblue standart-btn text-h3"
+              disabled={loading}
+            >
+              {loading ? "Отправка..." : "Отправить"}
               <svg
                 width="26"
                 height="25"
