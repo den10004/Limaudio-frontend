@@ -17,15 +17,13 @@ interface Comment {
 interface CommentsProps {
   comments: Comment[];
   commentsLength: number;
-  postId: string;
-  slug: string;
+  id: string;
 }
 
 export default function Comments({
   comments,
   commentsLength,
-  postId,
-  slug,
+  id,
 }: CommentsProps) {
   const [name, setName] = useState("");
   const [text, setText] = useState("");
@@ -39,6 +37,9 @@ export default function Comments({
     setError("");
     setSuccess(false);
 
+    const articleId = parseInt(id); // Convert to number
+    console.log("Sending articleId:", articleId); // Debug: Should log 794
+
     try {
       const res = await fetch("/api/comments", {
         method: "POST",
@@ -48,24 +49,29 @@ export default function Comments({
         body: JSON.stringify({
           name,
           text,
+          id,
         }),
       });
 
+      const data = await res.json();
+      console.log("API response:", data); // Debug
+
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || "Ошибка при отправке комментария");
+        setError(data.error?.message || "Ошибка при отправке комментария");
       } else {
         setSuccess(true);
         setName("");
         setText("");
+        comments.push(data.data); // Consider refetching comments
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error:", err);
       setError("Ошибка сервера");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className={styles.comments}>
       <h3 className="text-h3-bold">Комментарии ({commentsLength})</h3>
@@ -76,52 +82,19 @@ export default function Comments({
               {FormatDate(comment.createdAt)}
             </time>
             <h3>{comment.name}</h3>
-
             <div>
               <p className="text">{comment.text}</p>
             </div>
-
-            {/*
-            <div className={styles.comments__btn}>
-              <a href="#reply" className={`text16 ${styles.comment_reply} `}>
-                Ответить на комментарий
-              </a>
-            </div>*/}
           </article>
         ))}
       </div>
 
       <div className={styles.comments__cards}>
-        {" "}
-        {/*
-        <div className={styles.comments__nav}>
-          <div className={styles.number_buttons}>
-            <button className={`text16 ${styles.number_button}`}>1</button>
-            <button className={styles.number_button}>2</button>
-            <button className={styles.number_button}>3</button>
-            <button className={styles.number_button}>4</button>
-            <button className={`text16 ${styles.number_button}`}>
-              <svg
-                width="15"
-                height="8"
-                viewBox="0 0 15 8"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.3536 4.35355C14.5488 4.15829 14.5488 3.84171 14.3536 3.64645L11.1716 0.464466C10.9763 0.269204 10.6597 0.269204 10.4645 0.464466C10.2692 0.659728 10.2692 0.976311 10.4645 1.17157L13.2929 4L10.4645 6.82843C10.2692 7.02369 10.2692 7.34027 10.4645 7.53553C10.6597 7.7308 10.9763 7.7308 11.1716 7.53553L14.3536 4.35355ZM0 4.5H14V3.5H0V4.5Z"
-                  fill="#BEBEBE"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>*/}
         <div
           className={`${styles.comments__send} ${styles.comments__card}`}
           id="reply"
         >
           <h3 className="text-h3-bold">Оставить комментарий</h3>
-
           <form className={styles.comments__send__form} onSubmit={handleSubmit}>
             <div className={styles.comments__send__form_group}>
               <label className="text-small" htmlFor="name">
@@ -135,6 +108,7 @@ export default function Comments({
                 name="name"
                 required
                 placeholder="Гость"
+                value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
@@ -148,6 +122,7 @@ export default function Comments({
                 name="comment-area"
                 required
                 placeholder="Введите ваш комментарий"
+                value={text}
                 onChange={(e) => setText(e.target.value)}
               ></textarea>
             </div>

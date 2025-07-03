@@ -169,9 +169,8 @@ export default async function BlogPostPage({ params }: any) {
 
                 <Comments
                   comments={comments}
-                  postId={content.documentId}
+                  id={content.id}
                   commentsLength={comments.length}
-                  slug={content.slug}
                 />
               </div>
 

@@ -1,44 +1,44 @@
-// app/api/comments/route.ts
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const body = await req.json();
-
-  const { name, text } = body;
-
-  if (!name || !text) {
-    return NextResponse.json(
-      { error: "Missing required fields" },
-      { status: 400 }
-    );
-  }
-
   try {
-    const res = await fetch(`${process.env.API_URL}/comments`, {
+    const { name, text, id } = await req.json();
+    console.log("Received data:", { name, text, id }); // Debug log
+
+    if (!name || !text || !id) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const response = await fetch(`${process.env.API_URL}/comments/`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.TOKEN}`,
         "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.TOKEN}`,
       },
       body: JSON.stringify({
         data: {
-          name: name,
-          text: text,
+          name,
+          text,
+          article: id,
         },
       }),
     });
 
-    if (!res.ok) {
-      console.error("Error posting comment", res.status);
+    const data = await response.json();
+    console.log("Strapi response:", data); // Debug log
+
+    if (!response.ok) {
+      console.error("Strapi error:", data);
       return NextResponse.json(
-        { error: "Failed to post comment" },
-        { status: res.status }
+        { error: data.error?.message || "Failed to post comment" },
+        { status: response.status }
       );
     }
 
-    const data = await res.json();
-
-    return NextResponse.json(data, { status: 200 });
+    return NextResponse.json(data, { status: 201 });
   } catch (error) {
     console.error("Server error:", error);
     return NextResponse.json(
