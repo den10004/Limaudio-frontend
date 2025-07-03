@@ -72,7 +72,11 @@ export default function Comments({
 
   return (
     <div className={styles.comments}>
-      <h3 className="text-h3-bold">Комментарии ({commentsLength})</h3>
+      <h3 className="text-h3-bold">
+        {commentsLength === 0
+          ? "Комментариев нет"
+          : `Комментарии (${commentsLength})`}
+      </h3>
       <div className={styles.comments__cards}>
         {comments?.map((comment) =>
           comment?.id ? (
