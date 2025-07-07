@@ -101,7 +101,6 @@ export default function BlogCard({ card, type }: any) {
               </svg>
               {card.views}
             </div>{" "}
-            {/*
             <div className="label show-label show-label-min label-color">
               <svg
                 width="14"
@@ -117,9 +116,9 @@ export default function BlogCard({ card, type }: any) {
                   fill="#1C1C1C"
                 ></path>
               </svg>
-           
+
               {card.comments.count}
-            </div>*/}
+            </div>
           </div>
         </div>
         <div className="card__desc">

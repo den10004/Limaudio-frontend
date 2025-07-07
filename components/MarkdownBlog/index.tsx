@@ -135,6 +135,7 @@ export default function Markdown({ blocs }: any) {
                             height: "auto",
                             display: "block",
                             maxWidth: "100%",
+                            margin: "10px 0",
                           }}
                         />
                       ),
