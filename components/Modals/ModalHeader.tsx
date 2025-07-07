@@ -13,28 +13,6 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
   topics,
 }) => {
   const [callbackModal, setCallbackModal] = useState(false);
-  /*
-  
-  const [topics, setTopics] = useState<any>();
-
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const res = await fetch("/api/topic");
-        if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || "Ошибка при загрузке");
-        }
-
-        const cards = await res.json();
-        setTopics(cards.data);
-      } catch (err: any) {
-        console.log(err);
-      }
-    };
-
-    fetchCards();
-  }, []);*/
 
   return (
     <div id="myModal" className="modal">
@@ -57,7 +35,6 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
           <Link href="/contacts">Контакты</Link>
           {/*
           <Link href="">Каталог</Link>*/}
-          <Link href=""></Link>
           <br />
 
           {topics?.map((item: { slug: string; title: string }, i: number) => {
@@ -77,6 +54,7 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({
         <ul className="modal__icons">
           <Link href="#">
             <svg
+              style={{ marginRight: "10px" }}
               width="40"
               height="40"
               viewBox="0 0 40 40"
