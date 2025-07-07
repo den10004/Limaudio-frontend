@@ -111,8 +111,15 @@
     .showbtnPopular {
         display: block;
     }
-
 }
+
+
+@media screen and (max-width: 500px) {
+    .showbtnPopular {
+        padding: 0;
+    }
+}
+
 
 @media screen and (max-width: 375px) {
     .search_input {
