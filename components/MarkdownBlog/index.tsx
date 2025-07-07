@@ -51,7 +51,7 @@ export default function Markdown({ blocs }: any) {
                           return children[0];
                         }
                         return (
-                          <p style={{ margin: "0.8rem 0" }} {...props}>
+                          <p style={{ margin: "0" }} {...props}>
                             {children}
                           </p>
                         );
