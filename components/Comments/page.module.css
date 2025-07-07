@@ -37,7 +37,10 @@
     transition: all 0.3s ease;
     margin-top: 5px;
     color: var(--color-blue);
+    cursor: pointer;
+    text-align: right;
 }
+
 
 /***/
 

@@ -89,9 +89,9 @@ export default function Comments({
               </div>
 
               <div className="comments__btn">
-                <a href="#reply" className="comment-reply text16">
+                <div className={styles.comment_reply}>
                   Ответить на комментарий
-                </a>
+                </div>
               </div>
             </article>
           ) : null
