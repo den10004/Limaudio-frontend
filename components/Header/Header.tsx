@@ -1,7 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ModalHeader } from "../Modals/ModalHeader";
 import { ModalQuestions } from "../Modals/ModalQuestions";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -30,6 +29,27 @@ export default function Header() {
       label: "Гайды и советы",
     },
   ];
+
+  const [topics, setTopics] = useState<any>();
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/topic");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+        setTopics(cards.data);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+
+    fetchCards();
+  }, []);
 
   return (
     <>
@@ -246,7 +266,9 @@ export default function Header() {
         </div>
       </header>
 
-      {headerMenu && <ModalHeader onClose={() => setHeaderMenu(false)} />}
+      {headerMenu && (
+        <ModalHeader onClose={() => setHeaderMenu(false)} topics={topics} />
+      )}
       {callbackModal && (
         <ModalQuestions onClose={() => setCallbackModal(false)} />
       )}

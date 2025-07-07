@@ -1,3 +1,4 @@
+/*
 export const linksFooter = [
   { href: "/topics/телевизор", label: "Телевизор" },
   { href: "/topics/полочная-акустика", label: "Полочная акустика" },
@@ -27,7 +28,7 @@ export const linksFooter = [
   { href: "/topics/домашний-кинотеатр", label: "Домашний кинотеатр" },
   { href: "/topics/Hi-Fi-звук", label: "Hi-Fi звук" },
   { href: "/topics/акустика", label: "Акустика" },
-];
+];*/
 
 export const linksTopics = [
   { slug: "телевизор", label: "Телевизоры" },

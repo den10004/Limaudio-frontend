@@ -1,15 +1,41 @@
 "use client";
 import Link from "next/link";
-import { linksFooter } from "@/lib/footerLinks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalQuestions } from "./ModalQuestions";
 
 interface ModalHeaderProps {
   onClose: () => void;
+  topics: any;
 }
 
-export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
+export const ModalHeader: React.FC<ModalHeaderProps> = ({
+  onClose,
+  topics,
+}) => {
   const [callbackModal, setCallbackModal] = useState(false);
+  /*
+  
+  const [topics, setTopics] = useState<any>();
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const res = await fetch("/api/topic");
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || "Ошибка при загрузке");
+        }
+
+        const cards = await res.json();
+        setTopics(cards.data);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+
+    fetchCards();
+  }, []);*/
+
   return (
     <div id="myModal" className="modal">
       <div className="modal-content">
@@ -34,10 +60,10 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ onClose }) => {
           <Link href=""></Link>
           <br />
 
-          {linksFooter?.map((item, i) => {
+          {topics?.map((item: { slug: string; title: string }, i: number) => {
             return (
-              <Link key={i} href={item.href}>
-                {item.label}
+              <Link key={i} href={item.slug}>
+                {item.title}
               </Link>
             );
           })}
