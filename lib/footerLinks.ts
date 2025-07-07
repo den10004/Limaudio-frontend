@@ -1,4 +1,5 @@
 export const linksFooter = [
+  { href: "/topics/телевизор", label: "Телевизор" },
   { href: "/topics/полочная-акустика", label: "Полочная акустика" },
   {
     href: "/topics/встраиваемая-акустика",
@@ -8,6 +9,7 @@ export const linksFooter = [
   { href: "/topics/cабвуферы", label: "Сабвуферы" },
   { href: "/topics/AV-ресиверы", label: "AV Ресиверы" },
   { href: "/topics/ЦАПы", label: "ЦАПы" },
+  { href: "/topics/стример", label: "Стример" },
   { href: "/topics/комплекты-акустики", label: "Комплекты акустики" },
   { href: "/topics/AV-Процессоры", label: "AV Процессоры" },
   { href: "/topics/предусилители", label: "Предусилители" },
@@ -27,14 +29,15 @@ export const linksFooter = [
   { href: "/topics/акустика", label: "Акустика" },
 ];
 
-
 export const linksTopics = [
+  { slug: "телевизор", label: "Телевизоры" },
   { slug: "полочная-акустика", label: "Полочная акустика" },
   { slug: "встраиваемая-акустика", label: "Встраиваемая акустика" },
   { slug: "dolby-atmos", label: "Dolby Atmos" },
   { slug: "cабвуферы", label: "Сабвуферы" },
   { slug: "av-ресиверы", label: "AV Ресиверы" },
   { slug: "цапы", label: "ЦАПы" },
+  { slug: "стример", label: "Стримеры" },
   { slug: "комплекты-акустики", label: "Комплекты акустики" },
   { slug: "av-процессоры", label: "AV Процессоры" },
   { slug: "предусилители", label: "Предусилители" },
