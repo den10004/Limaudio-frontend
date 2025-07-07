@@ -247,6 +247,7 @@ textarea {
     box-sizing: border-box;
     border: 1px solid #A0A0A0;
     background-color: transparent;
+    background: var(--color-white);
 }
 
 

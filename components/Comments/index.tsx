@@ -52,7 +52,6 @@ export default function Comments({
       });
 
       const data = await res.json();
-      console.log("API response:", data); // Debug
 
       if (!res.ok) {
         setError(data.error?.message || "Ошибка при отправке комментария");
@@ -87,6 +86,12 @@ export default function Comments({
               <h3>{comment?.name}</h3>
               <div>
                 <p className="text">{comment?.text}</p>
+              </div>
+
+              <div className="comments__btn">
+                <a href="#reply" className="comment-reply text16">
+                  Ответить на комментарий
+                </a>
               </div>
             </article>
           ) : null
