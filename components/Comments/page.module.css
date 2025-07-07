@@ -117,3 +117,31 @@
 .comments__send>form>button {
     margin-top: 10px;
 }
+
+
+.reply_form {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.comment_reply {
+    background: none;
+    border: none;
+    color: #0070f3;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    font-size: inherit;
+}
+
+.comment_reply:hover {
+    text-decoration: none;
+}
+
+.comments__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const { name, text, id } = await req.json();
+    console.log("Received data:", { name, text, id });
     const articleID = id;
     if (!name || !text || !id) {
       return NextResponse.json(

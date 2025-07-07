@@ -36,7 +36,7 @@ export default function BlogMainPage() {
   const searchQuery = searchParams.get("searchQuery") || "";
   const tags = searchParams.getAll("tags[]");
 
-  const INITIAL_VISIBLE_GROUPS = 4;
+  const INITIAL_VISIBLE_GROUPS = 8;
 
   const [allCards, setAllCards] = useState<CardsResponse>({
     data: [],

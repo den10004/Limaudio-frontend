@@ -31,6 +31,11 @@ export default function Comments({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [replyingTo, setReplyingTo] = useState<{
+    id: number;
+    name: string;
+  } | null>(null);
+  const [replyText, setReplyText] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +53,7 @@ export default function Comments({
           name,
           text,
           id,
+          ...(replyingTo && { parentId: replyingTo.id }),
         }),
       });
 
@@ -59,6 +65,8 @@ export default function Comments({
         setSuccess(true);
         setName("");
         setText("");
+        setReplyText("");
+        setReplyingTo(null);
         comments.push(data.data);
       }
     } catch (err) {
@@ -69,6 +77,57 @@ export default function Comments({
     }
   };
 
+  const handleReply = async (
+    e: React.FormEvent,
+    commentId: number,
+    commentName: string
+  ) => {
+    e.preventDefault();
+    if (!replyText.trim()) return;
+
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name || "Гость",
+          text: replyText,
+          id,
+          parentId: commentId,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error?.message || "Ошибка при отправке ответа");
+      } else {
+        setSuccess(true);
+        setReplyText("");
+        setReplyingTo(null);
+        comments.push(data.data);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      setError("Ошибка сервера");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startReply = (commentId: number, commentName: string) => {
+    setReplyingTo({ id: commentId, name: commentName });
+    setReplyText(`@${commentName}, `);
+    document.getElementById("reply")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  console.log(comments);
   return (
     <div className={styles.comments}>
       <h3 className="text-h3-bold">
@@ -89,10 +148,57 @@ export default function Comments({
               </div>
 
               <div className="comments__btn">
-                <div className={styles.comment_reply}>
+                <button
+                  className={`${styles.comment_reply} text16`}
+                  onClick={() => startReply(comment.id, comment.name)}
+                >
                   Ответить на комментарий
-                </div>
+                </button>
               </div>
+
+              {/* Форма ответа на конкретный комментарий */}
+              {replyingTo?.id === comment.id && (
+                <form
+                  className={styles.reply_form}
+                  onSubmit={(e) => handleReply(e, comment.id, comment.name)}
+                >
+                  <div className={styles.comments__send__form_group}>
+                    <label
+                      className="text-small"
+                      htmlFor={`reply-${comment.id}`}
+                    >
+                      Ваш ответ
+                    </label>
+                    <textarea
+                      className="inputform"
+                      id={`reply-${comment.id}`}
+                      required
+                      placeholder="Введите ваш ответ"
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                    />
+                  </div>
+                  <div className={styles.comments__actions}>
+                    <button
+                      type="button"
+                      className="blogbtn standart-btn text-h3"
+                      onClick={() => {
+                        setReplyingTo(null);
+                        setReplyText("");
+                      }}
+                    >
+                      Отменить
+                    </button>
+                    <button
+                      type="submit"
+                      className="blogbtnblue standart-btn text-h3"
+                      disabled={loading}
+                    >
+                      {loading ? "Отправка..." : "Отправить ответ"}
+                    </button>
+                  </div>
+                </form>
+              )}
             </article>
           ) : null
         )}
