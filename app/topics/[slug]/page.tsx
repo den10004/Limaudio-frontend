@@ -34,7 +34,6 @@ interface Topic {
   seo?: Seo;
 }
 
-// Update PageProps to use Promise for params
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -49,7 +48,6 @@ function getTopicLabel(slug: string): string | null {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  // Await the params to get the slug
   const { slug } = await params;
   const label = getTopicLabel(slug);
 
@@ -85,6 +83,7 @@ export default async function TopicPageWrapper({ params }: PageProps) {
   // Await the params to get the slug
   const { slug } = await params;
   const label = getTopicLabel(slug);
+  console.log(slug);
 
   if (!label) {
     notFound();

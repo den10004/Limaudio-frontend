@@ -31,14 +31,14 @@ export const linksFooter = [
 ];*/
 
 export const linksTopics = [
-  { slug: "телевизор", label: "Телевизоры" },
+  { slug: "телевизоры", label: "Телевизоры" },
   { slug: "полочная-акустика", label: "Полочная акустика" },
   { slug: "встраиваемая-акустика", label: "Встраиваемая акустика" },
   { slug: "dolby-atmos", label: "Dolby Atmos" },
   { slug: "cабвуферы", label: "Сабвуферы" },
   { slug: "av-ресиверы", label: "AV Ресиверы" },
   { slug: "цапы", label: "ЦАПы" },
-  { slug: "стример", label: "Стримеры" },
+  { slug: "стримеры", label: "Стримеры" },
   { slug: "комплекты-акустики", label: "Комплекты акустики" },
   { slug: "av-процессоры", label: "AV Процессоры" },
   { slug: "предусилители", label: "Предусилители" },
