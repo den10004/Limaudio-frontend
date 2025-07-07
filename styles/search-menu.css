@@ -4,8 +4,8 @@
 
  .search_input_header {
      position: absolute;
-     top: -3px;
-     left: 138px;
+     top: 15px;
+     left: 130px;
      width: 0;
      padding: 13px 10px 13px 35px;
      border-radius: 12px;
@@ -30,8 +30,8 @@
 
  @media screen and (max-width:500px) {
      .search_input_header {
-         left: 0px;
-         width: calc(100% - 90px);
+         width: calc(100% - 120px);
+         left: 15px;
      }
 
      .search_input_header.active {
