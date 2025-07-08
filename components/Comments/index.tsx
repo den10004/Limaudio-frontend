@@ -32,6 +32,7 @@ export default function Comments({
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingReply, setLoadingReply] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
   const [replyingTo, setReplyingTo] = useState<{
@@ -72,9 +73,6 @@ export default function Comments({
         setSuccess(true);
         setName("");
         setText("");
-
-        // ✅ Добавляем новый комментарий в localComments
-        setLocalComments((prev) => [...prev, data]);
       }
     } catch (err) {
       console.error("Error:", err);
@@ -93,7 +91,7 @@ export default function Comments({
     e.preventDefault();
     if (!replyText.trim()) return;
 
-    setLoading(true);
+    setLoadingReply(true);
     setError("");
     setSuccess(false);
 
@@ -119,26 +117,12 @@ export default function Comments({
         setSuccess(true);
         setReplyText("");
         setReplyingTo(null);
-
-        const newReply = data;
-
-        // ✅ Добавляем новый ответ в replies родителя
-        setLocalComments((prev) =>
-          prev.map((comment) =>
-            comment.documentId === documentId
-              ? {
-                  ...comment,
-                  replies: [...comment.replies, newReply],
-                }
-              : comment
-          )
-        );
       }
     } catch (err) {
       console.error("Error:", err);
       setError("Ошибка сервера");
     } finally {
-      setLoading(false);
+      setLoadingReply(false);
     }
   };
 
@@ -151,8 +135,6 @@ export default function Comments({
     setReplyText(`@${commentName}, `);
     document.getElementById("reply")?.scrollIntoView({ behavior: "smooth" });
   };
-
-  // ✅ Фильтрация только top-level comments
   const topLevelComments = localComments.filter(
     (comment) => comment.reply === null
   );
@@ -175,7 +157,16 @@ export default function Comments({
               <div>
                 <p className="text">{comment?.text}</p>
               </div>
-
+              <div className={styles.comments__btn}>
+                <button
+                  className={`${styles.comment_reply} text16`}
+                  onClick={() =>
+                    startReply(comment.id, comment.name, comment.documentId)
+                  }
+                >
+                  Ответить на комментарий
+                </button>
+              </div>
               {comment?.replies?.map((reply) => (
                 <div
                   key={reply.id}
@@ -188,22 +179,9 @@ export default function Comments({
                   <time className="text-small" dateTime="16-04-2025">
                     {FormatDate(reply?.createdAt)}
                   </time>
-                  <h3>{reply?.creatorName || reply?.name}</h3>
                   <p className="text">{reply?.text}</p>
                 </div>
               ))}
-
-              <div className="comments__btn">
-                <button
-                  className={`${styles.comment_reply} text16`}
-                  onClick={() =>
-                    startReply(comment.id, comment.name, comment.documentId)
-                  }
-                >
-                  Ответить на комментарий
-                </button>
-              </div>
-
               {replyingTo?.id === comment.id && (
                 <form
                   className={styles.reply_form}
@@ -241,9 +219,9 @@ export default function Comments({
                     <button
                       type="submit"
                       className="blogbtnblue standart-btn text-h3"
-                      disabled={loading || !replyText.trim()}
+                      disabled={loadingReply || !replyText.trim()}
                     >
-                      {loading ? "Отправка..." : "Отправить ответ"}
+                      {loadingReply ? "Отправка..." : "Отправить ответ"}
                     </button>
                   </div>
                 </form>
@@ -294,7 +272,7 @@ export default function Comments({
             {success && <p style={{ color: "green" }}>Комментарий отправлен</p>}
             {!error && success && (
               <Info
-                res={error ? "Ошибка" : "Комментарий отправлен"}
+                res={error ? "Ошибка" : "Комментарий отправлен на проверку"}
                 colors={error ? "red" : "black"}
               />
             )}
