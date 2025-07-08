@@ -5,11 +5,12 @@ import { useState } from "react";
 import { Info } from "../Modals/info";
 
 interface Comment {
+  replies: Comment[];
   createdAt: string;
   documentId: string;
   id: number;
   name: string;
-  publishedAt: string;
+  publishedAt: string | null;
   reply: string | null;
   text: string;
   updatedAt: string;
@@ -34,8 +35,10 @@ export default function Comments({
   const [replyingTo, setReplyingTo] = useState<{
     id: number;
     name: string;
+    documentId: string;
   } | null>(null);
   const [replyText, setReplyText] = useState("");
+  const [localComments, setLocalComments] = useState<Comment[]>(comments);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +56,6 @@ export default function Comments({
           name,
           text,
           id,
-          ...(replyingTo && { parentId: replyingTo.id }),
         }),
       });
 
@@ -65,9 +67,7 @@ export default function Comments({
         setSuccess(true);
         setName("");
         setText("");
-        setReplyText("");
-        setReplyingTo(null);
-        comments.push(data.data);
+        setLocalComments((prev) => [...prev, data]); // Add top-level comment
       }
     } catch (err) {
       console.error("Error:", err);
@@ -80,7 +80,8 @@ export default function Comments({
   const handleReply = async (
     e: React.FormEvent,
     commentId: number,
-    commentName: string
+    commentName: string,
+    documentId: string
   ) => {
     e.preventDefault();
     if (!replyText.trim()) return;
@@ -99,7 +100,7 @@ export default function Comments({
           name: name || "Гость",
           text: replyText,
           id,
-          parentId: commentId,
+          parentId: documentId, // Send parent comment's documentId
         }),
       });
 
@@ -111,7 +112,17 @@ export default function Comments({
         setSuccess(true);
         setReplyText("");
         setReplyingTo(null);
-        comments.push(data.data);
+        // Add reply only to the parent comment's replies array
+        setLocalComments((prev) =>
+          prev.map((comment) =>
+            comment.documentId === documentId
+              ? {
+                  ...comment,
+                  replies: [...(comment.replies || []), data],
+                }
+              : comment
+          )
+        );
       }
     } catch (err) {
       console.error("Error:", err);
@@ -121,13 +132,16 @@ export default function Comments({
     }
   };
 
-  const startReply = (commentId: number, commentName: string) => {
-    setReplyingTo({ id: commentId, name: commentName });
+  const startReply = (
+    commentId: number,
+    commentName: string,
+    documentId: string
+  ) => {
+    setReplyingTo({ id: commentId, name: commentName, documentId });
     setReplyText(`@${commentName}, `);
     document.getElementById("reply")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  console.log(comments);
   return (
     <div className={styles.comments}>
       <h3 className="text-h3-bold">
@@ -136,7 +150,7 @@ export default function Comments({
           : `Комментарии (${commentsLength})`}
       </h3>
       <div className={styles.comments__cards}>
-        {comments?.map((comment) =>
+        {localComments?.map((comment) =>
           comment?.id ? (
             <article key={comment?.id} className={styles.comments__card}>
               <time className="text-small" dateTime="16-04-2025">
@@ -147,20 +161,40 @@ export default function Comments({
                 <p className="text">{comment?.text}</p>
               </div>
 
+              {comment?.replies?.map((reply) => (
+                <div
+                  key={reply.id}
+                  style={{
+                    margin: "20px 0 0 30px",
+                    paddingTop: "10px",
+                    borderTop: "1px solid #a0a0a0",
+                  }}
+                >
+                  <time className="text-small" dateTime="16-04-2025">
+                    {FormatDate(reply?.createdAt)}
+                  </time>
+                  <h3>{reply?.name}</h3>
+                  <p className="text">{reply?.text}</p>
+                </div>
+              ))}
+
               <div className="comments__btn">
                 <button
                   className={`${styles.comment_reply} text16`}
-                  onClick={() => startReply(comment.id, comment.name)}
+                  onClick={() =>
+                    startReply(comment.id, comment.name, comment.documentId)
+                  }
                 >
                   Ответить на комментарий
                 </button>
               </div>
 
-              {/* Форма ответа на конкретный комментарий */}
               {replyingTo?.id === comment.id && (
                 <form
                   className={styles.reply_form}
-                  onSubmit={(e) => handleReply(e, comment.id, comment.name)}
+                  onSubmit={(e) =>
+                    handleReply(e, comment.id, comment.name, comment.documentId)
+                  }
                 >
                   <div className={styles.comments__send__form_group}>
                     <label

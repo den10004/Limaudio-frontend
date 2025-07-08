@@ -2,17 +2,15 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    const { name, text, id } = await req.json();
-    console.log("Received data:", { name, text, id });
-    const articleID = id;
+    const { name, text, id, parentId } = await req.json();
+    console.log("Received data:", { name, text, id, parentId });
+
     if (!name || !text || !id) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing required fields: name, text, or id" },
         { status: 400 }
       );
     }
-
-    const pubDate = new Date();
 
     const response = await fetch(`${process.env.API_URL}/comments/new/`, {
       method: "POST",
@@ -23,7 +21,8 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         name,
         text,
-        articleID,
+        articleID: id,
+        parentId: parentId || null,
       }),
     });
 
