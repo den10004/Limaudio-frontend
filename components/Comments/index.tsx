@@ -1,7 +1,7 @@
 "use client";
 import { FormatDate } from "@/utils/formatDate";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Info } from "../Modals/info";
 
 interface Comment {
@@ -14,6 +14,8 @@ interface Comment {
   reply: string | null;
   text: string;
   updatedAt: string;
+  createdBy?: { id: number; username: string } | null;
+  creatorName?: string;
 }
 
 interface CommentsProps {
@@ -47,16 +49,19 @@ export default function Comments({
     setSuccess(false);
 
     try {
+      const payload = {
+        name,
+        text,
+        id,
+        ...(replyingTo ? { parentId: replyingTo.documentId } : {}),
+      };
+
       const res = await fetch("/api/comments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name,
-          text,
-          id,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -67,7 +72,9 @@ export default function Comments({
         setSuccess(true);
         setName("");
         setText("");
-        setLocalComments((prev) => [...prev, data]); // Add top-level comment
+
+        // ✅ Добавляем новый комментарий в localComments
+        setLocalComments((prev) => [...prev, data]);
       }
     } catch (err) {
       console.error("Error:", err);
@@ -100,7 +107,7 @@ export default function Comments({
           name: name || "Гость",
           text: replyText,
           id,
-          parentId: documentId, // Send parent comment's documentId
+          parentId: documentId,
         }),
       });
 
@@ -112,13 +119,16 @@ export default function Comments({
         setSuccess(true);
         setReplyText("");
         setReplyingTo(null);
-        // Add reply only to the parent comment's replies array
+
+        const newReply = data;
+
+        // ✅ Добавляем новый ответ в replies родителя
         setLocalComments((prev) =>
           prev.map((comment) =>
             comment.documentId === documentId
               ? {
                   ...comment,
-                  replies: [...(comment.replies || []), data],
+                  replies: [...comment.replies, newReply],
                 }
               : comment
           )
@@ -142,6 +152,11 @@ export default function Comments({
     document.getElementById("reply")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // ✅ Фильтрация только top-level comments
+  const topLevelComments = localComments.filter(
+    (comment) => comment.reply === null
+  );
+
   return (
     <div className={styles.comments}>
       <h3 className="text-h3-bold">
@@ -150,13 +165,13 @@ export default function Comments({
           : `Комментарии (${commentsLength})`}
       </h3>
       <div className={styles.comments__cards}>
-        {localComments?.map((comment) =>
+        {topLevelComments.map((comment) =>
           comment?.id ? (
             <article key={comment?.id} className={styles.comments__card}>
               <time className="text-small" dateTime="16-04-2025">
                 {FormatDate(comment?.createdAt)}
               </time>
-              <h3>{comment?.name}</h3>
+              <h3>{comment?.creatorName || comment?.name}</h3>
               <div>
                 <p className="text">{comment?.text}</p>
               </div>
@@ -173,7 +188,7 @@ export default function Comments({
                   <time className="text-small" dateTime="16-04-2025">
                     {FormatDate(reply?.createdAt)}
                   </time>
-                  <h3>{reply?.name}</h3>
+                  <h3>{reply?.creatorName || reply?.name}</h3>
                   <p className="text">{reply?.text}</p>
                 </div>
               ))}
@@ -226,7 +241,7 @@ export default function Comments({
                     <button
                       type="submit"
                       className="blogbtnblue standart-btn text-h3"
-                      disabled={loading}
+                      disabled={loading || !replyText.trim()}
                     >
                       {loading ? "Отправка..." : "Отправить ответ"}
                     </button>
@@ -287,7 +302,7 @@ export default function Comments({
             <button
               type="submit"
               className="blogbtnblue standart-btn text-h3"
-              disabled={loading}
+              disabled={loading || !text.trim() || !name.trim()}
             >
               {loading ? "Отправка..." : "Отправить"}
               <svg
